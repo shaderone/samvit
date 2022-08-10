@@ -17,6 +17,9 @@ class TeacherView(APIView):
 
 
 class PhoneNumberVerification(APIView):
+    """
+    Enter mobile number for sending otp
+    """
 
     def post(self, request):
         phone = request.data['phone']
@@ -39,6 +42,10 @@ class PhoneNumberVerification(APIView):
 
 
 class PhoneNumberOtp(APIView):
+
+    """
+    Checking OTP
+    """
 
     def post(self, request):
         otp = request.data['otp']
