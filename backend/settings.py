@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-g8dwrq)1g%47f5c7#*xv3g+yd69v8ejb9fu@@f!vfszpwa#sxh
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 JAZZMIN_SETTINGS = {
     "site_title": "BerchFete Admin",
