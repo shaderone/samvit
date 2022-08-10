@@ -10,7 +10,7 @@ class ReservationAdmin(admin.ModelAdmin):
     list_display = ('date', 'time', 'number_of_slot')
     fieldsets = (
         (None, {
-            'fields': ('date', 'number_of_slot', 'time')
+            'fields': ('date', 'number_of_slot', 'time',)
         }),
     )
 class TeacherAdmin(admin.ModelAdmin):
@@ -20,6 +20,6 @@ class TeacherAdmin(admin.ModelAdmin):
         }),
     )
 
-admin.site.register(Teachers)
+admin.site.register(Teachers, TeacherAdmin)
 admin.site.register(Reservation, ReservationAdmin)
 admin.site.register(Colleges)
