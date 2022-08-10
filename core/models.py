@@ -1,5 +1,6 @@
 from datetime import date
 import email
+from pyexpat import model
 from django.db import models
 
 # Create your models here.
@@ -40,7 +41,8 @@ class Colleges(models.Model):
     address = models.CharField(max_length=255)
     phone = models.CharField(max_length=255)
     email = models.EmailField()
-    created_by = models.ForeignKey(Reservation, on_delete=models.CASCADE)
+    reservation = models.ForeignKey(Reservation, on_delete=models.CASCADE)
+    created_by = models.ForeignKey(Teachers, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name

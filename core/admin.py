@@ -13,6 +13,12 @@ class ReservationAdmin(admin.ModelAdmin):
             'fields': ('date', 'number_of_slot', 'time')
         }),
     )
+class TeacherAdmin(admin.ModelAdmin):
+    fieldsets = (
+        (None, {
+            'fields': ('name', 'e_id', 'phone_number')
+        }),
+    )
 
 admin.site.register(Teachers)
 admin.site.register(Reservation, ReservationAdmin)
