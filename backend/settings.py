@@ -17,7 +17,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # import dj_database_url
     
 import django_heroku
-django_heroku.settings(locals())
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -146,3 +146,6 @@ STATIC_DIR = [
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+django_heroku.settings(locals())
