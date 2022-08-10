@@ -14,3 +14,6 @@ sqlparse==0.4.2
 static3==0.7.0
 tzdata==2022.1
 urllib3==1.26.11
+
+dj-database-url 
+psycopg2
