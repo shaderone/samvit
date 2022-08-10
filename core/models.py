@@ -41,7 +41,7 @@ class Colleges(models.Model):
     address = models.CharField(max_length=255)
     phone = models.CharField(max_length=255)
     email = models.EmailField()
-    # reservation = models.ForeignKey(Reservation, on_delete=models.CASCADE)
+    eeservation =  models.ForeignKey(Reservation, on_delete=models.CASCADE)
     created_by = models.ForeignKey(Teachers, on_delete=models.CASCADE)
 
     def __str__(self):
