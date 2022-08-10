@@ -32,6 +32,9 @@ class Reservation(models.Model):
     # add time
     time = models.CharField(max_length=10, choices=DATE)
 
+    def __str__(self) -> str:
+        return f"{self.date} -> {self.time}"
+
 class Colleges(models.Model):
     name = models.CharField(max_length=255)
     address = models.CharField(max_length=255)
