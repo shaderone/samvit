@@ -1,3 +1,4 @@
+import 'package:brechfete/core/constants.dart';
 import 'package:brechfete/presentation/root/widgets/bottom_navbar.dart';
 
 import 'package:brechfete/presentation/screens/booking/booking_screen.dart';
@@ -17,17 +18,36 @@ class App extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
+        toolbarHeight: 10,
         backgroundColor: Colors.transparent,
       ),
       body: SafeArea(
         child: ValueListenableBuilder(
-          valueListenable: currentSelectedIndexNotifier,
+          valueListenable: MaterialBottomNav.currentSelectedIndexNotifier,
           builder: (BuildContext context, int newSelectedIndex, Widget? _) {
             return pages[newSelectedIndex];
           },
         ),
       ),
-      bottomNavigationBar: const BottomNavbar(),
+      bottomNavigationBar: SizedBox(
+        height: 70,
+        child: MaterialBottomNav(
+          labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+          onItemTap: (int newIndex) {
+            MaterialBottomNav.currentSelectedIndexNotifier.value = newIndex;
+          },
+          destinations: const [
+            NavigationDestination(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.settings),
+              label: 'Settings',
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

@@ -10,7 +10,22 @@ class CustomTheme {
         //background color
         primary: secondaryBlueShadeDark,
         //text color
-        onPrimary: textWhiteShadeLight,
+        onPrimary: pureWhite,
+      ),
+    ),
+    // custom material you navbar theme
+    navigationBarTheme: NavigationBarThemeData(
+      backgroundColor: bottomNavDark,
+      indicatorColor: pureWhite,
+      iconTheme: MaterialStateProperty.all(
+        const IconThemeData(
+          color: secondaryBlueShadeDark,
+        ),
+      ),
+      labelTextStyle: MaterialStateProperty.all(
+        const TextStyle(
+          fontSize: 14,
+        ),
       ),
     ),
     //will make all the text addptive to darkmode
