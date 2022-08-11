@@ -43,7 +43,7 @@ class Colleges(models.Model):
     email = models.EmailField()
     #hope it wil fix
     # need to fix this issue
-    reservation =  models.ForeignKey(Reservation, on_delete=models.CASCADE, default=0)
+    reservation =  models.ForeignKey(Reservation, on_delete=models.CASCADE, db_column='reservation_id')
     created_by = models.ForeignKey(Teachers, on_delete=models.CASCADE)
 
     def __str__(self):
