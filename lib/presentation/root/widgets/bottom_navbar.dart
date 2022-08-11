@@ -28,21 +28,21 @@ class MaterialBottomNav extends StatelessWidget {
             destinations: [
               NavigationDestination(
                 icon: Icon(
-                  Icons.home,
+                  Icons.update,
                   color: newIndex == 1
                       ? textWhiteShadeDark
                       : secondaryBlueShadeDark,
                 ),
-                label: 'Home',
+                label: 'booking',
               ),
               NavigationDestination(
                 icon: Icon(
-                  Icons.settings,
+                  Icons.edit_calendar_outlined,
                   color: newIndex == 0
                       ? textWhiteShadeDark
                       : secondaryBlueShadeDark,
                 ),
-                label: 'Settings',
+                label: 'reservations',
               ),
             ],
           );
