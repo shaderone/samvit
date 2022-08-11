@@ -42,7 +42,7 @@ class Colleges(models.Model):
     phone = models.CharField(max_length=255)
     email = models.EmailField()
     # need to fix this issue
-    # eeservation =  models.ForeignKey(Reservation, on_delete=models.CASCADE)
+    reservation =  models.ForeignKey(Reservation, on_delete=models.CASCADE)
     created_by = models.ForeignKey(Teachers, on_delete=models.CASCADE)
 
     def __str__(self):
