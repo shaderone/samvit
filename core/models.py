@@ -45,13 +45,23 @@ class Colleges(models.Model):
     address = models.CharField(max_length=255)
     phone = models.CharField(max_length=255)
     email = models.EmailField()
-    #hope it wil fix
-    # need to fix this issue
+    no_of_seat = models.IntegerField(default=0)
     reservation =  models.ForeignKey(Reservation, on_delete=models.CASCADE, db_column='reservation_id')
     created_by = models.ForeignKey(Teachers, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs) -> None:
+        res = self.reservation.number_of_slot - self.no_of_seat
+        if res > 0:
+            self.reservation.number_of_slot = res
+            self.reservation.save()
+        else:
+            self.reservation.number_of_slot = 0
+            self.reservation.save()
+
+        return super().save(args, kwargs)
 
     class Meta:
         verbose_name="College"
