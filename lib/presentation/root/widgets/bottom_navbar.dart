@@ -1,19 +1,15 @@
+import 'package:brechfete/core/constants.dart';
 import 'package:flutter/material.dart';
 
 class MaterialBottomNav extends StatelessWidget {
   static final ValueNotifier<int> currentSelectedIndexNotifier =
       ValueNotifier(0);
-  final List<NavigationDestination> destinations;
-  final NavigationDestinationLabelBehavior? labelBehavior;
-  final void Function(int index) onItemTap;
+
   final Color? backgroundColor;
 
   const MaterialBottomNav({
     Key? key,
-    required this.onItemTap,
-    required this.destinations,
     this.backgroundColor,
-    this.labelBehavior,
   }) : super(key: key);
 
   @override
@@ -23,13 +19,32 @@ class MaterialBottomNav extends StatelessWidget {
         builder: (BuildContext context, int newIndex, Widget? _) {
           return NavigationBar(
             //animationDuration: const Duration(seconds: 2),
-            labelBehavior: labelBehavior,
+            labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
             backgroundColor: backgroundColor,
             selectedIndex: newIndex,
             onDestinationSelected: (int tappedIndex) {
-              onItemTap(tappedIndex);
+              currentSelectedIndexNotifier.value = tappedIndex;
             },
-            destinations: destinations,
+            destinations: [
+              NavigationDestination(
+                icon: Icon(
+                  Icons.home,
+                  color: newIndex == 1
+                      ? textWhiteShadeDark
+                      : secondaryBlueShadeDark,
+                ),
+                label: 'Home',
+              ),
+              NavigationDestination(
+                icon: Icon(
+                  Icons.settings,
+                  color: newIndex == 0
+                      ? textWhiteShadeDark
+                      : secondaryBlueShadeDark,
+                ),
+                label: 'Settings',
+              ),
+            ],
           );
         });
   }

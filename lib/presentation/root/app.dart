@@ -29,24 +29,9 @@ class App extends StatelessWidget {
           },
         ),
       ),
-      bottomNavigationBar: SizedBox(
+      bottomNavigationBar: const SizedBox(
         height: 70,
-        child: MaterialBottomNav(
-          labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
-          onItemTap: (int newIndex) {
-            MaterialBottomNav.currentSelectedIndexNotifier.value = newIndex;
-          },
-          destinations: const [
-            NavigationDestination(
-              icon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            NavigationDestination(
-              icon: Icon(Icons.settings),
-              label: 'Settings',
-            ),
-          ],
-        ),
+        child: MaterialBottomNav(),
       ),
     );
   }
