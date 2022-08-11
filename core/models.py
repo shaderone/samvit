@@ -15,6 +15,10 @@ class Teachers(models.Model):
     def __str__(self) -> str:
         return f"{self.name}"
 
+    class Meta:
+        verbose_name = "Teacher"
+        verbose_name_plural = "Teachers"
+
 
 DATE = (
     ('10:00 AM', '10:00 AM'),
@@ -48,3 +52,7 @@ class Colleges(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name="College"
+        verbose_name_plural  = "Colleges"
