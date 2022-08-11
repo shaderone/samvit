@@ -41,6 +41,7 @@ class Colleges(models.Model):
     address = models.CharField(max_length=255)
     phone = models.CharField(max_length=255)
     email = models.EmailField()
+    #hope it wil fix
     # need to fix this issue
     reservation =  models.ForeignKey(Reservation, on_delete=models.CASCADE)
     created_by = models.ForeignKey(Teachers, on_delete=models.CASCADE)
