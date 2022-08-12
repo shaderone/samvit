@@ -23,7 +23,7 @@ class App extends StatelessWidget {
       appBar: AppBar(
         systemOverlayStyle: const SystemUiOverlayStyle(
           statusBarBrightness: Brightness.dark,
-          statusBarColor: secondaryBlueShadeDark,
+          statusBarColor: Colors.transparent,
         ),
         elevation: 0,
         toolbarHeight: 10,
