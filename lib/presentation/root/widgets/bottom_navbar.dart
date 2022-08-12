@@ -25,22 +25,23 @@ class MaterialBottomNav extends StatelessWidget {
             onDestinationSelected: (int tappedIndex) {
               currentSelectedIndexNotifier.value = tappedIndex;
             },
-            destinations: [
+            destinations: const [
               NavigationDestination(
-                icon: Icon(
-                  Icons.update,
-                  color: newIndex == 1
-                      ? textWhiteShadeDark
-                      : secondaryBlueShadeDark,
+                selectedIcon: Icon(
+                  Icons.update_rounded,
+                  color: secondaryBlueShadeDark,
                 ),
+                icon: Icon(Icons.update, color: textWhiteShadeDark),
                 label: 'booking',
               ),
               NavigationDestination(
+                selectedIcon: Icon(
+                  Icons.edit_calendar,
+                  color: secondaryBlueShadeDark,
+                ),
                 icon: Icon(
                   Icons.edit_calendar_outlined,
-                  color: newIndex == 0
-                      ? textWhiteShadeDark
-                      : secondaryBlueShadeDark,
+                  color: textWhiteShadeDark,
                 ),
                 label: 'reservations',
               ),

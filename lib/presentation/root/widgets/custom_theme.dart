@@ -1,9 +1,17 @@
 import 'package:brechfete/core/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class CustomTheme {
   static final darkTheme = ThemeData(
     scaffoldBackgroundColor: bgDark,
+    appBarTheme: const AppBarTheme(
+      systemOverlayStyle: SystemUiOverlayStyle(
+        statusBarColor: Colors.amber,
+        statusBarIconBrightness: Brightness.dark,
+        statusBarBrightness: Brightness.dark,
+      ),
+    ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         //backgroundColor: MaterialStateProperty.all(secondaryBlueShadeDark),
