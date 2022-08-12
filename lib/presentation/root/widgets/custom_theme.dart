@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 
 class CustomTheme {
   static final darkTheme = ThemeData(
+    visualDensity: VisualDensity.adaptivePlatformDensity,
     scaffoldBackgroundColor: bgDark,
     appBarTheme: const AppBarTheme(
       systemOverlayStyle: SystemUiOverlayStyle(
@@ -51,6 +52,7 @@ class CustomTheme {
   );
 
   static final lightTheme = ThemeData(
+    visualDensity: VisualDensity.adaptivePlatformDensity,
     scaffoldBackgroundColor: Colors.white,
     //make the text color adaptive to light mode
     colorScheme: const ColorScheme.light(),

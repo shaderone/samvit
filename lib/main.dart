@@ -1,8 +1,6 @@
 import 'package:brechfete/presentation/root/app.dart';
 import 'package:brechfete/presentation/root/widgets/custom_theme.dart';
-import 'package:brechfete/presentation/screens/booking/booking_screen.dart';
 import 'package:brechfete/presentation/screens/initial/login.dart';
-import 'package:brechfete/presentation/screens/reservation/reservation_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
