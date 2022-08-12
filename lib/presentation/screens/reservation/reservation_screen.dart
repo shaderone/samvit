@@ -8,7 +8,21 @@ class ReservationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("BerchFete"),
+        elevation: 25,
+        backgroundColor: primaryDarkShadeDark,
+        title: Row(
+          children: [
+            Image.asset("assets/logo.png", width: 30),
+            const SizedBox(width: 15),
+            const Text(
+              "BerchFete",
+              style: TextStyle(fontSize: 24),
+            ),
+          ],
+        ),
+        actions: [
+          IconButton(onPressed: () {}, icon: const Icon(Icons.logout_rounded))
+        ],
       ),
       body: Padding(
         //platform specific padding here
@@ -39,7 +53,7 @@ class ReservationCard extends StatelessWidget {
       //height shows no issue
       height: 225,
       child: Card(
-        color: primaryDarkShadeDark,
+        color: primaryDark,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5),
         ),
@@ -71,7 +85,7 @@ class ReservationCard extends StatelessWidget {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15.0),
                         ),
-                        shadowColor: Colors.black87,
+                        shadowColor: Colors.black,
                         child: CircleAvatar(
                           radius: 22,
                           backgroundColor: primaryDark,
@@ -212,6 +226,14 @@ class ReservationCard extends StatelessWidget {
                       SizedBox(
                         height: 50,
                         child: ElevatedButton(
+                          style: ButtonStyle(
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                            ),
+                          ),
                           onPressed: () {
                             //reshedule
                           },
