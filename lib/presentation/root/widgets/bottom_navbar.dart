@@ -18,8 +18,8 @@ class MaterialBottomNav extends StatelessWidget {
         valueListenable: currentSelectedIndexNotifier,
         builder: (BuildContext context, int newIndex, Widget? _) {
           return NavigationBar(
-            //animationDuration: const Duration(seconds: 2),
-            labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+            animationDuration: const Duration(seconds: 1),
+            labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
             backgroundColor: backgroundColor,
             selectedIndex: newIndex,
             onDestinationSelected: (int tappedIndex) {

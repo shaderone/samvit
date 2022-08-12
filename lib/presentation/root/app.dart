@@ -9,6 +9,9 @@ import 'package:flutter/services.dart';
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
 
+  static const String loginRoute = "/login";
+  static const String home = "/home";
+
   final pages = const [
     BookingScreen(),
     ReservationScreen(),

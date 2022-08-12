@@ -1,5 +1,8 @@
 import 'package:brechfete/presentation/root/app.dart';
 import 'package:brechfete/presentation/root/widgets/custom_theme.dart';
+import 'package:brechfete/presentation/screens/booking/booking_screen.dart';
+import 'package:brechfete/presentation/screens/initial/login.dart';
+import 'package:brechfete/presentation/screens/reservation/reservation_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -20,7 +23,14 @@ class MyApp extends StatelessWidget {
           darkTheme: CustomTheme.darkTheme.copyWith(
             splashColor: Colors.transparent,
           ),
-          home: const App(),
+          initialRoute: '/login', //change it later to splash screen
+          //home: const App(), // initial route is defined
+          routes: {
+            //login screen
+            App.loginRoute: (context) => const LoginScreen(),
+            //root screen
+            App.home: (context) => const App(),
+          },
         );
       },
     );
