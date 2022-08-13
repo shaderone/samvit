@@ -1,4 +1,3 @@
-import 'package:brechfete/core/constants.dart';
 import 'package:brechfete/presentation/root/widgets/bottom_navbar.dart';
 
 import 'package:brechfete/presentation/screens/booking/booking_screen.dart';
