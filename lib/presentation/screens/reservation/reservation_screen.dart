@@ -2,6 +2,8 @@ import 'package:brechfete/core/constants.dart';
 import 'package:brechfete/presentation/screens/reservation/widgets/reservation_chip.dart';
 import 'package:flutter/material.dart';
 
+const extraSmallScreenWidth = 320;
+
 class ReservationScreen extends StatelessWidget {
   const ReservationScreen({Key? key}) : super(key: key);
 
@@ -60,29 +62,33 @@ class ReservationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 250,
-      child: Card(
-        color: primaryDark,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(5),
-        ),
-        elevation: 10,
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Column(
-            children: [
-              Column(
-                children: const [
-                  CardTop(),
-                  SizedBox(height: 25),
-                  CardMiddle(),
-                  SizedBox(height: 25),
-                  CardBottom(),
-                ],
-              )
-            ],
-          ),
+    final screenWidth = MediaQuery.of(context).size.width;
+    return Card(
+      color: primaryDark,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+      ),
+      elevation: 10,
+      child: Padding(
+        padding: screenWidth <= extraSmallScreenWidth
+            ? const EdgeInsets.symmetric(vertical: 20, horizontal: 10)
+            : const EdgeInsets.all(10),
+        child: Column(
+          children: [
+            Column(
+              children: [
+                const CardTop(),
+                screenWidth <= extraSmallScreenWidth
+                    ? const SizedBox(height: 10)
+                    : const SizedBox(height: 25),
+                const CardMiddle(),
+                screenWidth <= extraSmallScreenWidth
+                    ? const SizedBox(height: 10)
+                    : const SizedBox(height: 25),
+                const CardBottom(),
+              ],
+            )
+          ],
         ),
       ),
     );
@@ -142,6 +148,20 @@ class CardMiddle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    return screenWidth <= extraSmallScreenWidth
+        ? const CardMiddleWrappedRow()
+        : const CardMiddleNormalRow();
+  }
+}
+
+class CardMiddleNormalRow extends StatelessWidget {
+  const CardMiddleNormalRow({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -153,7 +173,7 @@ class CardMiddle extends StatelessWidget {
             SizedBox(height: 10),
             Text(
               "Tue, 22 september",
-              style: TextStyle(fontSize: 20),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ],
         ),
@@ -185,6 +205,60 @@ class CardMiddle extends StatelessWidget {
   }
 }
 
+class CardMiddleWrappedRow extends StatelessWidget {
+  const CardMiddleWrappedRow({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      spacing: 20,
+      runSpacing: 10,
+      runAlignment: WrapAlignment.center,
+      crossAxisAlignment: WrapCrossAlignment.end,
+      alignment: WrapAlignment.center,
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: const [
+            Text("Date"),
+            //replace with somthing more dynamic
+            SizedBox(height: 10),
+            Text(
+              "Tue, 22 september",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: const [
+            Text("Slots"),
+            SizedBox(height: 10),
+            Text(
+              "300",
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.w900,
+                color: extraYellow,
+              ),
+            ),
+          ],
+        ),
+        const ReservationChip(
+          chipCrossAxisAlignment: CrossAxisAlignment.center,
+          chipTitle: "Time",
+          chipText: "10:00 AM",
+          chipWidth: 110,
+          chipBgColor: primaryDarkShadeLight,
+          chipStrokeColor: strokeLight,
+        ),
+      ],
+    );
+  }
+}
+
 class CardBottom extends StatelessWidget {
   const CardBottom({
     Key? key,
@@ -192,9 +266,78 @@ class CardBottom extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    return screenWidth <= extraSmallScreenWidth
+        ? const CardBottomWrappedRow()
+        : const CardBottomNormalRow();
+  }
+}
+
+class CardBottomNormalRow extends StatelessWidget {
+  const CardBottomNormalRow({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        ReservationChip(
+          chipCrossAxisAlignment: CrossAxisAlignment.center,
+          chipTitle: "Exhibition Status",
+          chipText: "ONGOING",
+          chipWidth: 110,
+          chipBgColor: secondaryBlueShadeLight.withOpacity(0.1),
+          chipStrokeColor: secondaryBlueShadeLight,
+        ),
+        ReservationChip(
+          chipCrossAxisAlignment: CrossAxisAlignment.center,
+          chipTitle: "Payment Status",
+          chipText: "PAID",
+          chipWidth: 110,
+          chipBgColor: extraGreen.withOpacity(0.1),
+          chipStrokeColor: extraGreen,
+        ),
+        SizedBox(
+          height: 50,
+          child: ElevatedButton(
+            style: ButtonStyle(
+              padding: MaterialStateProperty.all(
+                const EdgeInsets.symmetric(horizontal: 10),
+              ),
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
+                ),
+              ),
+            ),
+            onPressed: () {
+              //reshedule
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Icon(Icons.event_repeat),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class CardBottomWrappedRow extends StatelessWidget {
+  const CardBottomWrappedRow({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      runSpacing: 10,
+      alignment: WrapAlignment.center,
       children: [
         ReservationChip(
           chipCrossAxisAlignment: CrossAxisAlignment.center,
@@ -238,12 +381,6 @@ class CardBottom extends StatelessWidget {
                 Icon(Icons.event_repeat),
               ],
             ),
-            //child: Row(
-            //  mainAxisAlignment: MainAxisAlignment.center,
-            //  children: const [
-            //    Icon(Icons.event_repeat),
-            //  ],
-            //),
           ),
         ),
       ],
