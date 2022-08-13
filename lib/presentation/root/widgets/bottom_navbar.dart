@@ -28,23 +28,37 @@ class MaterialBottomNav extends StatelessWidget {
             destinations: const [
               NavigationDestination(
                 selectedIcon: Icon(
-                  Icons.watch_later,
+                  Icons.calendar_month,
                   color: secondaryBlueShadeDark,
                 ),
-                icon:
-                    Icon(Icons.watch_later_outlined, color: textWhiteShadeDark),
+                icon: Icon(
+                  Icons.calendar_month_outlined,
+                  color: textWhiteShadeDark,
+                ),
                 label: 'booking',
               ),
               NavigationDestination(
                 selectedIcon: Icon(
-                  Icons.edit_calendar,
+                  Icons.hourglass_full,
                   color: secondaryBlueShadeDark,
                 ),
                 icon: Icon(
-                  Icons.edit_calendar_outlined,
+                  //Icons.watch_later_outlined,
+                  Icons.hourglass_bottom,
                   color: textWhiteShadeDark,
                 ),
                 label: 'reservations',
+              ),
+              NavigationDestination(
+                selectedIcon: Icon(
+                  Icons.account_balance_wallet_rounded,
+                  color: secondaryBlueShadeDark,
+                ),
+                icon: Icon(
+                  Icons.account_balance_wallet_outlined,
+                  color: textWhiteShadeDark,
+                ),
+                label: 'Payment History',
               ),
             ],
           );
