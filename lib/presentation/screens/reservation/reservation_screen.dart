@@ -33,24 +33,16 @@ class ReservationScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: Padding(
-        //platform specific padding here
-        padding: const EdgeInsets.only(
-          left: 5,
-          right: 5,
-          top: 20,
-          bottom: 10,
-        ),
-        child: ListView.separated(
-          physics: const BouncingScrollPhysics(),
-          itemBuilder: (BuildContext context, int index) {
-            return const ReservationCard();
-          },
-          separatorBuilder: (BuildContext context, int index) {
-            return const SizedBox(height: 10);
-          },
-          itemCount: 8,
-        ),
+      body: ListView.separated(
+        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 15),
+        physics: const BouncingScrollPhysics(),
+        itemBuilder: (BuildContext context, int index) {
+          return const ReservationCard();
+        },
+        separatorBuilder: (BuildContext context, int index) {
+          return const SizedBox(height: 10);
+        },
+        itemCount: 8,
       ),
     );
   }
