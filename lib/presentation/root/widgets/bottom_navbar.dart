@@ -58,7 +58,7 @@ class MaterialBottomNav extends StatelessWidget {
                 Icons.account_balance_wallet_outlined,
                 color: textWhiteShadeDark,
               ),
-              label: 'Payment History',
+              label: 'Payments',
             ),
           ],
         );

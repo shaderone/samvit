@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:brechfete/core/constants.dart';
+import 'package:flutter/services.dart';
 import 'widgets/reservation_card_widgets/card_bottom_widget.dart';
 import 'widgets/reservation_card_widgets/card_middle_widget.dart';
 
@@ -12,14 +13,18 @@ class ReservationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        systemOverlayStyle: const SystemUiOverlayStyle(
+          statusBarColor: primaryDarkShadeLight,
+          statusBarBrightness: Brightness.dark,
+        ),
         elevation: 25,
-        backgroundColor: primaryDarkShadeDark,
+        backgroundColor: Colors.transparent,
         title: Row(
           children: [
             Image.asset("assets/logo.png", width: 30),
             const SizedBox(width: 15),
             const Text(
-              "BerchFete",
+              "Reservations",
               style: TextStyle(fontSize: 24),
             ),
           ],
@@ -57,7 +62,7 @@ class ReservationCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     return Card(
-      color: primaryDark,
+      color: primaryDarkShadeLight.withOpacity(0.75),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
       ),
@@ -65,7 +70,7 @@ class ReservationCard extends StatelessWidget {
       child: Padding(
         padding: screenWidth <= extraSmallScreenWidth
             ? const EdgeInsets.symmetric(vertical: 20, horizontal: 10)
-            : const EdgeInsets.all(12),
+            : const EdgeInsets.all(10),
         child: Column(
           children: [
             Column(
@@ -73,11 +78,11 @@ class ReservationCard extends StatelessWidget {
                 const CardTop(),
                 screenWidth <= extraSmallScreenWidth
                     ? const SizedBox(height: 10)
-                    : const SizedBox(height: 25),
+                    : const SizedBox(height: 15),
                 const CardMiddle(),
                 screenWidth <= extraSmallScreenWidth
                     ? const SizedBox(height: 10)
-                    : const SizedBox(height: 25),
+                    : const SizedBox(height: 15),
                 const CardBottom(),
               ],
             )
@@ -100,13 +105,17 @@ class CardTop extends StatelessWidget {
       children: [
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
+          children: [
             Text(
               "St.Joseph HSS",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: pureWhite.withOpacity(.85),
+              ),
             ),
-            SizedBox(height: 5),
-            Text("Near market roard, changanacherry"),
+            const SizedBox(height: 5),
+            const Text("Near market roard, changanacherry"),
           ],
         ),
         CircleAvatar(

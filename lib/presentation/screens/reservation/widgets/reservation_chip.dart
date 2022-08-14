@@ -1,3 +1,4 @@
+import 'package:brechfete/core/constants.dart';
 import 'package:flutter/material.dart';
 
 class ReservationChip extends StatelessWidget {
@@ -6,8 +7,8 @@ class ReservationChip extends StatelessWidget {
   final String chipText;
   final double chipWidth;
   final Color chipBgColor;
-  //final Color chipTextColor;
   final Color chipStrokeColor;
+  final String chipTimePeriod;
 
   const ReservationChip({
     Key? key,
@@ -16,7 +17,7 @@ class ReservationChip extends StatelessWidget {
     required this.chipText,
     required this.chipWidth,
     required this.chipBgColor,
-    //required this.chipTextColor,
+    this.chipTimePeriod = "",
     required this.chipStrokeColor,
   }) : super(key: key);
 
@@ -40,12 +41,27 @@ class ReservationChip extends StatelessWidget {
             ),
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 7),
-              child: Text(
-                chipText,
+              child: RichText(
                 textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
+                text: TextSpan(
+                  style: DefaultTextStyle.of(context).style,
+                  children: [
+                    TextSpan(
+                      text: chipText,
+                      style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    TextSpan(
+                      text: " $chipTimePeriod",
+                      style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: secondaryBlueShadeLight,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
