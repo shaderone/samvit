@@ -34,7 +34,7 @@ class ReservationScreen extends StatelessWidget {
         ],
       ),
       body: ListView.separated(
-        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 15),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 15),
         physics: const BouncingScrollPhysics(),
         itemBuilder: (BuildContext context, int index) {
           return const ReservationCard();
@@ -65,7 +65,7 @@ class ReservationCard extends StatelessWidget {
       child: Padding(
         padding: screenWidth <= extraSmallScreenWidth
             ? const EdgeInsets.symmetric(vertical: 20, horizontal: 10)
-            : const EdgeInsets.all(10),
+            : const EdgeInsets.all(12),
         child: Column(
           children: [
             Column(
@@ -109,24 +109,16 @@ class CardTop extends StatelessWidget {
             Text("Near market roard, changanacherry"),
           ],
         ),
-        Card(
-          color: Colors.transparent,
-          elevation: 5,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15.0),
-          ),
-          shadowColor: Colors.black,
-          child: CircleAvatar(
-            radius: 22,
-            backgroundColor: primaryDark,
-            child: IconButton(
-              icon: const Icon(
-                Icons.delete_forever,
-                //change color later
-                color: Colors.red,
-              ),
-              onPressed: () {},
+        CircleAvatar(
+          radius: 22,
+          backgroundColor: const Color(0xFFEC5146),
+          child: IconButton(
+            icon: const Icon(
+              Icons.delete_forever,
+              size: 23,
+              color: pureWhite,
             ),
+            onPressed: () {},
           ),
         ),
       ],

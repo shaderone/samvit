@@ -28,7 +28,7 @@ class CardMiddleNormalRow extends StatelessWidget {
           chipCrossAxisAlignment: CrossAxisAlignment.start,
           chipTitle: "Time",
           chipText: "10:00 AM",
-          chipWidth: 110,
+          chipWidth: 90,
           chipBgColor: primaryDarkShadeLight,
           chipStrokeColor: strokeLight,
         ),

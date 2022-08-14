@@ -6,9 +6,10 @@ class CustomTheme {
   static final darkTheme = ThemeData(
     visualDensity: VisualDensity.adaptivePlatformDensity,
     scaffoldBackgroundColor: bgDark,
+    fontFamily: "Poppins",
     appBarTheme: const AppBarTheme(
       systemOverlayStyle: SystemUiOverlayStyle(
-        statusBarColor: Colors.amber,
+        statusBarColor: bgDark,
         statusBarIconBrightness: Brightness.dark,
         statusBarBrightness: Brightness.dark,
       ),

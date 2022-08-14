@@ -29,7 +29,7 @@ class CardBottomNormalRow extends StatelessWidget {
           chipStrokeColor: extraGreen,
         ),
         SizedBox(
-          height: 50,
+          height: 60,
           child: ElevatedButton(
             style: ButtonStyle(
               padding: MaterialStateProperty.all(
@@ -37,19 +37,14 @@ class CardBottomNormalRow extends StatelessWidget {
               ),
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5),
+                  borderRadius: BorderRadius.circular(10),
                 ),
               ),
             ),
             onPressed: () {
               //reshedule
             },
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Icon(Icons.event_repeat),
-              ],
-            ),
+            child: const Icon(Icons.event_repeat),
           ),
         ),
       ],
