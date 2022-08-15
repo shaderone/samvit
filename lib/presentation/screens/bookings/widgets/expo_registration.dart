@@ -34,6 +34,7 @@ class ExpoRegistration extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
     institutionNameController.text = bookingsModal.institutionName;
     return Scaffold(
       appBar: AppBar(
@@ -43,10 +44,10 @@ class ExpoRegistration extends StatelessWidget {
           children: [
             Image.asset("assets/logo.png", width: 30),
             const SizedBox(width: 15),
-            const Text(
+            Text(
               "Expo Registration",
               style: TextStyle(
-                fontSize: 24,
+                fontSize: screenWidth <= 320 ? 20 : 24,
                 fontWeight: FontWeight.bold,
               ),
             ),

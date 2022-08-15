@@ -16,6 +16,7 @@ class _SlotCalenderState extends State<SlotCalender> {
   //set today style
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -46,7 +47,7 @@ class _SlotCalenderState extends State<SlotCalender> {
               currentDay: DateTime.utc(2022, 9, 1),
               rowHeight: 48,
               calendarStyle: CalendarStyle(
-                cellMargin: const EdgeInsets.all(8),
+                cellMargin: EdgeInsets.all(screenWidth <= 320 ? 4 : 8),
                 selectedDecoration: BoxDecoration(
                   shape: BoxShape.rectangle,
                   color: const Color(0xFF0F9EFF),
