@@ -1,3 +1,5 @@
+import 'package:brechfete/presentation/screens/booking/booking_screen.dart';
+import 'package:brechfete/presentation/screens/booking/widgets/slot_date_time_booking.dart';
 import 'package:flutter/material.dart';
 
 class RegistrationFormWidget extends StatelessWidget {
@@ -11,6 +13,7 @@ class RegistrationFormWidget extends StatelessWidget {
     required this.buildSchoolPhoneOptionalField,
     required this.buildSchoolAddressField,
     required this.buildFacultyPhoneOrEmailField,
+    required this.doRegistration,
   })  : _shouldAutoValidate = shouldAutoValidate,
         _formKey = formKey,
         super(key: key);
@@ -23,6 +26,7 @@ class RegistrationFormWidget extends StatelessWidget {
   final Widget buildSchoolPhoneOptionalField;
   final Widget buildSchoolAddressField;
   final Widget buildFacultyPhoneOrEmailField;
+  final Function() doRegistration;
 
   @override
   Widget build(BuildContext context) {
@@ -38,15 +42,37 @@ class RegistrationFormWidget extends StatelessWidget {
           alignment: Alignment.center,
           child: ListView(
             children: <Widget>[
+              const SizedBox(height: 20),
               buildschoolNameField,
               const SizedBox(height: 20),
               buildSchoolEmailField,
               const SizedBox(height: 20),
               buildSchoolPhoneField,
               const SizedBox(height: 20),
+              buildSchoolPhoneOptionalField,
+              const SizedBox(height: 20),
               buildSchoolAddressField,
               const SizedBox(height: 20),
               buildFacultyPhoneOrEmailField,
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  doRegistration;
+                },
+                style: ButtonStyle(
+                  minimumSize: MaterialStateProperty.all(
+                    const Size.fromHeight(50),
+                  ),
+                ),
+                child: const Text(
+                  "Proceed to book slots",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
             ],
           ),
         ),

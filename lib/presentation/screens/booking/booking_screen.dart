@@ -1,38 +1,51 @@
+import 'dart:developer';
 import 'package:brechfete/core/constants.dart';
 import 'package:brechfete/presentation/screens/booking/widgets/registration_form_widget.dart';
 import 'package:brechfete/presentation/screens/booking/widgets/slot_date_time_booking.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class BookingScreen extends StatefulWidget {
   const BookingScreen({Key? key}) : super(key: key);
 
+  static final TextEditingController schoolNameController =
+      TextEditingController();
+  static final TextEditingController schoolEmailController =
+      TextEditingController();
+
+  static final TextEditingController schoolPhoneController =
+      TextEditingController();
+
+  static final TextEditingController schoolPhoneOptionalController =
+      TextEditingController();
+
+  static final TextEditingController schoolAddressController =
+      TextEditingController();
+
+  static final TextEditingController facultyEmailOrPhoneController =
+      TextEditingController();
+
   @override
-  ExpRegistration createState() => ExpRegistration();
+  State<BookingScreen> createState() => _BookingScreenState();
 }
 
-class ExpRegistration extends State<BookingScreen> {
+class _BookingScreenState extends State<BookingScreen> {
   final Map<String, String> _loginObject = <String, String>{};
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  bool _shouldAutoValidate = false;
 
-  //controllers
-  final TextEditingController _schoolNameController = TextEditingController();
-  final TextEditingController _schoolEmailController = TextEditingController();
-  final TextEditingController _schoolPhoneController = TextEditingController();
-  final TextEditingController _schoolPhoneOptionalController =
-      TextEditingController();
-  final TextEditingController _schoolAddressController =
-      TextEditingController();
-  final TextEditingController _facultyEmailOrPhoneController =
-      TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  bool _shouldAutoValidate = false;
 
   //focusNodes for field swtiching using onFieldSubmitted
   final FocusNode _schoolNameFocusNode = FocusNode();
+
   final FocusNode _schoolEmailFocusNode = FocusNode();
+
   final FocusNode _schoolPhoneFocusNode = FocusNode();
+
   final FocusNode _schoolPhoneOptionalFocusNode = FocusNode();
+
   final FocusNode _schoolAddressFocusNode = FocusNode();
+
   final FocusNode _facultyEmailOrPhoneFocusNode = FocusNode();
 
   int newIndex = 0;
@@ -49,22 +62,19 @@ class ExpRegistration extends State<BookingScreen> {
         buildSchoolPhoneOptionalField: _buildSchoolPhoneOptionalField,
         buildSchoolAddressField: _buildSchoolAddressField,
         buildFacultyPhoneOrEmailField: _buildFacultyPhoneOrEmailField,
+        doRegistration: _doRegistration,
       ),
       SlotDateTimeBooking(
-        schoolName: _schoolNameController.text,
-        schoolEmail: _schoolEmailController.text,
-        schoolPhone: _schoolPhoneController.text,
-        schoolPhoneOptional: _schoolPhoneOptionalController.text,
-        schoolAddress: _schoolAddressController.text,
-        facultyPhoneOrEmail: _facultyEmailOrPhoneController.text,
+        schoolName: BookingScreen.schoolNameController.text,
+        schoolEmail: BookingScreen.schoolEmailController.text,
+        schoolPhone: BookingScreen.schoolPhoneController.text,
+        schoolPhoneOptional: BookingScreen.schoolPhoneOptionalController.text,
+        schoolAddress: BookingScreen.schoolAddressController.text,
+        facultyPhoneOrEmail: BookingScreen.facultyEmailOrPhoneController.text,
       ),
     ];
     return Scaffold(
       appBar: AppBar(
-        systemOverlayStyle: const SystemUiOverlayStyle(
-          statusBarColor: primaryDarkShadeLight,
-          statusBarBrightness: Brightness.dark,
-        ),
         elevation: 25,
         backgroundColor: Colors.transparent,
         title: Row(
@@ -86,221 +96,79 @@ class ExpRegistration extends State<BookingScreen> {
           ),
         ],
       ),
-      body: IndexedStack(
-        index: newIndex,
-        children: pages,
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _doERegistration,
-        child: const Icon(Icons.arrow_right_alt_rounded),
-      ),
+      body: IndexedStack(index: newIndex, children: pages),
     );
   }
 
   Widget get _buildschoolNameField {
-    return TextFormField(
-      controller: _schoolNameController,
-      keyboardType: TextInputType.name,
-      decoration: InputDecoration(
-        border: OutlineInputBorder(
-          borderSide: const BorderSide(
-            color: strokeLight,
-            width: 2.0,
-          ),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        labelText: "Phone",
-        floatingLabelStyle: const TextStyle(
-          fontSize: 20,
-          color: textWhiteShadeLight,
-        ),
-        hintText: 'Enter your phone number',
-        hintStyle: const TextStyle(
-          color: textWhiteShadeDark,
-        ),
-      ),
-      textInputAction: TextInputAction.next,
-      onFieldSubmitted: (val) {
-        FocusScope.of(context).requestFocus(_schoolNameFocusNode);
-      },
-      onSaved: (String? val) => _loginObject['email'] = val!,
-      /*
-      ~error : The argument type 'String? Function(String)' can't be assigned to the parameter type 'String? Function(String?)?'
-      ------ cause : did not null checked argument
-      */
-      validator: _validateEmail,
-      autofocus: true,
+    return FormInputbuilder(
+      controller: BookingScreen.schoolNameController,
+      textInputType: TextInputType.name,
+      labelText: "Name",
+      hintText: "Enter School Name",
       focusNode: _schoolNameFocusNode,
+      loginObject: _loginObject,
     );
   }
 
   Widget get _buildSchoolEmailField {
-    return TextFormField(
-      controller: _schoolEmailController,
-      keyboardType: TextInputType.emailAddress,
-      decoration: InputDecoration(
-        border: OutlineInputBorder(
-          borderSide: const BorderSide(
-            color: strokeLight,
-            width: 2.0,
-          ),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        labelText: "Phone",
-        floatingLabelStyle: const TextStyle(
-          fontSize: 20,
-          color: textWhiteShadeLight,
-        ),
-        hintText: 'Enter your phone number',
-        hintStyle: const TextStyle(
-          color: textWhiteShadeDark,
-        ),
-      ),
-      textInputAction: TextInputAction.next,
-      onFieldSubmitted: (val) {
-        FocusScope.of(context).requestFocus(_schoolEmailFocusNode);
-      },
-      onSaved: (String? val) => _loginObject['email'] = val!,
-      validator: _validateEmail,
-      autofocus: true,
+    return FormInputbuilder(
+      controller: BookingScreen.schoolNameController,
+      textInputType: TextInputType.emailAddress,
+      labelText: "School Email",
+      hintText: "Enter School Email Address",
       focusNode: _schoolEmailFocusNode,
+      loginObject: _loginObject,
     );
   }
 
   Widget get _buildSchoolPhoneField {
-    return TextFormField(
-      controller: _schoolEmailController,
-      keyboardType: TextInputType.emailAddress,
-      decoration: InputDecoration(
-        border: OutlineInputBorder(
-          borderSide: const BorderSide(
-            color: strokeLight,
-            width: 2.0,
-          ),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        labelText: "Phone",
-        floatingLabelStyle: const TextStyle(
-          fontSize: 20,
-          color: textWhiteShadeLight,
-        ),
-        hintText: 'Enter your phone number',
-        hintStyle: const TextStyle(
-          color: textWhiteShadeDark,
-        ),
-      ),
-      textInputAction: TextInputAction.next,
-      onFieldSubmitted: (val) {
-        FocusScope.of(context).requestFocus(_schoolPhoneFocusNode);
-      },
-      onSaved: (String? val) => _loginObject['email'] = val!,
-      validator: _validateEmail,
-      autofocus: true,
+    return FormInputbuilder(
+      controller: BookingScreen.schoolPhoneController,
+      textInputType: TextInputType.number,
+      labelText: "School Phone",
+      hintText: "Enter School Phone number",
       focusNode: _schoolPhoneFocusNode,
+      loginObject: _loginObject,
     );
   }
 
   Widget get _buildSchoolPhoneOptionalField {
-    return TextFormField(
-      controller: _schoolEmailController,
-      keyboardType: TextInputType.emailAddress,
-      decoration: InputDecoration(
-        border: OutlineInputBorder(
-          borderSide: const BorderSide(
-            color: strokeLight,
-            width: 2.0,
-          ),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        labelText: "Phone",
-        floatingLabelStyle: const TextStyle(
-          fontSize: 20,
-          color: textWhiteShadeLight,
-        ),
-        hintText: 'Enter your phone number',
-        hintStyle: const TextStyle(
-          color: textWhiteShadeDark,
-        ),
-      ),
-      textInputAction: TextInputAction.next,
-      onFieldSubmitted: (val) {
-        FocusScope.of(context).requestFocus(_schoolPhoneOptionalFocusNode);
-      },
-      onSaved: (String? val) => _loginObject['email'] = val!,
-      validator: _validateEmail,
-      autofocus: true,
+    return FormInputbuilder(
+      controller: BookingScreen.schoolPhoneOptionalController,
+      textInputType: TextInputType.name,
+      labelText: "School Phone(optional)",
+      hintText: "Enter School phone number",
       focusNode: _schoolPhoneOptionalFocusNode,
+      loginObject: _loginObject,
     );
   }
 
   Widget get _buildSchoolAddressField {
-    return TextFormField(
-      controller: _schoolEmailController,
-      keyboardType: TextInputType.emailAddress,
-      decoration: InputDecoration(
-        border: OutlineInputBorder(
-          borderSide: const BorderSide(
-            color: strokeLight,
-            width: 2.0,
-          ),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        labelText: "Phone",
-        floatingLabelStyle: const TextStyle(
-          fontSize: 20,
-          color: textWhiteShadeLight,
-        ),
-        hintText: 'Enter your phone number',
-        hintStyle: const TextStyle(
-          color: textWhiteShadeDark,
-        ),
-      ),
-      textInputAction: TextInputAction.next,
-      onFieldSubmitted: (val) {
-        FocusScope.of(context).requestFocus(_schoolAddressFocusNode);
-      },
-      onSaved: (String? val) => _loginObject['email'] = val!,
-      validator: _validateEmail,
-      autofocus: true,
+    return FormInputbuilder(
+      controller: BookingScreen.schoolAddressController,
+      textInputType: TextInputType.streetAddress,
+      labelText: "School Address",
+      hintText: "Enter School Address",
       focusNode: _schoolAddressFocusNode,
+      loginObject: _loginObject,
     );
   }
 
   Widget get _buildFacultyPhoneOrEmailField {
-    return TextFormField(
-      controller: _schoolEmailController,
-      keyboardType: TextInputType.emailAddress,
-      decoration: InputDecoration(
-        border: OutlineInputBorder(
-          borderSide: const BorderSide(
-            color: strokeLight,
-            width: 2.0,
-          ),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        labelText: "Phone",
-        floatingLabelStyle: const TextStyle(
-          fontSize: 20,
-          color: textWhiteShadeLight,
-        ),
-        hintText: 'Enter your phone number',
-        hintStyle: const TextStyle(
-          color: textWhiteShadeDark,
-        ),
-      ),
-      textInputAction: TextInputAction.next,
-      onFieldSubmitted: (val) {
-        FocusScope.of(context).requestFocus(_facultyEmailOrPhoneFocusNode);
-      },
-      onSaved: (String? val) => _loginObject['email'] = val!,
-      validator: _validateEmail,
-      autofocus: true,
+    return FormInputbuilder(
+      controller: BookingScreen.facultyEmailOrPhoneController,
+      textInputType: TextInputType.text,
+      labelText: "Faculty phone or email",
+      hintText: "Enter faculty phone or email",
+      textInputAction: TextInputAction.done,
       focusNode: _facultyEmailOrPhoneFocusNode,
+      loginObject: _loginObject,
     );
   }
 
 //-------------------------validators--------------------//
-  String? _validateEmail(String? email) {
+  String? validateEmail(String? email) {
     RegExp regexEmail = RegExp(r'\w+@\w+\.\w+');
     if (email == null || email.isEmpty || !regexEmail.hasMatch(email)) {
       return "Email is required";
@@ -310,10 +178,10 @@ class ExpRegistration extends State<BookingScreen> {
     return null;
   }
 
-  void _doERegistration() {
+  void _doRegistration() {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      print("""
+      log("""
     The user has BookingScreen with an email address of '${_loginObject['email']}' 
     and a password of '${_loginObject['password']}'
     """);
@@ -321,16 +189,78 @@ class ExpRegistration extends State<BookingScreen> {
     setState(() {
       _shouldAutoValidate = true;
     });
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (BuildContext context) {
-      return SlotDateTimeBooking(
-        schoolName: _schoolNameController.text,
-        schoolEmail: _schoolEmailController.text,
-        schoolAddress: _schoolAddressController.text,
-        facultyPhoneOrEmail: _facultyEmailOrPhoneController.text,
-        schoolPhone: _schoolPhoneController.text,
-        schoolPhoneOptional: _schoolPhoneOptionalController.text,
-      );
-    }));
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (BuildContext context) {
+          return SlotDateTimeBooking(
+            schoolName: BookingScreen.schoolNameController.text,
+            schoolEmail: BookingScreen.schoolEmailController.text,
+            schoolAddress: BookingScreen.schoolAddressController.text,
+            facultyPhoneOrEmail:
+                BookingScreen.facultyEmailOrPhoneController.text,
+            schoolPhone: BookingScreen.schoolPhoneController.text,
+            schoolPhoneOptional:
+                BookingScreen.schoolPhoneOptionalController.text,
+          );
+        },
+      ),
+    );
+  }
+}
+
+class FormInputbuilder extends StatelessWidget {
+  final TextEditingController controller;
+  final TextInputType textInputType;
+  final String labelText;
+  final String hintText;
+  final TextInputAction textInputAction;
+  final FocusNode focusNode;
+  final Map<String, String> loginObject;
+  final String? Function(String?)? validator;
+  const FormInputbuilder({
+    Key? key,
+    required this.controller,
+    required this.textInputType,
+    required this.labelText,
+    required this.hintText,
+    this.textInputAction = TextInputAction.next,
+    required this.focusNode,
+    required this.loginObject,
+    this.validator,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      controller: controller,
+      keyboardType: textInputType,
+      decoration: InputDecoration(
+        border: OutlineInputBorder(
+          borderSide: const BorderSide(
+            color: strokeLight,
+            width: 2.0,
+          ),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        labelText: labelText,
+        floatingLabelStyle: const TextStyle(
+          fontSize: 20,
+          color: textWhiteShadeLight,
+        ),
+        hintText: hintText,
+        hintStyle: const TextStyle(
+          color: textWhiteShadeDark,
+        ),
+      ),
+      textInputAction: textInputAction,
+      onFieldSubmitted: (val) {
+        FocusScope.of(context).requestFocus(focusNode);
+      },
+      //dynamic data here
+      onSaved: (String? val) => loginObject['email'] = val!,
+      validator: validator,
+      autofocus: true,
+      focusNode: focusNode,
+    );
   }
 }
