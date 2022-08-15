@@ -22,7 +22,7 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20),
-              Image.asset("assets/logo.png"),
+              Image.asset("assets/images/logo.png"),
               const SizedBox(height: 50),
               TextFormField(
                 keyboardType: TextInputType.number,
