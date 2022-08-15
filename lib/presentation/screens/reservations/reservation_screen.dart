@@ -62,7 +62,7 @@ class ReservationCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     return Card(
-      color: primaryDarkShadeLight.withOpacity(0.75),
+      color: primaryDarkShadeLight.withOpacity(.35),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
       ),

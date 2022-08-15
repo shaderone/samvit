@@ -1,7 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:brechfete/presentation/root/app.dart';
 import 'package:brechfete/presentation/root/widgets/custom_theme.dart';
 import 'package:brechfete/presentation/screens/initial/login.dart';
-import 'package:flutter/material.dart';
 
 void main() {
   runApp(const MyApp());
