@@ -62,7 +62,7 @@ class ReservationCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     return Card(
-      color: primaryDarkShadeLight.withOpacity(0.75),
+      color: primaryDarkShadeLight.withOpacity(.35),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
       ),
@@ -100,34 +100,45 @@ class CardTop extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "St.Joseph HSS",
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: pureWhite.withOpacity(.85),
+        Expanded(
+          flex: 7,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "St.Joseph HSS",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: pureWhite.withOpacity(.85),
+                ),
               ),
-            ),
-            const SizedBox(height: 5),
-            const Text("Near market roard, changanacherry"),
-          ],
+              const SizedBox(height: 5),
+              Text(
+                "Near market roard, changanacherry",
+                style: TextStyle(
+                  fontSize: screenWidth <= 320 ? 12 : 14,
+                ),
+              ),
+            ],
+          ),
         ),
-        CircleAvatar(
-          radius: 22,
-          backgroundColor: const Color(0xFFEC5146),
-          child: IconButton(
-            icon: const Icon(
-              Icons.delete_forever,
-              size: 23,
-              color: pureWhite,
+        Flexible(
+          flex: 1,
+          child: CircleAvatar(
+            radius: 22,
+            backgroundColor: const Color(0xFFEC5146),
+            child: IconButton(
+              icon: Icon(
+                Icons.delete_forever,
+                size: screenWidth <= 320 ? 18 : 23,
+                color: pureWhite,
+              ),
+              onPressed: () {},
             ),
-            onPressed: () {},
           ),
         ),
       ],

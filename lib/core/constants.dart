@@ -26,3 +26,4 @@ const textWhiteShadeDark = Color(0xFFB3B3B3);
 //others
 const extraGreen = Color(0xFF57F697);
 const extraYellow = Color(0xFFF6DD57);
+const extraRed = Color(0xFFEC5146);

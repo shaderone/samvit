@@ -6,7 +6,7 @@ class PaymentHistoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Center(
-      child: Text("Payment History"),
+      child: Text("No Payment History"),
     );
   }
 }

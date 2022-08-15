@@ -1,5 +1,5 @@
 import 'package:brechfete/core/constants.dart';
-import 'package:brechfete/presentation/screens/reservation/widgets/reservation_chip.dart';
+import 'package:brechfete/presentation/screens/reservations/widgets/reservation_chip.dart';
 import 'package:flutter/material.dart';
 
 class CardMiddleNormalRow extends StatelessWidget {

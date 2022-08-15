@@ -62,6 +62,14 @@ class LoginScreen extends StatelessWidget {
                     color: textWhiteShadeDark,
                   ),
                 ),
+                //events and validations
+                onChanged: (value) {
+                  //make api call to check phone here, if it returns true, make the check mark visible with blue color, else display a message phone number not verified
+
+                  //on pressing login, user recieves OTP and enter it (autocomplete)
+
+                  //finally move to booking screen
+                },
               ),
               const SizedBox(height: 20),
               ElevatedButton(
