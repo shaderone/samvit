@@ -1,8 +1,8 @@
 import 'package:brechfete/presentation/root/widgets/bottom_navbar.dart';
 
-import 'package:brechfete/presentation/screens/booking/booking_screen.dart';
-import 'package:brechfete/presentation/screens/payment/payment_history_screen.dart';
-import 'package:brechfete/presentation/screens/reservation/reservation_screen.dart';
+import 'package:brechfete/presentation/screens/bookings/booking_screen.dart';
+import 'package:brechfete/presentation/screens/payments/payment_history_screen.dart';
+import 'package:brechfete/presentation/screens/reservations/reservation_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
