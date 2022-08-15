@@ -22,10 +22,8 @@ class _SlotCalenderState extends State<SlotCalender> {
         Card(
           color: const Color(0xFF1f1f1f),
           clipBehavior: Clip.antiAliasWithSaveLayer,
-          margin: const EdgeInsets.symmetric(
-            vertical: 15,
-            horizontal: 12,
-          ),
+          margin:
+              const EdgeInsets.only(top: 15, left: 12, right: 12, bottom: 5),
           elevation: 5.0,
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(
