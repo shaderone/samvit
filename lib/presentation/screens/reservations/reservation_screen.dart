@@ -21,7 +21,7 @@ class ReservationScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         title: Row(
           children: [
-            Image.asset("assets/logo.png", width: 30),
+            Image.asset("assets/images/logo.png", width: 30),
             const SizedBox(width: 15),
             const Text(
               "Reservations",
