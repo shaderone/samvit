@@ -2,7 +2,7 @@ from django.contrib import admin
 
 from django.contrib.auth.models import User, Group
 # Register your models here.
-from .models import Teachers, Reservation, Colleges
+from .models import Teachers, Reservation, Colleges, Test
 
 # admin.site.unregister(User)
 # admin.site.unregister(Group)
@@ -32,3 +32,4 @@ class CollegeAdmin(admin.ModelAdmin):
 admin.site.register(Teachers, TeacherAdmin)
 admin.site.register(Reservation, ReservationAdmin)
 admin.site.register(Colleges, CollegeAdmin)
+admin.site.register(Test)

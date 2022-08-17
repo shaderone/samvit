@@ -1,6 +1,8 @@
 from datetime import date
 import email
 from pyexpat import model
+from typing import ChainMap
+from xml.dom.minidom import CharacterData
 from django.db import models
 
 # Create your models here.
@@ -66,3 +68,13 @@ class Colleges(models.Model):
     class Meta:
         verbose_name="College"
         verbose_name_plural  = "Colleges"
+
+
+
+class Test(models.Model):
+    name = models.CharField(max_length=255)
+    phone = models.CharField(max_length=12)
+    passw = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name

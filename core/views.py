@@ -3,8 +3,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
 
-from .models import Teachers
-from .serializers import TeacherSerializer
+from .models import Teachers, Test
+from .serializers import TeacherSerializer, TestSerialiser
 from .utils import send_otp
 
 
@@ -61,3 +61,22 @@ class PhoneNumberOtp(APIView):
             return Response("Otp is invalid")
 
 
+
+
+class  TestView(APIView):
+
+    def get(self, request):
+        data = Test.objects.all()
+        serializer = TestSerialiser(data=data, many=True)
+        return Response(serializer.data)
+    
+
+    def post(self, request):
+        try:
+            phone = request.data['phone']
+            pwd = request.data['password']
+            
+            obj = Test.objects.get(phone=phone).first()
+            return Response({"verified"})
+        except:
+            return Response("incorrect")
