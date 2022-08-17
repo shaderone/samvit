@@ -1,9 +1,17 @@
+import 'package:brechfete/presentation/root/widgets/custom_form_input.dart';
+import 'package:flutter/material.dart';
 import 'package:brechfete/core/constants.dart';
 import 'package:brechfete/presentation/root/app.dart';
-import 'package:flutter/material.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -12,81 +20,84 @@ class LoginScreen extends StatelessWidget {
         child: SingleChildScrollView(
           reverse: true,
           padding: const EdgeInsets.all(20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              const Center(
-                child: Text(
-                  "BerchFete",
-                  style: TextStyle(fontSize: 26),
+          child: Form(
+            key: formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const Center(
+                  child: Text(
+                    "BerchFete",
+                    style: TextStyle(fontSize: 26),
+                  ),
                 ),
-              ),
-              const SizedBox(height: 20),
-              Image.asset("assets/images/logo.png"),
-              const SizedBox(height: 50),
-              TextFormField(
-                keyboardType: TextInputType.number,
-                //input value style
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: textWhiteShadeDark,
-                ),
-                //common decoration
-                decoration: InputDecoration(
-                  suffixIcon: const Icon(
-                    Icons.check,
-                    color: textWhiteShadeLight,
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      color: Colors.white,
-                      width: 2.0,
-                    ),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  //floatingLabelBehavior: FloatingLabelBehavior.always,
-                  border: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      color: strokeLight,
-                      width: 2.0,
-                    ),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
+                const SizedBox(height: 20),
+                Image.asset("assets/images/logo.png"),
+                const SizedBox(height: 50),
+                CustomFormInput(
                   labelText: "Phone",
-                  floatingLabelStyle: const TextStyle(
-                    fontSize: 20,
-                    color: textWhiteShadeLight,
-                  ),
+                  textInputAction: TextInputAction.next,
+                  textInputType: TextInputType.number,
+                  maxInputLength: 10,
+                  suffixIcon: Icons.check,
+                  inputSpacing: 0,
                   hintText: 'Enter your phone number',
-                  hintStyle: const TextStyle(
-                    color: textWhiteShadeDark,
-                  ),
+                  onChanged: (value) {
+                    formKey.currentState!.validate();
+                    //send api request here, if the data doesn't match call the validate() - phone number doesn't match, if success change the color of the check icon, make sure to send only NUMBER
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "phone number is required";
+                    } else if (value.length != 10) {
+                      return "Enter a valid 10-digit phone number";
+                    }
+                    return null;
+                  },
                 ),
-                //events and validations
-                onChanged: (value) {
-                  //make api call to check phone here, if it returns true, make the check mark visible with blue color, else display a message phone number not verified
-
-                  //on pressing login, user recieves OTP and enter it (autocomplete)
-
-                  //finally move to booking screen
-                },
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pushReplacementNamed(
-                    App.home,
-                  );
-                },
-                style: ButtonStyle(
-                  minimumSize: MaterialStateProperty.all(
-                    const Size.fromHeight(50),
-                  ),
+                CustomFormInput(
+                  labelText: "Password",
+                  textInputAction: TextInputAction.done,
+                  obscureText: true,
+                  textInputType: TextInputType.text,
+                  suffixIcon: Icons.check,
+                  hintText: 'Enter your password',
+                  inputSpacing: 0,
+                  onChanged: (value) {
+                    formKey.currentState!.validate();
+                    //send api request here, if the data doesn't match call the validate() - password doesn't match, if success change the color of the check icon
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "password is required";
+                    } else if (value.length < 5) {
+                      return "Enter a valid password";
+                    }
+                    return null;
+                  },
                 ),
-                child: const Text("LOGIN"),
-              ),
-              const SizedBox(height: 20),
-            ],
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    if (formKey.currentState!.validate()) {
+                      print("login successfull");
+                      Navigator.of(context).pushReplacementNamed(
+                        App.home,
+                      );
+                    } else {
+                      print("login failed!");
+                    }
+                  },
+                  style: ButtonStyle(
+                    minimumSize: MaterialStateProperty.all(
+                      const Size.fromHeight(50),
+                    ),
+                  ),
+                  child: const Text("LOGIN"),
+                ),
+                const SizedBox(height: 20),
+              ],
+            ),
           ),
         ),
       ),
