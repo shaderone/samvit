@@ -75,8 +75,10 @@ class  TestView(APIView):
         try:
             phone = request.data['phone']
             pwd = request.data['password']
-            
-            obj = Test.objects.get(phone=phone).first()
+            # breakpoint()
+            obj = Test.objects.get(phone=phone)
             return Response({"verified"})
-        except:
-            return Response("incorrect")
+
+        except Exception as e:
+            breakpoint()
+            return Response("t")
