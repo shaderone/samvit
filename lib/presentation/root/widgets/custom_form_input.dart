@@ -1,5 +1,6 @@
 import 'package:brechfete/core/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class CustomFormInput extends StatelessWidget {
   final double inputSpacing;
@@ -12,6 +13,9 @@ class CustomFormInput extends StatelessWidget {
   final IconData? suffixIcon;
   final String? Function(String?) validator;
   final void Function(String)? onChanged;
+  final void Function(String?)? onSaved;
+  final List<TextInputFormatter>? inputFormatters;
+  final void Function()? suffixIconAction;
   const CustomFormInput({
     Key? key,
     required this.labelText,
@@ -24,6 +28,9 @@ class CustomFormInput extends StatelessWidget {
     this.inputSpacing = 20,
     required this.hintText,
     this.obscureText = false,
+    this.onSaved,
+    this.inputFormatters,
+    this.suffixIconAction,
   }) : super(key: key);
 
   @override
@@ -42,19 +49,22 @@ class CustomFormInput extends StatelessWidget {
         const SizedBox(height: 5),
         TextFormField(
           obscureText: obscureText,
+          inputFormatters: inputFormatters,
 
           maxLength: maxInputLength,
           keyboardType: textInputType,
           style: const TextStyle(
-            //update this on user interaction
             fontWeight: FontWeight.bold,
             color: textWhiteShadeDark,
           ),
           //common decoration
           decoration: InputDecoration(
-            suffixIcon: Icon(
-              suffixIcon,
-              color: textWhiteShadeLight,
+            suffixIcon: GestureDetector(
+              onTap: suffixIconAction,
+              child: Icon(
+                suffixIcon,
+                color: textWhiteShadeLight,
+              ),
             ),
             focusedBorder: OutlineInputBorder(
               borderSide: const BorderSide(
@@ -70,25 +80,15 @@ class CustomFormInput extends StatelessWidget {
               ),
               borderRadius: BorderRadius.circular(8),
             ),
-            //labelText: "Phone",
-            //floatingLabelStyle: const TextStyle(
-            //  fontSize: 20,
-            //  color: textWhiteShadeLight,
-            //),
             hintText: hintText,
             hintStyle: const TextStyle(
               color: textWhiteShadeDark,
               fontWeight: FontWeight.normal,
             ),
           ),
-          //events and validations
           validator: validator,
           onChanged: onChanged,
-          //make api call to check phone here, if it returns true, make the check mark visible with blue color, else display a message phone number not verified
-
-          //on pressing login, user recieves OTP and enter it (autocomplete)
-
-          //finally move to booking screen
+          onSaved: onSaved,
         ),
         SizedBox(height: inputSpacing),
       ],

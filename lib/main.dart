@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:brechfete/presentation/root/app.dart';
 import 'package:brechfete/presentation/root/widgets/custom_theme.dart';
-import 'package:brechfete/presentation/screens/initial/login.dart';
+import 'package:brechfete/presentation/screens/login/login.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -12,24 +13,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Builder(
-      builder: (context) {
-        return MaterialApp(
-          debugShowCheckedModeBanner: false,
-          themeMode: ThemeMode.dark,
-          //theme: CustomTheme.lightTheme, //later
-          darkTheme: CustomTheme.darkTheme.copyWith(
-            splashColor: Colors.transparent,
-          ),
-          initialRoute: '/login', //change it later to splash screen
-          //home: const App(), // initial route is defined
-          routes: {
-            //login screen
-            App.loginRoute: (context) => const LoginScreen(),
-            //root screen
-            App.home: (context) => const App(),
-          },
-        );
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      themeMode: ThemeMode.dark,
+      darkTheme: CustomTheme.darkTheme.copyWith(
+        splashColor: Colors.transparent,
+      ),
+      initialRoute: '/login', //change it later to splash screen
+      routes: {
+        //login screen
+        App.loginRoute: (context) => const LoginScreen(),
+        //root screen
+        App.home: (context) => const App(),
       },
     );
   }
