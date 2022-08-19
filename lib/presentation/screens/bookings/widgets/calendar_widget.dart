@@ -23,8 +23,6 @@ class _SlotCalenderState extends State<SlotCalender> {
         Card(
           color: const Color(0xFF1f1f1f),
           clipBehavior: Clip.antiAliasWithSaveLayer,
-          margin:
-              const EdgeInsets.only(top: 15, left: 12, right: 12, bottom: 5),
           elevation: 5.0,
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(
@@ -45,24 +43,24 @@ class _SlotCalenderState extends State<SlotCalender> {
               lastDay: DateTime.utc(2022, 9, 25),
               startingDayOfWeek: StartingDayOfWeek.monday,
               currentDay: DateTime.utc(2022, 9, 1),
-              rowHeight: 48,
+              rowHeight: screenWidth <= 340 ? 38 : 48,
               calendarStyle: CalendarStyle(
-                cellMargin: EdgeInsets.all(screenWidth <= 320 ? 4 : 8),
+                cellMargin: EdgeInsets.all(screenWidth <= 320 ? 5 : 8),
                 selectedDecoration: BoxDecoration(
                   shape: BoxShape.rectangle,
                   color: const Color(0xFF0F9EFF),
                   borderRadius: BorderRadius.circular(5),
                 ),
-                selectedTextStyle: const TextStyle(
+                selectedTextStyle: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
-                  fontSize: 18,
+                  fontSize: screenWidth <= 340 ? 13 : 18,
                 ),
                 outsideDaysVisible: true,
-                outsideTextStyle: const TextStyle(
+                outsideTextStyle: TextStyle(
                   color: Colors.grey,
                   fontWeight: FontWeight.bold,
-                  fontSize: 18,
+                  fontSize: screenWidth <= 340 ? 13 : 18,
                 ),
                 rowDecoration: const BoxDecoration(
                   color: Color(0xFF1f1f1f),
@@ -85,7 +83,7 @@ class _SlotCalenderState extends State<SlotCalender> {
                 ),
                 defaultTextStyle: const TextStyle(
                   color: Colors.white,
-                  fontSize: 16,
+                  fontSize: 13,
                 ),
                 weekendTextStyle: const TextStyle(color: Colors.white),
                 disabledTextStyle: const TextStyle(color: Colors.white38),
@@ -155,11 +153,11 @@ class _SlotCalenderState extends State<SlotCalender> {
                 );
               },
               calendarFormat: _calendarFormat,
-              onFormatChanged: (format) {
-                setState(() {
-                  _calendarFormat = format;
-                });
-              },
+              //onFormatChanged: (format) {
+              //  setState(() {
+              //    _calendarFormat = format;
+              //  });
+              //},
             ),
           ),
         ),
