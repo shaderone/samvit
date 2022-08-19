@@ -11,17 +11,18 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 void configLoading() {
   EasyLoading.instance
     ..displayDuration = const Duration(milliseconds: 2000)
-    ..indicatorType = EasyLoadingIndicatorType.chasingDots
+    ..indicatorType = EasyLoadingIndicatorType.pulse
     ..loadingStyle = EasyLoadingStyle.custom
     ..indicatorSize = 45.0
     ..radius = 10.0
-    ..progressColor = Colors.yellow
+    ..progressColor = textWhiteShadeLight
     ..backgroundColor = primaryDark
-    ..indicatorColor = Colors.yellow
+    ..indicatorColor = textWhiteShadeLight
     ..textColor = pureWhite
     ..maskColor = Colors.blue.withOpacity(0.5)
     ..userInteractions = true
-    ..dismissOnTap = false;
+    ..dismissOnTap = false
+    ..userInteractions = false;
   //..customAnimation = CustomAnimation();
 }
 
@@ -64,6 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       body: SafeArea(
         child: GestureDetector(
@@ -178,8 +180,14 @@ class _LoginScreenState extends State<LoginScreen> {
                               });
                               EasyLoading.instance.backgroundColor =
                                   Colors.black;
-                              EasyLoading.instance.backgroundColor =
-                                  Colors.black;
+                              EasyLoading.instance.indicatorColor =
+                                  textWhiteShadeLight;
+                              EasyLoading.instance.indicatorType =
+                                  EasyLoadingIndicatorType.ripple;
+                              EasyLoading.instance.textStyle = TextStyle(
+                                fontSize: screenWidth <= 320 ? 16 : 18,
+                                color: pureWhite,
+                              );
                               EasyLoading.show(
                                 status: 'Vefifying...',
                                 //indicator: const CupertinoActivityIndicator(
@@ -189,10 +197,15 @@ class _LoginScreenState extends State<LoginScreen> {
                               await Future.delayed(const Duration(seconds: 2));
                               EasyLoading.dismiss();
                               //code to get api response here
-                              final res = await false;
+                              final res = await true;
                               if (res) {
                                 EasyLoading.instance.indicatorColor =
                                     extraGreen;
+                                EasyLoading.instance.textColor = pureWhite;
+                                EasyLoading.instance.textStyle = TextStyle(
+                                  fontSize: screenWidth <= 320 ? 16 : 18,
+                                  color: pureWhite,
+                                );
                                 EasyLoading.showSuccess(
                                   'Verification Successful!',
                                 );
@@ -203,22 +216,36 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ));
                               } else {
                                 EasyLoading.instance.indicatorColor = extraRed;
+                                EasyLoading.instance.textStyle = TextStyle(
+                                  fontSize: screenWidth <= 320 ? 16 : 18,
+                                  color: pureWhite,
+                                );
+                                EasyLoading.instance.userInteractions = false;
                                 EasyLoading.showError(
                                   'Verification Failed!',
                                 );
                               }
 
-                              Timer(const Duration(seconds: 2), () {
-                                EasyLoading.showToast(
-                                  "Please Enter correct details",
-                                  toastPosition:
-                                      EasyLoadingToastPosition.bottom,
-                                );
-                                setState(() {
-                                  isAbsorbing = false;
-                                });
-                              });
+                              if (res == false) {
+                                Timer(const Duration(seconds: 2), () {
+                                  EasyLoading.instance.textStyle = TextStyle(
+                                    fontSize: screenWidth <= 320 ? 13 : 18,
+                                    color:
+                                        const Color.fromARGB(255, 255, 85, 73),
+                                  );
+                                  EasyLoading.instance.userInteractions = true;
 
+                                  EasyLoading.showToast(
+                                    "Please Enter correct details",
+                                    toastPosition:
+                                        EasyLoadingToastPosition.bottom,
+                                  );
+                                  setState(() {
+                                    isAbsorbing = false;
+                                  });
+                                });
+                              }
+                              await Future.delayed(const Duration(seconds: 2));
                               EasyLoading.dismiss();
                               EasyLoading.removeAllCallbacks();
                             }
