@@ -1,41 +1,15 @@
 import 'package:brechfete/core/constants.dart';
-import 'package:brechfete/domain/screens/bookings/booking_modal.dart';
-import 'package:brechfete/presentation/root/widgets/form_input_builder.dart';
-import 'package:brechfete/presentation/screens/bookings/widgets/slot_date_time_booking.dart';
 import 'package:flutter/material.dart';
 
 class ExpoRegistration extends StatelessWidget {
-  final BookingsModal bookingsModal;
-
-  final TextEditingController institutionNameController =
-      TextEditingController();
-
-  final TextEditingController institutionPhoneorEmailController =
-      TextEditingController();
-
-  final TextEditingController institutionPhoneOptionalController =
-      TextEditingController();
-
-  final TextEditingController institutionAddressController =
-      TextEditingController();
-
-  final TextEditingController facultyNameController = TextEditingController();
-
-  final TextEditingController facultyEmailOrPhoneController =
-      TextEditingController();
-
-  final TextEditingController facultyPhoneOptionalController =
-      TextEditingController();
-
-  ExpoRegistration({
+  const ExpoRegistration({
     Key? key,
-    required this.bookingsModal,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    institutionNameController.text = bookingsModal.institutionName;
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -68,8 +42,8 @@ class ExpoRegistration extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
+            children: const [
+              Text(
                 "INSTITUTION INFO",
                 style: TextStyle(
                   color: secondaryBlueShadeLight,
@@ -77,34 +51,12 @@ class ExpoRegistration extends StatelessWidget {
                   fontSize: 18,
                 ),
               ),
-              const Divider(
+              Divider(
                 color: textWhiteShadeLight,
                 thickness: 1,
               ),
-              const SizedBox(height: 10),
-              FormInputBuilder(
-                controller: institutionNameController,
-                labelText: "Name",
-                hintText: "",
-                textInputType: TextInputType.name,
-                autoFocus: true,
-              ),
-              const SizedBox(height: 20),
-              FormInputBuilder(
-                controller: institutionPhoneorEmailController,
-                labelText: "Phone or Email",
-                hintText: "",
-                textInputType: TextInputType.text,
-              ),
-              const SizedBox(height: 20),
-              FormInputBuilder(
-                controller: institutionPhoneOptionalController,
-                labelText: "Phone other(optional)",
-                hintText: "",
-                textInputType: TextInputType.number,
-              ),
-              const SizedBox(height: 20),
-              const Text(
+              SizedBox(height: 10),
+              Text(
                 "FACULTY INFO",
                 style: TextStyle(
                   color: secondaryBlueShadeLight,
@@ -112,65 +64,11 @@ class ExpoRegistration extends StatelessWidget {
                   fontSize: 18,
                 ),
               ),
-              const Divider(
+              Divider(
                 color: textWhiteShadeLight,
                 thickness: 1,
               ),
-              const SizedBox(height: 10),
-              FormInputBuilder(
-                controller: facultyNameController,
-                labelText: "Name",
-                hintText: "",
-                textInputType: TextInputType.name,
-              ),
-              const SizedBox(height: 20),
-              FormInputBuilder(
-                controller: facultyEmailOrPhoneController,
-                labelText: "Phone or email",
-                hintText: "",
-                textInputType: TextInputType.text,
-              ),
-              const SizedBox(height: 20),
-              FormInputBuilder(
-                controller: facultyPhoneOptionalController,
-                labelText: "Phone other(optional)",
-                hintText: "",
-                textInputType: TextInputType.number,
-                textInputAction: TextInputAction.done,
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  //save the form data here
-                  bookingsModal.institutionName =
-                      institutionNameController.text;
-                  bookingsModal.institutionPhoneOrEmail =
-                      institutionPhoneorEmailController.text;
-                  bookingsModal.institutionPhoneOptional =
-                      institutionPhoneOptionalController.text;
-                  bookingsModal.facultyName = facultyNameController.text;
-                  bookingsModal.facultyPhoneOrEmail =
-                      facultyEmailOrPhoneController.text;
-                  bookingsModal.facultyPhoneOptional =
-                      facultyPhoneOptionalController.text;
-
-                  //After saving, go to next page
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => SlotDateTimeBooking(
-                        bookingsModal: bookingsModal,
-                      ),
-                    ),
-                  );
-                },
-                style: ButtonStyle(
-                  minimumSize: MaterialStateProperty.all(
-                    const Size.fromHeight(50),
-                  ),
-                ),
-                child: const Text("Proceed to book slots"),
-              ),
-              const SizedBox(height: 10),
+              SizedBox(height: 10),
             ],
           ),
         ),
@@ -190,4 +88,46 @@ class ExpoRegistration extends StatelessWidget {
   }
 
   void _doRegistration() {}
+}
+
+class SlotButtons extends StatelessWidget {
+  const SlotButtons({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 25, left: 15, right: 15),
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          ElevatedButton(
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(
+                primaryDarkShadeLight,
+              ),
+            ),
+            onPressed: () {},
+            child: const Padding(
+              padding: EdgeInsets.symmetric(
+                vertical: 10,
+                horizontal: 20,
+              ),
+              child: Text("Pay Later"),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {},
+            child: const Padding(
+              padding: EdgeInsets.symmetric(
+                vertical: 10,
+                horizontal: 20,
+              ),
+              child: Text("Pay Now"),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
