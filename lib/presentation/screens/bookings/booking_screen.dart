@@ -1,3 +1,4 @@
+import 'package:brechfete/presentation/screens/bookings/widgets/expo_registration.dart';
 import 'package:flutter/material.dart';
 import 'package:brechfete/presentation/screens/bookings/widgets/slot_status_widgets/slot_info_container.dart';
 import 'package:brechfete/presentation/screens/bookings/widgets/time_slot_widget.dart';
@@ -44,13 +45,14 @@ class BookingScreen extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: const <Widget>[
             CalendarStatus(),
-            SizedBox(height: 20),
+            SizedBox(height: 10),
             SlotCalender(),
             TimeSlotList(),
             SizedBox(height: 30),
             SlotInfoContainer(),
             SizedBox(height: 30),
             ConfirmButton(),
+            SizedBox(height: 30),
           ],
         ),
       ),
@@ -68,6 +70,11 @@ class ConfirmButton extends StatelessWidget {
         //save the form data here
 
         //After saving, go to next page
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => const ExpoRegistration(),
+          ),
+        );
       },
       style: ButtonStyle(
         minimumSize: MaterialStateProperty.all(
