@@ -11,6 +11,7 @@ class CustomFormInput extends StatelessWidget {
   final int? maxInputLength;
   final TextInputType? textInputType;
   final IconData? suffixIcon;
+  final AutovalidateMode autoValidateMode;
   final String? Function(String?) validator;
   final void Function(String)? onChanged;
   final void Function(String?)? onSaved;
@@ -31,6 +32,7 @@ class CustomFormInput extends StatelessWidget {
     this.onSaved,
     this.inputFormatters,
     this.suffixIconAction,
+    this.autoValidateMode = AutovalidateMode.disabled,
   }) : super(key: key);
 
   @override
@@ -50,7 +52,7 @@ class CustomFormInput extends StatelessWidget {
         TextFormField(
           obscureText: obscureText,
           inputFormatters: inputFormatters,
-
+          autovalidateMode: autoValidateMode,
           maxLength: maxInputLength,
           keyboardType: textInputType,
           style: const TextStyle(

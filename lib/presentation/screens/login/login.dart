@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:brechfete/core/constants.dart';
 import 'package:brechfete/presentation/root/widgets/custom_form_input.dart';
 import 'package:brechfete/presentation/screens/bookings/booking_screen.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -40,10 +39,10 @@ class _LoginScreenState extends State<LoginScreen> {
   bool obscureText = true;
   bool isButtonActive = false;
   bool isAbsorbing = false;
+  AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
 
   //flutter_easyloading variables
   Timer? _timer;
-  late double _progress;
 
   @override
   void initState() {
@@ -70,13 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
       body: SafeArea(
         child: GestureDetector(
           behavior: HitTestBehavior.translucent,
-          onTap: () {
-            FocusScopeNode currentFocus = FocusScope.of(context);
-            if (!currentFocus.hasPrimaryFocus &&
-                currentFocus.focusedChild != null) {
-              FocusManager.instance.primaryFocus?.unfocus();
-            }
-          },
+          onTap: hideKeyboard,
           child: AbsorbPointer(
             absorbing: isAbsorbing,
             child: SingleChildScrollView(
@@ -106,20 +99,36 @@ class _LoginScreenState extends State<LoginScreen> {
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly,
                       ],
+                      autoValidateMode: autovalidateMode,
                       onSaved: (String? value) {
                         phone = value!;
                       },
                       onChanged: (value) {
-                        formKey.currentState!.validate();
-                        if (formKey.currentState!.validate()) {
-                          formKey.currentState!.save();
+                        if (value.length == 10 &&
+                            formKey.currentState!.validate()) {
                           setState(() {
                             isButtonActive = true;
                           });
-                        } else {
-                          setState(() {
-                            isButtonActive = false;
-                          });
+                        }
+                        //} else {
+                        //  formKey.currentState!.validate();
+                        //  setState(() {
+                        //    isButtonActive = false;
+                        //  });
+                        //}
+                        if (autovalidateMode ==
+                            AutovalidateMode.onUserInteraction) {
+                          formKey.currentState!.validate();
+                          if (formKey.currentState!.validate()) {
+                            formKey.currentState!.save();
+                            setState(() {
+                              isButtonActive = true;
+                            });
+                          } else {
+                            setState(() {
+                              isButtonActive = false;
+                            });
+                          }
                         }
                       },
                       validator: (value) {
@@ -137,6 +146,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       obscureText: obscureText,
                       textInputAction: TextInputAction.done,
                       textInputType: TextInputType.text,
+                      autoValidateMode: autovalidateMode,
                       suffixIcon: obscureText
                           ? Icons.visibility_off_outlined
                           : Icons.visibility,
@@ -150,16 +160,30 @@ class _LoginScreenState extends State<LoginScreen> {
                         password = value!;
                       },
                       onChanged: (value) {
-                        formKey.currentState!.validate();
-                        if (formKey.currentState!.validate()) {
+                        if (value.length >= 4 &&
+                            formKey.currentState!.validate()) {
                           setState(() {
                             isButtonActive = true;
                           });
-                          formKey.currentState!.save();
-                        } else {
-                          setState(() {
-                            isButtonActive = false;
-                          });
+                        }
+                        //} else {
+                        //  setState(() {
+                        //    isButtonActive = false;
+                        //  });
+                        //}
+                        if (autovalidateMode ==
+                            AutovalidateMode.onUserInteraction) {
+                          formKey.currentState!.validate();
+                          if (formKey.currentState!.validate()) {
+                            setState(() {
+                              isButtonActive = true;
+                            });
+                            formKey.currentState!.save();
+                          } else {
+                            setState(() {
+                              isButtonActive = false;
+                            });
+                          }
                         }
                       },
                       validator: (value) {
@@ -175,79 +199,89 @@ class _LoginScreenState extends State<LoginScreen> {
                     ElevatedButton(
                       onPressed: isButtonActive
                           ? () async {
-                              setState(() {
-                                isAbsorbing = true;
-                              });
-                              EasyLoading.instance.backgroundColor =
-                                  Colors.black;
-                              EasyLoading.instance.indicatorColor =
-                                  textWhiteShadeLight;
-                              EasyLoading.instance.indicatorType =
-                                  EasyLoadingIndicatorType.ripple;
-                              EasyLoading.instance.textStyle = TextStyle(
-                                fontSize: screenWidth <= 320 ? 16 : 18,
-                                color: pureWhite,
-                              );
-                              EasyLoading.show(
-                                status: 'Vefifying...',
-                                //indicator: const CupertinoActivityIndicator(
-                                //  animating: true,
-                                //),
-                              );
-                              await Future.delayed(const Duration(seconds: 2));
-                              EasyLoading.dismiss();
-                              //code to get api response here
-                              final res = await true;
-                              if (res) {
-                                EasyLoading.instance.indicatorColor =
-                                    extraGreen;
-                                EasyLoading.instance.textColor = pureWhite;
-                                EasyLoading.instance.textStyle = TextStyle(
-                                  fontSize: screenWidth <= 320 ? 16 : 18,
-                                  color: pureWhite,
-                                );
-                                EasyLoading.showSuccess(
-                                  'Verification Successful!',
-                                );
-                                if (!mounted) return;
-                                Navigator.of(context)
-                                    .pushReplacement(MaterialPageRoute(
-                                  builder: (context) => const BookingScreen(),
-                                ));
-                              } else {
-                                EasyLoading.instance.indicatorColor = extraRed;
-                                EasyLoading.instance.textStyle = TextStyle(
-                                  fontSize: screenWidth <= 320 ? 16 : 18,
-                                  color: pureWhite,
-                                );
-                                EasyLoading.instance.userInteractions = false;
-                                EasyLoading.showError(
-                                  'Verification Failed!',
-                                );
-                              }
-
-                              if (res == false) {
-                                Timer(const Duration(seconds: 2), () {
-                                  EasyLoading.instance.textStyle = TextStyle(
-                                    fontSize: screenWidth <= 320 ? 13 : 18,
-                                    color:
-                                        const Color.fromARGB(255, 255, 85, 73),
-                                  );
-                                  EasyLoading.instance.userInteractions = true;
-
-                                  EasyLoading.showToast(
-                                    "Please Enter correct details",
-                                    toastPosition:
-                                        EasyLoadingToastPosition.bottom,
-                                  );
-                                  setState(() {
-                                    isAbsorbing = false;
-                                  });
+                              if (formKey.currentState!.validate()) {
+                                hideKeyboard();
+                                //fire validation
+                                setState(() {
+                                  autovalidateMode =
+                                      AutovalidateMode.onUserInteraction;
+                                  isAbsorbing = true;
                                 });
+                                EasyLoading.instance.backgroundColor =
+                                    Colors.black;
+                                EasyLoading.instance.indicatorColor =
+                                    textWhiteShadeLight;
+                                EasyLoading.instance.indicatorType =
+                                    EasyLoadingIndicatorType.ripple;
+                                EasyLoading.instance.textStyle = TextStyle(
+                                  fontSize: screenWidth <= 320 ? 16 : 18,
+                                  color: pureWhite,
+                                );
+                                EasyLoading.show(
+                                  status: 'Vefifying...',
+                                  //indicator: const CupertinoActivityIndicator(
+                                  //  animating: true,
+                                  //),
+                                );
+                                await Future.delayed(
+                                    const Duration(seconds: 2));
+                                EasyLoading.dismiss();
+                                //code to get api response here
+                                final res = await true;
+                                if (res) {
+                                  EasyLoading.instance.indicatorColor =
+                                      extraGreen;
+                                  EasyLoading.instance.textColor = pureWhite;
+                                  EasyLoading.instance.textStyle = TextStyle(
+                                    fontSize: screenWidth <= 320 ? 16 : 18,
+                                    color: pureWhite,
+                                  );
+                                  EasyLoading.showSuccess(
+                                    'Verification Successful!',
+                                  );
+                                  if (!mounted) return;
+                                  Navigator.of(context)
+                                      .pushReplacement(MaterialPageRoute(
+                                    builder: (context) => const BookingScreen(),
+                                  ));
+                                } else {
+                                  EasyLoading.instance.indicatorColor =
+                                      extraRed;
+                                  EasyLoading.instance.textStyle = TextStyle(
+                                    fontSize: screenWidth <= 320 ? 16 : 18,
+                                    color: pureWhite,
+                                  );
+                                  EasyLoading.instance.userInteractions = false;
+                                  EasyLoading.showError(
+                                    'Verification Failed!',
+                                  );
+                                }
+
+                                if (res == false) {
+                                  Timer(const Duration(seconds: 2), () {
+                                    EasyLoading.instance.textStyle = TextStyle(
+                                      fontSize: screenWidth <= 320 ? 13 : 18,
+                                      color: const Color.fromARGB(
+                                          255, 255, 85, 73),
+                                    );
+                                    EasyLoading.instance.userInteractions =
+                                        true;
+
+                                    EasyLoading.showToast(
+                                      "Please Enter correct details",
+                                      //toastPosition:
+                                      //    EasyLoadingToastPosition.bottom,
+                                    );
+                                    setState(() {
+                                      isAbsorbing = false;
+                                    });
+                                  });
+                                }
+                                await Future.delayed(
+                                    const Duration(seconds: 2));
+                                EasyLoading.dismiss();
+                                EasyLoading.removeAllCallbacks();
                               }
-                              await Future.delayed(const Duration(seconds: 2));
-                              EasyLoading.dismiss();
-                              EasyLoading.removeAllCallbacks();
                             }
                           : null,
                       style: ButtonStyle(
@@ -277,5 +311,12 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
+  }
+
+  void hideKeyboard() {
+    FocusScopeNode currentFocus = FocusScope.of(context);
+    if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
+      FocusManager.instance.primaryFocus?.unfocus();
+    }
   }
 }
