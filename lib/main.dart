@@ -1,3 +1,4 @@
+import 'package:brechfete/presentation/screens/bookings/booking_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:brechfete/presentation/root/app.dart';
 import 'package:brechfete/presentation/root/widgets/custom_theme.dart';
@@ -20,8 +21,9 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.dark,
       darkTheme: CustomTheme.darkTheme.copyWith(
         splashColor: Colors.transparent,
-      ),
-      initialRoute: '/login', //change it later to splash screen
+      ), //change it later to splash screen
+      //if already authenticated move to app directly
+      initialRoute: App.loginRoute,
       routes: {
         //login screen
         App.loginRoute: (context) => const LoginScreen(),

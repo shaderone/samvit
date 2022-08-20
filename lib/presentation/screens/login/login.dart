@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:brechfete/core/constants.dart';
+import 'package:brechfete/presentation/root/app.dart';
 import 'package:brechfete/presentation/root/widgets/custom_form_input.dart';
 import 'package:brechfete/presentation/screens/bookings/booking_screen.dart';
 import 'package:flutter/material.dart';
@@ -240,10 +241,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                     'Verification Successful!',
                                   );
                                   if (!mounted) return;
-                                  Navigator.of(context)
-                                      .pushReplacement(MaterialPageRoute(
-                                    builder: (context) => const BookingScreen(),
-                                  ));
+                                  Navigator.of(context).pushAndRemoveUntil(
+                                      MaterialPageRoute(
+                                        builder: (context) => const App(),
+                                      ),
+                                      (route) => false);
                                 } else {
                                   EasyLoading.instance.indicatorColor =
                                       extraRed;
