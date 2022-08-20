@@ -40,7 +40,8 @@ class BookingScreen extends StatelessWidget {
         ],
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.only(top: 20, right: 10, left: 10, bottom: 5),
+        padding: EdgeInsets.symmetric(
+            vertical: 20, horizontal: screenWidth <= 340 ? 10 : 15),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: const <Widget>[
@@ -48,7 +49,7 @@ class BookingScreen extends StatelessWidget {
             SizedBox(height: 10),
             SlotCalender(),
             TimeSlotList(),
-            SizedBox(height: 30),
+            SizedBox(height: 10),
             SlotInfoContainer(),
             SizedBox(height: 30),
             ConfirmButton(),

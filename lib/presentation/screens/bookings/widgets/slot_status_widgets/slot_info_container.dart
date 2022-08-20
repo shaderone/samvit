@@ -6,28 +6,32 @@ class SlotInfoContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 15),
       decoration: BoxDecoration(
         color: primaryDark,
         borderRadius: BorderRadius.circular(10),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        mainAxisSize: MainAxisSize.max,
-        children: const [
-          SlotStatusItem(
-            slotStatus: 'Available',
-            slotCount: "120",
-            slotCountColor: secondaryBlueShadeLight,
-          ),
-          SlotStatusItem(
-            slotStatus: "Booked",
-            slotCount: "60",
-            slotCountColor: extraRed,
-          ),
-          SlotInputItem(),
-        ],
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: screenWidth <= 320 ? 0 : 5),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisSize: MainAxisSize.max,
+          children: const [
+            SlotStatusItem(
+              slotStatus: 'Available',
+              slotCount: "120",
+              slotCountColor: secondaryBlueShadeLight,
+            ),
+            SlotStatusItem(
+              slotStatus: "Booked",
+              slotCount: "60",
+              slotCountColor: extraRed,
+            ),
+            SlotInputItem(),
+          ],
+        ),
       ),
     );
   }
