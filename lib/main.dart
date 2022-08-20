@@ -1,4 +1,4 @@
-import 'package:brechfete/presentation/screens/bookings/booking_screen.dart';
+import 'package:brechfete/presentation/root/splash_screen/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:brechfete/presentation/root/app.dart';
 import 'package:brechfete/presentation/root/widgets/custom_theme.dart';
@@ -13,7 +13,6 @@ Future<void> main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -23,7 +22,7 @@ class MyApp extends StatelessWidget {
         splashColor: Colors.transparent,
       ), //change it later to splash screen
       //if already authenticated move to app directly
-      initialRoute: App.loginRoute,
+      home: const SplashScreen(),
       routes: {
         //login screen
         App.loginRoute: (context) => const LoginScreen(),

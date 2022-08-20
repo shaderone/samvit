@@ -1,12 +1,16 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:developer';
+import 'dart:io';
 
 import 'package:brechfete/core/constants.dart';
 import 'package:brechfete/presentation/root/app.dart';
 import 'package:brechfete/presentation/root/widgets/custom_form_input.dart';
-import 'package:brechfete/presentation/screens/bookings/booking_screen.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void configLoading() {
   EasyLoading.instance
@@ -41,6 +45,8 @@ class _LoginScreenState extends State<LoginScreen> {
   bool isButtonActive = false;
   bool isAbsorbing = false;
   AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
+
+  String loginErrorText = '';
 
   //flutter_easyloading variables
   Timer? _timer;
@@ -107,6 +113,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       onChanged: (value) {
                         if (value.length == 10 &&
                             formKey.currentState!.validate()) {
+                          formKey.currentState!.save();
                           setState(() {
                             isButtonActive = true;
                           });
@@ -122,6 +129,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           formKey.currentState!.validate();
                           if (formKey.currentState!.validate()) {
                             formKey.currentState!.save();
+
                             setState(() {
                               isButtonActive = true;
                             });
@@ -163,6 +171,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       onChanged: (value) {
                         if (value.length >= 4 &&
                             formKey.currentState!.validate()) {
+                          formKey.currentState!.save();
                           setState(() {
                             isButtonActive = true;
                           });
@@ -228,8 +237,35 @@ class _LoginScreenState extends State<LoginScreen> {
                                     const Duration(seconds: 2));
                                 EasyLoading.dismiss();
                                 //code to get api response here
-                                final res = await true;
-                                if (res) {
+                                log("phonssse - $phone , password - $password");
+                                var client = http.Client();
+
+                                var response = await client.post(
+                                  //Uri.parse(
+                                  //  "https://cbxxje12vtc0000507n0gf6638ryyyyyb.interact.sh/",
+                                  //),
+                                  Uri.parse(
+                                    "http://10.0.2.2:5000/data",
+                                  ),
+                                  headers: {
+                                    "Content-Type": "application/json",
+                                  },
+                                  body: jsonEncode(
+                                    {
+                                      'user_mobile': phone,
+                                      'user_password': password,
+                                    },
+                                  ),
+                                );
+                                final data =
+                                    jsonDecode(response.body.toString());
+
+                                if (response.statusCode == 200) {
+                                  final SharedPreferences prefs =
+                                      await SharedPreferences.getInstance();
+                                  final token = data["auth_token"];
+                                  prefs.setString("token", token);
+                                  print(prefs.getString("token"));
                                   EasyLoading.instance.indicatorColor =
                                       extraGreen;
                                   EasyLoading.instance.textColor = pureWhite;
@@ -246,7 +282,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                         builder: (context) => const App(),
                                       ),
                                       (route) => false);
-                                } else {
+                                } else if (response.statusCode == 400) {
+                                  setState(() {
+                                    loginErrorText =
+                                        "Please Enter correct details";
+                                  });
                                   EasyLoading.instance.indicatorColor =
                                       extraRed;
                                   EasyLoading.instance.textStyle = TextStyle(
@@ -259,7 +299,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   );
                                 }
 
-                                if (res == false) {
+                                if (response.statusCode == 400) {
                                   Timer(const Duration(seconds: 2), () {
                                     EasyLoading.instance.textStyle = TextStyle(
                                       fontSize: screenWidth <= 320 ? 13 : 18,
@@ -270,7 +310,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         true;
 
                                     EasyLoading.showToast(
-                                      "Please Enter correct details",
+                                      loginErrorText,
                                       //toastPosition:
                                       //    EasyLoadingToastPosition.bottom,
                                     );

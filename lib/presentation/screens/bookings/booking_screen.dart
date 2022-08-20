@@ -1,18 +1,26 @@
+import 'package:brechfete/presentation/root/app.dart';
 import 'package:brechfete/presentation/screens/bookings/widgets/expo_registration.dart';
 import 'package:flutter/material.dart';
 import 'package:brechfete/presentation/screens/bookings/widgets/slot_status_widgets/slot_info_container.dart';
 import 'package:brechfete/presentation/screens/bookings/widgets/time_slot_widget.dart';
 import 'package:brechfete/presentation/screens/bookings/widgets/calendar_widget.dart';
 import 'package:brechfete/presentation/screens/bookings/widgets/calendar_widgets/calendar_status_widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class BookingScreen extends StatelessWidget {
+class BookingScreen extends StatefulWidget {
   const BookingScreen({
     Key? key,
   }) : super(key: key);
 
   @override
+  State<BookingScreen> createState() => _BookingScreenState();
+}
+
+class _BookingScreenState extends State<BookingScreen> {
+  @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -32,7 +40,13 @@ class BookingScreen extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () async {
+              final SharedPreferences prefs =
+                  await SharedPreferences.getInstance();
+              prefs.remove("token");
+              if (!mounted) return;
+              Navigator.of(context).pushReplacementNamed(App.loginRoute);
+            },
             icon: const Icon(
               Icons.logout_rounded,
             ),
