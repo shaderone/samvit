@@ -16,6 +16,7 @@ dependencies:
   google_fonts: ^3.0.1
   http: ^0.13.5
   intl: ^0.17.0
+  lottie: ^1.4.1
   shared_preferences: ^2.0.15
   simple_gradient_text: ^1.2.3
   table_calendar: ^3.0.6
@@ -31,6 +32,7 @@ flutter:
 
   assets:
     - assets/images/logo.png
+    - assets/lottie_files/done.json
 
   fonts:
     - family: Poppins

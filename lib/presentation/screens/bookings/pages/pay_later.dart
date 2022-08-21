@@ -1,7 +1,11 @@
 import 'package:brechfete/core/constants.dart';
+import 'package:brechfete/presentation/root/app.dart';
+import 'package:brechfete/presentation/root/widgets/bottom_navbar.dart';
+import 'package:brechfete/presentation/screens/bookings/booking_screen.dart';
 import 'package:brechfete/presentation/screens/bookings/pages/expo_registration.dart';
 import 'package:brechfete/presentation/screens/reservations/reservation_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 class PayLaterPage extends StatelessWidget {
   const PayLaterPage({Key? key}) : super(key: key);
@@ -14,6 +18,11 @@ class PayLaterPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Lottie.asset(
+                "assets/lottie_files/done.json",
+                height: 200,
+                width: 200,
+              ),
               //show lottie animation
               const Text(
                 "Booking Confirmed!",
@@ -31,11 +40,12 @@ class PayLaterPage extends StatelessWidget {
                     primary: primaryDarkShadeLight,
                   ),
                   onPressed: () {
-                    Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(
-                          builder: (context) => const ReservationScreen(),
-                        ),
-                        (route) => true);
+                    MaterialBottomNav.currentSelectedIndexNotifier.value = 0;
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (context) => const App(),
+                      ),
+                    );
                   },
                   child: const Text("Book More"),
                 ),
@@ -50,11 +60,12 @@ class PayLaterPage extends StatelessWidget {
                     ), // fromHeight use double.infinity as width and 40 is the height
                   ),
                   onPressed: () {
-                    Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(
-                          builder: (context) => const ReservationScreen(),
-                        ),
-                        (route) => true);
+                    MaterialBottomNav.currentSelectedIndexNotifier.value = 1;
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (context) => const App(),
+                      ),
+                    );
                   },
                   child: const Text("Go to reservations"),
                 ),
