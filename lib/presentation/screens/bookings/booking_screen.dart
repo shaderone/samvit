@@ -1,5 +1,5 @@
 import 'package:brechfete/presentation/root/app.dart';
-import 'package:brechfete/presentation/screens/bookings/pages/expo_registration.dart';
+import 'package:brechfete/presentation/screens/bookings/pages/expo_registration_page.dart';
 import 'package:flutter/material.dart';
 import 'package:brechfete/presentation/screens/bookings/widgets/slot_status_widgets/slot_info_container.dart';
 import 'package:brechfete/presentation/screens/bookings/widgets/time_slot_widget.dart';

@@ -1,6 +1,6 @@
 import 'package:brechfete/core/constants.dart';
 import 'package:brechfete/presentation/root/widgets/custom_form_input.dart';
-import 'package:brechfete/presentation/screens/bookings/pages/pay_later.dart';
+import 'package:brechfete/presentation/screens/bookings/pages/booking_success_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
