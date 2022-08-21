@@ -1,11 +1,13 @@
 import 'package:brechfete/presentation/root/app.dart';
-import 'package:brechfete/presentation/screens/bookings/widgets/expo_registration.dart';
+import 'package:brechfete/presentation/screens/bookings/pages/expo_registration.dart';
 import 'package:flutter/material.dart';
 import 'package:brechfete/presentation/screens/bookings/widgets/slot_status_widgets/slot_info_container.dart';
 import 'package:brechfete/presentation/screens/bookings/widgets/time_slot_widget.dart';
 import 'package:brechfete/presentation/screens/bookings/widgets/calendar_widget.dart';
 import 'package:brechfete/presentation/screens/bookings/widgets/calendar_widgets/calendar_status_widget.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:simple_gradient_text/simple_gradient_text.dart';
 
 class BookingScreen extends StatefulWidget {
   static final ValueNotifier<bool> isDateSelectedNotifier =
@@ -27,18 +29,20 @@ class _BookingScreenState extends State<BookingScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
+        elevation: 5,
         title: Row(
           children: [
             Image.asset("assets/images/logo.png", width: 30),
             const SizedBox(width: 15),
-            Text(
-              "Expo Slot Booking",
-              style: TextStyle(
+            GradientText(
+              'Slot Booking',
+              style: GoogleFonts.ubuntu(
                 fontSize: screenWidth <= 320 ? 20 : 24,
-                fontWeight: FontWeight.bold,
               ),
+              colors: const [
+                Color(0xFF6E6F71),
+                Color(0xFFECECEC),
+              ],
             ),
           ],
         ),
