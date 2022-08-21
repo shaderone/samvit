@@ -166,7 +166,7 @@ class ExpoRegistration extends StatelessWidget {
                   SlotButton(
                     buttonText: "Pay Later",
                     onPressed: () {
-                      Navigator.of(context).push(
+                      Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
                           builder: (context) => const PayLaterPage(),
                         ),
