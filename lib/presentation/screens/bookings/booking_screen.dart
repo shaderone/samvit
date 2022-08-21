@@ -1,13 +1,19 @@
 import 'package:brechfete/presentation/root/app.dart';
-import 'package:brechfete/presentation/screens/bookings/widgets/expo_registration.dart';
+import 'package:brechfete/presentation/screens/bookings/pages/expo_registration.dart';
 import 'package:flutter/material.dart';
 import 'package:brechfete/presentation/screens/bookings/widgets/slot_status_widgets/slot_info_container.dart';
 import 'package:brechfete/presentation/screens/bookings/widgets/time_slot_widget.dart';
 import 'package:brechfete/presentation/screens/bookings/widgets/calendar_widget.dart';
 import 'package:brechfete/presentation/screens/bookings/widgets/calendar_widgets/calendar_status_widget.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:simple_gradient_text/simple_gradient_text.dart';
 
 class BookingScreen extends StatefulWidget {
+  static final ValueNotifier<bool> isDateSelectedNotifier =
+      ValueNotifier(false);
+  static final ValueNotifier<bool> isTimeSelectedNotifier =
+      ValueNotifier(false);
   const BookingScreen({
     Key? key,
   }) : super(key: key);
@@ -23,18 +29,21 @@ class _BookingScreenState extends State<BookingScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
+        automaticallyImplyLeading: false,
+        elevation: 5,
         title: Row(
           children: [
             Image.asset("assets/images/logo.png", width: 30),
             const SizedBox(width: 15),
-            Text(
-              "Expo Slot Booking",
-              style: TextStyle(
+            GradientText(
+              'Slot Booking',
+              style: GoogleFonts.ubuntu(
                 fontSize: screenWidth <= 320 ? 20 : 24,
-                fontWeight: FontWeight.bold,
               ),
+              colors: const [
+                Color(0xFF6E6F71),
+                Color(0xFFECECEC),
+              ],
             ),
           ],
         ),
@@ -57,17 +66,47 @@ class _BookingScreenState extends State<BookingScreen> {
         padding: EdgeInsets.symmetric(
             vertical: 20, horizontal: screenWidth <= 340 ? 10 : 15),
         child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: const <Widget>[
-            CalendarStatus(),
-            SizedBox(height: 10),
-            SlotCalender(),
-            TimeSlotList(),
-            SizedBox(height: 10),
-            SlotInfoContainer(),
-            SizedBox(height: 30),
-            ConfirmButton(),
-            SizedBox(height: 30),
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            const CalendarStatus(),
+            const SizedBox(height: 10),
+            const SlotCalender(),
+            SizedBox(
+              height: 90,
+              child: ValueListenableBuilder(
+                valueListenable: BookingScreen.isDateSelectedNotifier,
+                builder:
+                    (BuildContext context, bool isDateSelected, Widget? _) {
+                  return Visibility(
+                    visible: isDateSelected,
+                    child: const TimeSlotList(
+                      maxHeight: 90,
+                    ),
+                  );
+                },
+              ),
+            ),
+            const SizedBox(height: 10),
+            ValueListenableBuilder(
+              valueListenable: BookingScreen.isTimeSelectedNotifier,
+              builder: (BuildContext context, bool isTimeSelected, Widget? _) {
+                return Visibility(
+                  visible: isTimeSelected,
+                  child: const SlotInfoContainer(),
+                );
+              },
+            ),
+            const SizedBox(height: 30),
+            ValueListenableBuilder(
+              valueListenable: BookingScreen.isTimeSelectedNotifier,
+              builder: (BuildContext context, bool isTimeSelected, Widget? _) {
+                return Visibility(
+                  visible: isTimeSelected,
+                  child: const ConfirmButton(),
+                );
+              },
+            ),
+            const SizedBox(height: 30),
           ],
         ),
       ),

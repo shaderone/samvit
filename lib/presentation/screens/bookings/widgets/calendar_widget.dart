@@ -1,3 +1,4 @@
+import 'package:brechfete/presentation/screens/bookings/booking_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -12,6 +13,8 @@ class _SlotCalenderState extends State<SlotCalender> {
   CalendarFormat _calendarFormat = CalendarFormat.week;
   DateTime _focusedDay = DateTime.utc(2022, 9, 20);
   DateTime? _selectedDay;
+  DateTime?
+      _previousSelectedDay; // to compare dates to decide whether to show time cards or not
   //set holiday and booked days styles (unavailable days)
   //set today style
   @override
@@ -134,15 +137,41 @@ class _SlotCalenderState extends State<SlotCalender> {
 
               /*-------------------events-------------------*/
 
-              enabledDayPredicate: (day) => true,
+              enabledDayPredicate: (day) {
+                //here goes the logic to disable unavailable days
+                return true;
+              },
               selectedDayPredicate: (day) {
+                //code to show time-card
+                //if ( == ) {
+                //  isDateSelectedNotifier.value = false;
+                //}
+
                 return isSameDay(_selectedDay, day);
               },
               onDaySelected: (selectedDay, focusedDay) {
+                //send request here
+                BookingScreen.isDateSelectedNotifier.value = true;
+                //if (_previousSelectedDay == null) {
+                //  print("fire");
+                //
+                //}
+                // else {
+                //  print(
+                //      "s - $selectedDay & f - $focusedDay & p - $_previousSelectedDay");
+                //  final res = isSameDay(selectedDay, _previousSelectedDay);
+                //  BookingScreen.isDateSelectedNotifier.value = !res;
+                //  setState(() {
+                //    _previousSelectedDay = null;
+                //    //also remove the active color and don't send the snackbar
+                //  });
+                //}
+
                 var snackBar = SnackBar(
                   content: Text(
                     selectedDay.toString().split(" ").first,
                   ),
+                  duration: const Duration(milliseconds: 500),
                 );
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 setState(

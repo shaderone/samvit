@@ -13,6 +13,7 @@ class ReservationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         systemOverlayStyle: const SystemUiOverlayStyle(
           statusBarColor: primaryDarkShadeLight,
           statusBarBrightness: Brightness.dark,
