@@ -1,5 +1,7 @@
 import 'package:brechfete/core/constants.dart';
 import 'package:brechfete/presentation/root/widgets/custom_form_input.dart';
+import 'package:brechfete/presentation/screens/bookings/pages/pay_later.dart';
+import 'package:brechfete/presentation/screens/bookings/pages/pay_now.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
@@ -164,13 +166,21 @@ class ExpoRegistration extends StatelessWidget {
                   SlotButton(
                     buttonText: "Pay Later",
                     onPressed: () {
-                      print("pay later");
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const PayLaterPage(),
+                        ),
+                      );
                     },
                   ),
                   SlotButton(
                     buttonText: "Pay Now",
                     onPressed: () {
-                      print("pay now");
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const PayNowPage(),
+                        ),
+                      );
                     },
                     bgColor: secondaryBlueShadeDark,
                   ),
