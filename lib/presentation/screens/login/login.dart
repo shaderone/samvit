@@ -245,7 +245,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   //  "https://cbxxje12vtc0000507n0gf6638ryyyyyb.interact.sh/",
                                   //),
                                   Uri.parse(
-                                    "http://10.0.2.2:5000/data",
+                                    "https://shielded-fjord-46900.herokuapp.com/data",
                                   ),
                                   headers: {
                                     "Content-Type": "application/json",
@@ -259,13 +259,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                 );
                                 final data =
                                     jsonDecode(response.body.toString());
-
+                                //print(data);
                                 if (response.statusCode == 200) {
                                   final SharedPreferences prefs =
                                       await SharedPreferences.getInstance();
                                   final token = data["auth_token"];
                                   prefs.setString("token", token);
-                                  print(prefs.getString("token"));
+                                  //print(prefs.getString("token"));
                                   EasyLoading.instance.indicatorColor =
                                       extraGreen;
                                   EasyLoading.instance.textColor = pureWhite;
