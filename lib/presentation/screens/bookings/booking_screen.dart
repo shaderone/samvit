@@ -8,6 +8,10 @@ import 'package:brechfete/presentation/screens/bookings/widgets/calendar_widgets
 import 'package:shared_preferences/shared_preferences.dart';
 
 class BookingScreen extends StatefulWidget {
+  static final ValueNotifier<bool> isDateSelectedNotifier =
+      ValueNotifier(false);
+  static final ValueNotifier<bool> isTimeSelectedNotifier =
+      ValueNotifier(false);
   const BookingScreen({
     Key? key,
   }) : super(key: key);
@@ -57,17 +61,47 @@ class _BookingScreenState extends State<BookingScreen> {
         padding: EdgeInsets.symmetric(
             vertical: 20, horizontal: screenWidth <= 340 ? 10 : 15),
         child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: const <Widget>[
-            CalendarStatus(),
-            SizedBox(height: 10),
-            SlotCalender(),
-            TimeSlotList(),
-            SizedBox(height: 10),
-            SlotInfoContainer(),
-            SizedBox(height: 30),
-            ConfirmButton(),
-            SizedBox(height: 30),
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            const CalendarStatus(),
+            const SizedBox(height: 10),
+            const SlotCalender(),
+            SizedBox(
+              height: 90,
+              child: ValueListenableBuilder(
+                valueListenable: BookingScreen.isDateSelectedNotifier,
+                builder:
+                    (BuildContext context, bool isDateSelected, Widget? _) {
+                  return Visibility(
+                    visible: isDateSelected,
+                    child: const TimeSlotList(
+                      maxHeight: 90,
+                    ),
+                  );
+                },
+              ),
+            ),
+            const SizedBox(height: 10),
+            ValueListenableBuilder(
+              valueListenable: BookingScreen.isTimeSelectedNotifier,
+              builder: (BuildContext context, bool isTimeSelected, Widget? _) {
+                return Visibility(
+                  visible: isTimeSelected,
+                  child: const SlotInfoContainer(),
+                );
+              },
+            ),
+            const SizedBox(height: 30),
+            ValueListenableBuilder(
+              valueListenable: BookingScreen.isTimeSelectedNotifier,
+              builder: (BuildContext context, bool isTimeSelected, Widget? _) {
+                return Visibility(
+                  visible: isTimeSelected,
+                  child: const ConfirmButton(),
+                );
+              },
+            ),
+            const SizedBox(height: 30),
           ],
         ),
       ),

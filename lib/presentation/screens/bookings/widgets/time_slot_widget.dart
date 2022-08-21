@@ -1,66 +1,72 @@
 import 'package:brechfete/core/constants.dart';
+import 'package:brechfete/presentation/screens/bookings/booking_screen.dart';
 import 'package:brechfete/presentation/screens/reservations/widgets/reservation_chip.dart';
 import 'package:flutter/material.dart';
 
-class TimeSlotList extends StatelessWidget {
+class TimeSlotList extends StatefulWidget {
+  final double maxHeight;
   const TimeSlotList({
     Key? key,
+    required this.maxHeight,
   }) : super(key: key);
 
   @override
+  State<TimeSlotList> createState() => _TimeSlotListState();
+}
+
+class _TimeSlotListState extends State<TimeSlotList> {
+  int? selectedIndex;
+
+  List<String> tempArr = [];
+  @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    return ListView.builder(
       scrollDirection: Axis.horizontal,
       physics: const BouncingScrollPhysics(),
+      shrinkWrap: true,
       primary: false,
-      child: Row(
-        children: List.generate(
-          12,
-          (index) {
-            /* --ONGOING--
-
-            String date = DateTime.now()
-                .toString()
-                .split(" ")
-                .last
-                .split(".")
-                .first
-                .split(":")
-                .first;
-            //date = "${date.split(":")[0]}:${date.split(":")[1]}";
-            date = "$date:00";
-            print(convertTo12HourFormat(date));
-            */
-            return SizedBox(
-              height: 85,
-              child: Stack(
-                alignment: Alignment.topCenter,
-                clipBehavior: Clip.none,
-                children: const [
-                  Positioned(
-                    bottom: -20,
-                    left: 20,
-                    child: Icon(
-                      Icons.arrow_drop_down,
-                      size: 80,
-                      color: strokeLight,
-                    ),
-                  ),
-                  ReservationChip(
-                    chipCrossAxisAlignment: CrossAxisAlignment.center,
-                    chipTitle: "",
-                    chipText: "10:00",
-                    chipWidth: 120,
-                    chipBgColor: primaryDark,
-                    chipStrokeColor: strokeLight,
-                    chipTimePeriod: "AM",
-                  ),
-                ],
+      itemBuilder: (context, index) {
+        return SizedBox(
+          height: widget.maxHeight,
+          child: Stack(
+            children: [
+              selectedIndex == index
+                  ? const Positioned(
+                      bottom: -20,
+                      left: 20,
+                      child: Icon(
+                        Icons.arrow_drop_down,
+                        size: 80,
+                        color: pureWhite,
+                      ),
+                    )
+                  : const SizedBox(),
+              GestureDetector(
+                onTap: () {
+                  BookingScreen.isTimeSelectedNotifier.value = true;
+                  setState(() {
+                    selectedIndex = index;
+                  });
+                },
+                child: ReservationChip(
+                  chipCrossAxisAlignment: CrossAxisAlignment.center,
+                  chipTitle: "",
+                  chipText: "0$index:00",
+                  chipWidth: 120,
+                  chipBgColor:
+                      selectedIndex == index ? primaryDarkShadeLight : bgDark,
+                  chipStrokeColor:
+                      selectedIndex == index ? pureWhite : strokeLight,
+                  chipTextColor:
+                      selectedIndex == index ? pureWhite : textWhiteShadeDark,
+                  chipTimePeriod: "AM",
+                ),
               ),
-            );
-          },
-        ),
-      ),
+            ],
+          ),
+        );
+      },
+      itemCount: 12,
     );
   }
 

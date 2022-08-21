@@ -6,10 +6,10 @@ class ReservationChip extends StatelessWidget {
   final String chipTitle;
   final String chipText;
   final double chipWidth;
+  final Color chipTextColor;
   final Color chipBgColor;
   final Color chipStrokeColor;
   final String chipTimePeriod;
-  final bool isChipSelected;
 
   const ReservationChip({
     Key? key,
@@ -19,8 +19,8 @@ class ReservationChip extends StatelessWidget {
     required this.chipWidth,
     required this.chipBgColor,
     this.chipTimePeriod = "",
-    this.isChipSelected = false,
     required this.chipStrokeColor,
+    this.chipTextColor = textWhiteShadeLight,
   }) : super(key: key);
 
   @override
@@ -34,12 +34,12 @@ class ReservationChip extends StatelessWidget {
           width: chipWidth,
           height: chipTitle == "" ? 50 : 40,
           child: Card(
-            color: isChipSelected ? primaryDarkShadeLight : chipBgColor,
+            color: chipBgColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(5),
               side: BorderSide(
                 width: 2,
-                color: isChipSelected ? pureWhite : chipStrokeColor,
+                color: chipStrokeColor,
               ),
             ),
             child: Center(
@@ -55,6 +55,7 @@ class ReservationChip extends StatelessWidget {
                         style: TextStyle(
                           fontSize: chipTitle == "" ? 14 : 12,
                           fontWeight: FontWeight.bold,
+                          color: chipTextColor,
                         ),
                       ),
                       TextSpan(
