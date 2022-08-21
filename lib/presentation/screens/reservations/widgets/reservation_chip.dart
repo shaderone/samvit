@@ -9,6 +9,7 @@ class ReservationChip extends StatelessWidget {
   final Color chipBgColor;
   final Color chipStrokeColor;
   final String chipTimePeriod;
+  final bool isChipSelected;
 
   const ReservationChip({
     Key? key,
@@ -18,6 +19,7 @@ class ReservationChip extends StatelessWidget {
     required this.chipWidth,
     required this.chipBgColor,
     this.chipTimePeriod = "",
+    this.isChipSelected = false,
     required this.chipStrokeColor,
   }) : super(key: key);
 
@@ -27,41 +29,44 @@ class ReservationChip extends StatelessWidget {
       crossAxisAlignment: chipCrossAxisAlignment,
       children: [
         Text(chipTitle),
-        const SizedBox(height: 5),
+        SizedBox(height: chipTitle == "" ? 0 : 5),
         SizedBox(
           width: chipWidth,
+          height: chipTitle == "" ? 50 : 40,
           child: Card(
-            color: chipBgColor,
+            color: isChipSelected ? primaryDarkShadeLight : chipBgColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(5),
               side: BorderSide(
                 width: 2,
-                color: chipStrokeColor,
+                color: isChipSelected ? pureWhite : chipStrokeColor,
               ),
             ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 7),
-              child: RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(
-                  style: DefaultTextStyle.of(context).style,
-                  children: [
-                    TextSpan(
-                      text: chipText,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 7),
+                child: RichText(
+                  textAlign: TextAlign.center,
+                  text: TextSpan(
+                    style: DefaultTextStyle.of(context).style,
+                    children: [
+                      TextSpan(
+                        text: chipText,
+                        style: TextStyle(
+                          fontSize: chipTitle == "" ? 14 : 12,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    TextSpan(
-                      text: " $chipTimePeriod",
-                      style: const TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                        color: secondaryBlueShadeLight,
+                      TextSpan(
+                        text: " $chipTimePeriod",
+                        style: TextStyle(
+                          fontSize: chipTitle == "" ? 14 : 12,
+                          fontWeight: FontWeight.bold,
+                          color: secondaryBlueShadeLight,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
