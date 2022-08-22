@@ -2,6 +2,7 @@ import 'package:brechfete/presentation/screens/bookings/booking_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:brechfete/core/constants.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'widgets/reservation_card_widgets/card_bottom_widget.dart';
 import 'widgets/reservation_card_widgets/card_middle_widget.dart';
 
@@ -45,16 +46,26 @@ class _ReservationScreenState extends State<ReservationScreen> {
           ),
         ],
       ),
-      body: ListView.separated(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 15),
-        physics: const BouncingScrollPhysics(),
-        itemBuilder: (BuildContext context, int index) {
-          return const ReservationCard();
-        },
-        separatorBuilder: (BuildContext context, int index) {
-          return const SizedBox(height: 10);
-        },
-        itemCount: 8,
+      body: AnimationLimiter(
+        child: ListView.separated(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 15),
+          physics: const BouncingScrollPhysics(),
+          itemBuilder: (BuildContext context, int index) {
+            return AnimationConfiguration.staggeredList(
+              position: index,
+              duration: const Duration(milliseconds: 500),
+              child: const SlideAnimation(
+                child: FadeInAnimation(
+                  child: ReservationCard(),
+                ),
+              ),
+            );
+          },
+          separatorBuilder: (BuildContext context, int index) {
+            return const SizedBox(height: 10);
+          },
+          itemCount: 8,
+        ),
       ),
     );
   }

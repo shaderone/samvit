@@ -1,6 +1,7 @@
 import 'package:brechfete/core/constants.dart';
 import 'package:brechfete/presentation/root/widgets/custom_form_input.dart';
 import 'package:brechfete/presentation/screens/bookings/pages/booking_success_page.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -100,7 +101,16 @@ class _PayNowPageState extends State<PayNowPage> {
                         50,
                       ), // fromHeight use double.infinity as width and 40 is the height
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (context) => const BookingSuccessPage(
+                            animationWidget: "assets/lottie_files/confirm.json",
+                            statusText: "Booking Successful!",
+                          ),
+                        ),
+                      );
+                    },
                     child: const Text("Send Payment Link"),
                   ),
                   const SizedBox(height: 20),
@@ -151,7 +161,9 @@ class _PayNowPageState extends State<PayNowPage> {
                         labelText: "Amount",
                         textInputType: TextInputType.number,
                         validator: (value) {
-                          //
+                          if (value == null || value.isEmpty) {
+                            return "Amount is required";
+                          }
                         },
                         textInputAction: TextInputAction.done,
                         hintText: "Enter cash recived",
