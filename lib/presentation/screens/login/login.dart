@@ -233,9 +233,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                   //  animating: true,
                                   //),
                                 );
-                                await Future.delayed(
-                                    const Duration(seconds: 2));
-                                EasyLoading.dismiss();
                                 //code to get api response here
                                 log("phonssse - $phone , password - $password");
                                 var client = http.Client();
@@ -257,6 +254,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     },
                                   ),
                                 );
+                                EasyLoading.dismiss();
                                 final data =
                                     jsonDecode(response.body.toString());
                                 //print(data);

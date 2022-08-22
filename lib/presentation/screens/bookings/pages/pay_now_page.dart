@@ -173,7 +173,7 @@ class _PayNowPageState extends State<PayNowPage> {
                     onPressed: () {
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
-                          builder: (context) => const PayLaterPage(
+                          builder: (context) => const BookingSuccessPage(
                             animationWidget: "assets/lottie_files/confirm.json",
                             statusText: "Booking Successful!",
                           ),

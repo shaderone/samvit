@@ -1,5 +1,7 @@
 import 'package:brechfete/core/constants.dart';
+import 'package:brechfete/presentation/root/app.dart';
 import 'package:brechfete/presentation/root/widgets/custom_form_input.dart';
+import 'package:brechfete/presentation/screens/bookings/booking_screen.dart';
 import 'package:brechfete/presentation/screens/bookings/pages/booking_success_page.dart';
 import 'package:brechfete/presentation/screens/bookings/pages/pay_now_page.dart';
 import 'package:flutter/material.dart';
@@ -166,16 +168,19 @@ class ExpoRegistration extends StatelessWidget {
                   SlotButton(
                     buttonText: "Pay Later",
                     onPressed: () {
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (context) => const PayLaterPage(),
-                        ),
+                      BookingScreen.isDateSelectedNotifier.value = false;
+                      BookingScreen.isTimeSelectedNotifier.value = false;
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                        App.bookingSuccessRoute,
+                        (route) => false,
                       );
                     },
                   ),
                   SlotButton(
                     buttonText: "Pay Now",
                     onPressed: () {
+                      BookingScreen.isDateSelectedNotifier.value = false;
+                      BookingScreen.isTimeSelectedNotifier.value = false;
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) => const PayNowPage(),

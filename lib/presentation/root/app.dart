@@ -9,6 +9,11 @@ class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
 
   static const String loginRoute = "login";
+  static const String bookingsRoute = "bookings";
+  static const String reservationsRoute = "reservations";
+  static const String payNowRoute = "payNowPage";
+  static const String bookingSuccessRoute = "bookingSuccessPage";
+  static const String paymentsRoute = "payments";
   static const String home = "home";
 
   final pages = const [

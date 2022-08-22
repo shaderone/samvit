@@ -6,10 +6,10 @@ import 'package:brechfete/presentation/screens/bookings/pages/expo_registration_
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
-class PayLaterPage extends StatelessWidget {
+class BookingSuccessPage extends StatelessWidget {
   final String? animationWidget;
   final String? statusText;
-  const PayLaterPage({Key? key, this.animationWidget, this.statusText})
+  const BookingSuccessPage({Key? key, this.animationWidget, this.statusText})
       : super(key: key);
 
   @override
@@ -24,6 +24,8 @@ class PayLaterPage extends StatelessWidget {
                 animationWidget ?? "assets/lottie_files/done.json",
                 height: 200,
                 width: 200,
+                repeat: false,
+                fit: BoxFit.contain,
               ),
               //show lottie animation
               Text(
@@ -70,10 +72,9 @@ class PayLaterPage extends StatelessWidget {
                   ),
                   onPressed: () {
                     MaterialBottomNav.currentSelectedIndexNotifier.value = 0;
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (context) => const App(),
-                      ),
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                      App.home,
+                      (route) => false,
                     );
                   },
                   child: const Text("Book More"),
@@ -90,10 +91,9 @@ class PayLaterPage extends StatelessWidget {
                   ),
                   onPressed: () {
                     MaterialBottomNav.currentSelectedIndexNotifier.value = 1;
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (context) => const App(),
-                      ),
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                      App.home,
+                      (route) => false,
                     );
                   },
                   child: const Text("Go to reservations"),
