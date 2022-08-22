@@ -1,3 +1,5 @@
+import 'package:animations/animations.dart';
+import 'package:brechfete/core/constants.dart';
 import 'package:brechfete/presentation/root/widgets/bottom_navbar.dart';
 import 'package:brechfete/presentation/screens/bookings/booking_screen.dart';
 import 'package:brechfete/presentation/screens/payments/payment_history_screen.dart';
@@ -25,6 +27,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: bgDark,
       appBar: AppBar(
         systemOverlayStyle: const SystemUiOverlayStyle(
           statusBarBrightness: Brightness.dark,
@@ -41,7 +44,18 @@ class App extends StatelessWidget {
             //to hide time and slot info on page switch
             BookingScreen.isDateSelectedNotifier.value = false;
             BookingScreen.isTimeSelectedNotifier.value = false;
-            return pages[newSelectedIndex];
+            return PageTransitionSwitcher(
+              duration: const Duration(milliseconds: 500),
+              transitionBuilder: (child, primaryAnimation, secondaryAnimation) {
+                return FadeThroughTransition(
+                  fillColor: bgDark,
+                  animation: primaryAnimation,
+                  secondaryAnimation: secondaryAnimation,
+                  child: child,
+                );
+              },
+              child: pages[newSelectedIndex],
+            );
           },
         ),
       ),
