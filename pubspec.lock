@@ -623,6 +623,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.0"
+  tabbed_sliverlist:
+    dependency: "direct main"
+    description:
+      name: tabbed_sliverlist
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.0"
   table_calendar:
     dependency: "direct main"
     description:
