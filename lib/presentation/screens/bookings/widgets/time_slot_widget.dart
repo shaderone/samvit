@@ -2,6 +2,7 @@ import 'package:brechfete/core/constants.dart';
 import 'package:brechfete/presentation/screens/bookings/booking_screen.dart';
 import 'package:brechfete/presentation/screens/reservations/widgets/reservation_chip.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 class TimeSlotList extends StatefulWidget {
   final double maxHeight;
@@ -20,53 +21,66 @@ class _TimeSlotListState extends State<TimeSlotList> {
   List<String> tempArr = [];
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      scrollDirection: Axis.horizontal,
-      physics: const BouncingScrollPhysics(),
-      shrinkWrap: true,
-      primary: false,
-      itemBuilder: (context, index) {
-        return SizedBox(
-          height: widget.maxHeight,
-          child: Stack(
-            children: [
-              selectedIndex == index
-                  ? const Positioned(
-                      bottom: -20,
-                      left: 20,
-                      child: Icon(
-                        Icons.arrow_drop_down,
-                        size: 80,
-                        color: pureWhite,
+    return AnimationLimiter(
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        physics: const BouncingScrollPhysics(),
+        shrinkWrap: true,
+        primary: false,
+        itemBuilder: (context, index) {
+          return AnimationConfiguration.staggeredList(
+            position: index,
+            duration: const Duration(milliseconds: 500),
+            child: SlideAnimation(
+              horizontalOffset: 50.0,
+              child: FadeInAnimation(
+                child: SizedBox(
+                  height: widget.maxHeight,
+                  child: Stack(
+                    children: [
+                      selectedIndex == index
+                          ? const Positioned(
+                              bottom: -20,
+                              left: 20,
+                              child: Icon(
+                                Icons.arrow_drop_down,
+                                size: 80,
+                                color: pureWhite,
+                              ),
+                            )
+                          : const SizedBox(),
+                      GestureDetector(
+                        onTap: () {
+                          BookingScreen.isTimeSelectedNotifier.value = true;
+                          setState(() {
+                            selectedIndex = index;
+                          });
+                        },
+                        child: ReservationChip(
+                          chipCrossAxisAlignment: CrossAxisAlignment.center,
+                          chipTitle: "",
+                          chipText: "0$index:00",
+                          chipWidth: 120,
+                          chipBgColor: selectedIndex == index
+                              ? primaryDarkShadeLight
+                              : bgDark,
+                          chipStrokeColor:
+                              selectedIndex == index ? pureWhite : strokeLight,
+                          chipTextColor: selectedIndex == index
+                              ? pureWhite
+                              : textWhiteShadeDark,
+                          chipTimePeriod: "AM",
+                        ),
                       ),
-                    )
-                  : const SizedBox(),
-              GestureDetector(
-                onTap: () {
-                  BookingScreen.isTimeSelectedNotifier.value = true;
-                  setState(() {
-                    selectedIndex = index;
-                  });
-                },
-                child: ReservationChip(
-                  chipCrossAxisAlignment: CrossAxisAlignment.center,
-                  chipTitle: "",
-                  chipText: "0$index:00",
-                  chipWidth: 120,
-                  chipBgColor:
-                      selectedIndex == index ? primaryDarkShadeLight : bgDark,
-                  chipStrokeColor:
-                      selectedIndex == index ? pureWhite : strokeLight,
-                  chipTextColor:
-                      selectedIndex == index ? pureWhite : textWhiteShadeDark,
-                  chipTimePeriod: "AM",
+                    ],
+                  ),
                 ),
               ),
-            ],
-          ),
-        );
-      },
-      itemCount: 12,
+            ),
+          );
+        },
+        itemCount: 12,
+      ),
     );
   }
 

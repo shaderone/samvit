@@ -1,5 +1,6 @@
 import 'package:brechfete/core/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 class SlotInfoContainer extends StatelessWidget {
   const SlotInfoContainer({Key? key}) : super(key: key);
@@ -7,29 +8,58 @@ class SlotInfoContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 15),
-      decoration: BoxDecoration(
-        color: primaryDark,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: screenWidth <= 320 ? 0 : 5),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          mainAxisSize: MainAxisSize.max,
-          children: const [
-            SlotStatusItem(
-              slotStatus: 'Available',
-              slotCount: "120",
-              slotCountColor: secondaryBlueShadeLight,
+    return AnimationLimiter(
+      child: Column(
+        children: AnimationConfiguration.toStaggeredList(
+          childAnimationBuilder: (widget) {
+            return SlideAnimation(
+              verticalOffset: 50.0,
+              duration: const Duration(milliseconds: 500),
+              child: FadeInAnimation(child: widget),
+            );
+          },
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 15),
+              decoration: BoxDecoration(
+                color: primaryDark,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: screenWidth <= 320 ? 0 : 5),
+                child: AnimationLimiter(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisSize: MainAxisSize.max,
+                    children: AnimationConfiguration.toStaggeredList(
+                      childAnimationBuilder: (widget) {
+                        return SlideAnimation(
+                          delay: const Duration(milliseconds: 100),
+                          duration: const Duration(milliseconds: 500),
+                          child: FadeInAnimation(
+                            child: widget,
+                          ),
+                        );
+                      },
+                      children: const [
+                        SlotStatusItem(
+                          slotStatus: 'Available',
+                          slotCount: "120",
+                          slotCountColor: secondaryBlueShadeLight,
+                        ),
+                        SlotStatusItem(
+                          slotStatus: "Booked",
+                          slotCount: "60",
+                          slotCountColor: extraRed,
+                        ),
+                        SlotInputItem(),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
             ),
-            SlotStatusItem(
-              slotStatus: "Booked",
-              slotCount: "60",
-              slotCountColor: extraRed,
-            ),
-            SlotInputItem(),
           ],
         ),
       ),
