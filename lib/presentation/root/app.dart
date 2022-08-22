@@ -38,6 +38,9 @@ class App extends StatelessWidget {
         child: ValueListenableBuilder(
           valueListenable: MaterialBottomNav.currentSelectedIndexNotifier,
           builder: (BuildContext context, int newSelectedIndex, Widget? _) {
+            //to hide time and slot info on page switch
+            BookingScreen.isDateSelectedNotifier.value = false;
+            BookingScreen.isTimeSelectedNotifier.value = false;
             return pages[newSelectedIndex];
           },
         ),

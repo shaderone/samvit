@@ -1,5 +1,7 @@
 import 'package:brechfete/presentation/root/app.dart';
+import 'package:brechfete/presentation/root/widgets/bottom_navbar.dart';
 import 'package:brechfete/presentation/screens/bookings/pages/expo_registration_page.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:brechfete/presentation/screens/bookings/widgets/slot_status_widgets/slot_info_container.dart';
 import 'package:brechfete/presentation/screens/bookings/widgets/time_slot_widget.dart';
@@ -49,13 +51,7 @@ class _BookingScreenState extends State<BookingScreen> {
         ),
         actions: [
           IconButton(
-            onPressed: () async {
-              final SharedPreferences prefs =
-                  await SharedPreferences.getInstance();
-              prefs.remove("token");
-              if (!mounted) return;
-              Navigator.of(context).pushReplacementNamed(App.loginRoute);
-            },
+            onPressed: () => logout(mounted, context),
             icon: const Icon(
               Icons.logout_rounded,
             ),
@@ -125,7 +121,7 @@ class ConfirmButton extends StatelessWidget {
 
         //After saving, go to next page
         Navigator.of(context).push(
-          MaterialPageRoute(
+          CupertinoPageRoute(
             builder: (context) => const ExpoRegistration(),
           ),
         );
@@ -138,4 +134,14 @@ class ConfirmButton extends StatelessWidget {
       child: const Text("Confirm Slots"),
     );
   }
+}
+
+void logout(bool mounted, BuildContext context) async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.remove("token");
+  MaterialBottomNav.currentSelectedIndexNotifier.value = 0;
+  BookingScreen.isDateSelectedNotifier.value = false;
+  BookingScreen.isTimeSelectedNotifier.value = false;
+  if (!mounted) return;
+  Navigator.of(context).pushReplacementNamed(App.loginRoute);
 }

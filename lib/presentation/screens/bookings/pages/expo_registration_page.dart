@@ -4,6 +4,7 @@ import 'package:brechfete/presentation/root/widgets/custom_form_input.dart';
 import 'package:brechfete/presentation/screens/bookings/booking_screen.dart';
 import 'package:brechfete/presentation/screens/bookings/pages/booking_success_page.dart';
 import 'package:brechfete/presentation/screens/bookings/pages/pay_now_page.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
@@ -182,7 +183,7 @@ class ExpoRegistration extends StatelessWidget {
                       BookingScreen.isDateSelectedNotifier.value = false;
                       BookingScreen.isTimeSelectedNotifier.value = false;
                       Navigator.of(context).push(
-                        MaterialPageRoute(
+                        CupertinoPageRoute(
                           builder: (context) => const PayNowPage(),
                         ),
                       );
@@ -198,19 +199,6 @@ class ExpoRegistration extends StatelessWidget {
       ),
     );
   }
-
-//-------------------------validators--------------------//
-  String? validateEmail(String? email) {
-    RegExp regexEmail = RegExp(r'\w+@\w+\.\w+');
-    if (email == null || email.isEmpty || !regexEmail.hasMatch(email)) {
-      return "Email is required";
-    } else if (!regexEmail.hasMatch(email)) {
-      return "Oops! That doesn't look like a valid email";
-    }
-    return null;
-  }
-
-  void _doRegistration() {}
 }
 
 class SlotButton extends StatelessWidget {

@@ -1,3 +1,4 @@
+import 'package:brechfete/presentation/screens/bookings/booking_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:brechfete/core/constants.dart';
 import 'package:flutter/services.dart';
@@ -6,9 +7,14 @@ import 'widgets/reservation_card_widgets/card_middle_widget.dart';
 
 const extraSmallScreenWidth = 320;
 
-class ReservationScreen extends StatelessWidget {
+class ReservationScreen extends StatefulWidget {
   const ReservationScreen({Key? key}) : super(key: key);
 
+  @override
+  State<ReservationScreen> createState() => _ReservationScreenState();
+}
+
+class _ReservationScreenState extends State<ReservationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +38,7 @@ class ReservationScreen extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () => logout(mounted, context),
             icon: const Icon(
               Icons.logout_rounded,
             ),
