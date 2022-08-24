@@ -176,6 +176,7 @@ class ExpoRegistration extends StatelessWidget {
                         (route) => false,
                       );
                     },
+                    screenWidth: screenWidth,
                   ),
                   SlotButton(
                     buttonText: "Pay Now",
@@ -189,6 +190,7 @@ class ExpoRegistration extends StatelessWidget {
                       );
                     },
                     bgColor: secondaryBlueShadeDark,
+                    screenWidth: screenWidth,
                   ),
                 ],
               ),
@@ -205,30 +207,32 @@ class SlotButton extends StatelessWidget {
   final String buttonText;
   final Color bgColor;
   final void Function()? onPressed;
+  final double screenWidth;
   const SlotButton({
     Key? key,
     this.bgColor = primaryDarkShadeLight,
     this.onPressed,
     required this.buttonText,
+    required this.screenWidth,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 160,
+      width: screenWidth <= 320 ? 125 : 160,
       child: ElevatedButton(
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all(bgColor),
         ),
         onPressed: onPressed,
         child: Padding(
-          padding: const EdgeInsets.symmetric(
+          padding: EdgeInsets.symmetric(
             vertical: 12,
-            horizontal: 20,
+            horizontal: screenWidth <= 320 ? 10 : 20,
           ),
           child: Text(
             buttonText,
-            style: const TextStyle(fontSize: 16),
+            style: TextStyle(fontSize: screenWidth <= 320 ? 14 : 16),
           ),
         ),
       ),
