@@ -59,26 +59,25 @@ class CardBottomWrappedRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(
-      runSpacing: 10,
-      alignment: WrapAlignment.center,
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         ReservationChip(
           chipCrossAxisAlignment: CrossAxisAlignment.center,
           chipTitle: "Exhibition Status",
-          chipText: "ONGOING",
-          chipWidth: 110,
-          chipBgColor: secondaryBlueShadeLight.withOpacity(0.1),
-          chipStrokeColor: secondaryBlueShadeLight,
+          chipText: "TBA / NIL",
+          chipWidth: 120,
+          chipBgColor: extraYellow.withOpacity(0.1),
+          chipStrokeColor: extraYellow,
         ),
-        ReservationChip(
-          chipCrossAxisAlignment: CrossAxisAlignment.center,
-          chipTitle: "Payment Status",
-          chipText: "PAID",
-          chipWidth: 110,
-          chipBgColor: extraGreen.withOpacity(0.1),
-          chipStrokeColor: extraGreen,
-        ),
+        //ReservationChip(
+        //  chipCrossAxisAlignment: CrossAxisAlignment.center,
+        //  chipTitle: "Payment Status",
+        //  chipText: "PAID",
+        //  chipWidth: 110,
+        //  chipBgColor: extraGreen.withOpacity(0.1),
+        //  chipStrokeColor: extraGreen,
+        //),
 
         //platform specific button here
         SizedBox(

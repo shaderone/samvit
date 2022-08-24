@@ -29,7 +29,7 @@ class ReservationChip extends StatelessWidget {
       crossAxisAlignment: chipCrossAxisAlignment,
       children: [
         Text(chipTitle),
-        SizedBox(height: chipTitle == "" ? 0 : 5),
+        SizedBox(height: chipTitle == "" ? 0 : 3),
         SizedBox(
           width: chipWidth,
           height: chipTitle == "" ? 50 : 40,

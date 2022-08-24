@@ -65,12 +65,8 @@ class CardMiddleWrappedRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(
-      spacing: 20,
-      runSpacing: 10,
-      runAlignment: WrapAlignment.center,
-      crossAxisAlignment: WrapCrossAlignment.end,
-      alignment: WrapAlignment.center,
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -80,33 +76,33 @@ class CardMiddleWrappedRow extends StatelessWidget {
             SizedBox(height: 10),
             Text(
               "Tue, 22 september",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
             ),
           ],
         ),
+        const ReservationChip(
+          chipCrossAxisAlignment: CrossAxisAlignment.start,
+          chipTitle: "Time",
+          chipText: "10:00",
+          chipWidth: 90,
+          chipBgColor: primaryDarkShadeLight,
+          chipStrokeColor: strokeLight,
+          chipTimePeriod: "AM",
+        ),
         Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: const [
             Text("Slots"),
             SizedBox(height: 10),
             Text(
               "300",
               style: TextStyle(
-                fontSize: 24,
+                fontSize: 18,
                 fontWeight: FontWeight.w900,
                 color: extraYellow,
               ),
             ),
           ],
-        ),
-        const ReservationChip(
-          chipCrossAxisAlignment: CrossAxisAlignment.center,
-          chipTitle: "Time",
-          chipText: "10:00",
-          chipWidth: 110,
-          chipBgColor: primaryDarkShadeLight,
-          chipStrokeColor: strokeLight,
-          chipTimePeriod: "AM",
         ),
       ],
     );
