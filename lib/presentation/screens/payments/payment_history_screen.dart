@@ -44,16 +44,19 @@ class _PaymentHistoryScreenState extends State<PaymentHistoryScreen> {
               ),
             ),
           ],
-          tabBar: const TabBar(
+          tabBar: TabBar(
             indicatorColor: secondaryBlueShadeLight,
             tabs: [
-              Tab(
+              const Tab(
                 text: 'Online',
               ),
               Tab(
-                text: 'Ready Cash',
+                child: Text(
+                  "Ready Cash",
+                  style: TextStyle(fontSize: screenWidth <= 320 ? 12 : 16),
+                ),
               ),
-              Tab(
+              const Tab(
                 text: 'Pay later',
               )
             ],
