@@ -177,14 +177,14 @@ class SlotStatusItem extends StatelessWidget {
                 Text(
                   slotStatus,
                   style: TextStyle(
-                    fontSize: screenWidth <= 340 ? 10 : 12,
+                    fontSize: screenWidth <= 340 ? 8 : 12,
                   ),
                 ),
                 SizedBox(height: screenWidth <= 320 ? 0 : 5),
                 Text(
                   slotCount,
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: screenWidth <= 340 ? 16 : 18,
                     fontWeight: FontWeight.bold,
                     color: slotCountColor,
                   ),
