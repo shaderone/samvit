@@ -25,8 +25,8 @@ class _ReservationScreenState extends State<ReservationScreen> {
           statusBarColor: primaryDarkShadeLight,
           statusBarBrightness: Brightness.dark,
         ),
-        elevation: 25,
-        backgroundColor: Colors.transparent,
+        elevation: 5,
+        //backgroundColor: Colors.transparent,
         title: Row(
           children: [
             Image.asset("assets/images/logo.png", width: 30),

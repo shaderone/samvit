@@ -76,7 +76,7 @@ class SlotInputItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     return SizedBox(
-      width: screenWidth <= 340 ? 90 : 120,
+      width: screenWidth <= 340 ? 90 : 110,
       height: screenWidth <= 340 ? 60 : 70,
       child: TextFormField(
         textAlign: TextAlign.center,
