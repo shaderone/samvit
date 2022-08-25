@@ -40,9 +40,7 @@ class ExpoRegistration extends StatelessWidget {
             children: [
               StickyHeader(
                 header: Container(
-                  margin: const EdgeInsets.only(
-                    bottom: 20,
-                  ),
+                  //margin: const EdgeInsets.only(bottom: 20),
                   padding: const EdgeInsets.all(15.0),
                   width: double.infinity,
                   decoration: BoxDecoration(
@@ -64,6 +62,7 @@ class ExpoRegistration extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      const SizedBox(height: 20),
                       CustomFormInput(
                         labelText: "Name",
                         textInputType: TextInputType.name,
@@ -103,26 +102,18 @@ class ExpoRegistration extends StatelessWidget {
                         hintText: "Enter phone",
                       ),
                       const SizedBox(height: 10),
+                      CustomFormInput(
+                        labelText: "Phone(other)",
+                        textInputType: TextInputType.name,
+                        validator: (value) {
+                          //logic
+                          return null;
+                        },
+                        textInputAction: TextInputAction.next,
+                        hintText: "Enter phone(other)",
+                      ),
                     ],
                   ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  children: [
-                    CustomFormInput(
-                      labelText: "Phone(other)",
-                      textInputType: TextInputType.name,
-                      validator: (value) {
-                        //logic
-                        return null;
-                      },
-                      textInputAction: TextInputAction.next,
-                      hintText: "Enter phone(other)",
-                    ),
-                    const SizedBox(height: 10),
-                  ],
                 ),
               ),
               StickyHeader(
@@ -132,9 +123,8 @@ class ExpoRegistration extends StatelessWidget {
                   ),
                   padding: const EdgeInsets.all(15.0),
                   width: double.infinity,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: bottomNavDark,
-                    borderRadius: BorderRadius.circular(5),
                   ),
                   child: Column(
                     children: const [
@@ -163,7 +153,6 @@ class ExpoRegistration extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(height: 10),
                       CustomFormInput(
                         labelText: "Name",
                         textInputType: TextInputType.name,
@@ -204,61 +193,57 @@ class ExpoRegistration extends StatelessWidget {
                         hintText: "Enter phone",
                       ),
                       const SizedBox(height: 10),
+                      CustomFormInput(
+                        labelText: "Phone(other)",
+                        textInputType: TextInputType.name,
+                        validator: (value) {
+                          //logic
+                          return null;
+                        },
+                        textInputAction: TextInputAction.next,
+                        hintText: "Enter phone(other)",
+                      ),
+                      const SizedBox(height: 10),
                     ],
                   ),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    CustomFormInput(
-                      labelText: "Phone(other)",
-                      textInputType: TextInputType.name,
-                      validator: (value) {
-                        //logic
-                        return null;
+                    SlotButton(
+                      buttonText: "Pay Later",
+                      onPressed: () {
+                        BookingScreen.isDateSelectedNotifier.value = false;
+                        BookingScreen.isTimeSelectedNotifier.value = false;
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                          App.bookingSuccessRoute,
+                          (route) => false,
+                        );
                       },
-                      textInputAction: TextInputAction.next,
-                      hintText: "Enter phone(other)",
+                      screenWidth: screenWidth,
                     ),
-                    const SizedBox(height: 10),
-                    Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SlotButton(
-                          buttonText: "Pay Later",
-                          onPressed: () {
-                            BookingScreen.isDateSelectedNotifier.value = false;
-                            BookingScreen.isTimeSelectedNotifier.value = false;
-                            Navigator.of(context).pushNamedAndRemoveUntil(
-                              App.bookingSuccessRoute,
-                              (route) => false,
-                            );
-                          },
-                          screenWidth: screenWidth,
-                        ),
-                        SlotButton(
-                          buttonText: "Pay Now",
-                          onPressed: () {
-                            BookingScreen.isDateSelectedNotifier.value = false;
-                            BookingScreen.isTimeSelectedNotifier.value = false;
-                            Navigator.of(context).push(
-                              CupertinoPageRoute(
-                                builder: (context) => const PayNowPage(),
-                              ),
-                            );
-                          },
-                          bgColor: secondaryBlueShadeDark,
-                          screenWidth: screenWidth,
-                        ),
-                      ],
+                    SlotButton(
+                      buttonText: "Pay Now",
+                      onPressed: () {
+                        BookingScreen.isDateSelectedNotifier.value = false;
+                        BookingScreen.isTimeSelectedNotifier.value = false;
+                        Navigator.of(context).push(
+                          CupertinoPageRoute(
+                            builder: (context) => const PayNowPage(),
+                          ),
+                        );
+                      },
+                      bgColor: secondaryBlueShadeDark,
+                      screenWidth: screenWidth,
                     ),
-                    const SizedBox(height: 30),
                   ],
                 ),
               ),
+              const SizedBox(height: 30),
             ],
           ),
         ),
