@@ -107,7 +107,6 @@ class SlotInputItem extends StatelessWidget {
           floatingLabelBehavior: FloatingLabelBehavior.always,
           floatingLabelAlignment: FloatingLabelAlignment.center,
           floatingLabelStyle: const TextStyle(
-            backgroundColor: pureBlack,
             color: pureWhite,
             fontWeight: FontWeight.bold,
             fontSize: 22,

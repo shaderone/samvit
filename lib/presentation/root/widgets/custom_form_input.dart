@@ -55,6 +55,7 @@ class CustomFormInput extends StatelessWidget {
           autovalidateMode: autoValidateMode,
           maxLength: maxInputLength,
           keyboardType: textInputType,
+          textInputAction: textInputAction,
           style: const TextStyle(
             fontWeight: FontWeight.bold,
             color: textWhiteShadeDark,

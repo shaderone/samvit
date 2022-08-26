@@ -2,7 +2,6 @@ import 'package:brechfete/core/constants.dart';
 import 'package:brechfete/presentation/root/app.dart';
 import 'package:brechfete/presentation/root/widgets/custom_form_input.dart';
 import 'package:brechfete/presentation/screens/bookings/booking_screen.dart';
-import 'package:brechfete/presentation/screens/bookings/pages/booking_success_page.dart';
 import 'package:brechfete/presentation/screens/bookings/pages/pay_now_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +10,7 @@ import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:sticky_headers/sticky_headers/widget.dart';
 
 class ExpoRegistration extends StatelessWidget {
+  static final formKey1 = GlobalKey<FormState>();
   const ExpoRegistration({
     Key? key,
   }) : super(key: key);
@@ -34,13 +34,13 @@ class ExpoRegistration extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Form(
+          key: formKey1,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               StickyHeader(
                 header: Container(
-                  //margin: const EdgeInsets.only(bottom: 20),
                   padding: const EdgeInsets.all(15.0),
                   width: double.infinity,
                   decoration: BoxDecoration(
@@ -200,7 +200,7 @@ class ExpoRegistration extends StatelessWidget {
                           //logic
                           return null;
                         },
-                        textInputAction: TextInputAction.next,
+                        textInputAction: TextInputAction.done,
                         hintText: "Enter phone(other)",
                       ),
                       const SizedBox(height: 10),
