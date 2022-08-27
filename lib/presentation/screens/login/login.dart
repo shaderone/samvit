@@ -211,7 +211,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           ? () async {
                               if (formKey.currentState!.validate()) {
                                 hideKeyboard();
-                                //fire validation
                                 setState(() {
                                   autovalidateMode =
                                       AutovalidateMode.onUserInteraction;
@@ -229,18 +228,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                 );
                                 EasyLoading.show(
                                   status: 'Vefifying...',
-                                  //indicator: const CupertinoActivityIndicator(
-                                  //  animating: true,
-                                  //),
                                 );
-                                //code to get api response here
-                                log("phonssse - $phone , password - $password");
                                 var client = http.Client();
-
+                                print("req started");
                                 var response = await client.post(
-                                  //Uri.parse(
-                                  //  "https://cbxxje12vtc0000507n0gf6638ryyyyyb.interact.sh/",
-                                  //),
                                   Uri.parse(
                                     "https://shielded-fjord-46900.herokuapp.com/data",
                                   ),
