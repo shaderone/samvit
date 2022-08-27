@@ -3,8 +3,10 @@ import 'package:brechfete/presentation/root/app.dart';
 import 'package:brechfete/presentation/root/widgets/custom_form_input.dart';
 import 'package:brechfete/presentation/screens/bookings/booking_screen.dart';
 import 'package:brechfete/presentation/screens/bookings/pages/pay_now_page.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:sticky_headers/sticky_headers/widget.dart';
@@ -72,51 +74,76 @@ class ExpoRegistration extends StatelessWidget {
                         CustomFormInput(
                           labelText: "Name",
                           textInputType: TextInputType.name,
+                          textInputAction: TextInputAction.next,
+                          hintText: "Enter institution name",
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return "phone number is required";
-                            } else if (value.length != 10) {
-                              return "Enter a valid 10-digit phone number";
+                              return "Name is required";
                             }
                             return null;
                           },
-                          textInputAction: TextInputAction.next,
-                          hintText: "Enter institution name",
+                          onChanged: (value) {
+                            formKey1.currentState!.validate();
+                          },
                         ),
                         CustomFormInput(
                           labelText: "Email",
-                          textInputType: TextInputType.name,
+                          textInputType: TextInputType.emailAddress,
+                          textInputAction: TextInputAction.next,
+                          hintText: "Enter email",
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return "phone number is required";
-                            } else if (value.length != 10) {
-                              return "Enter a valid 10-digit phone number";
+                              return "Email is required";
+                            } else if (!EmailValidator.validate(value)) {
+                              return "Enter a valid email";
                             }
                             return null;
                           },
-                          textInputAction: TextInputAction.next,
-                          hintText: "Enter email",
+                          onChanged: (value) {
+                            formKey1.currentState!.validate();
+                          },
                         ),
                         CustomFormInput(
                           labelText: "Phone",
-                          textInputType: TextInputType.name,
-                          validator: (value) {
-                            //logic
-                            return null;
-                          },
+                          textInputType: TextInputType.number,
                           textInputAction: TextInputAction.next,
                           hintText: "Enter phone",
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Phone is required";
+                            }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            formKey1.currentState!.validate();
+                          },
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
+                          ],
+                          maxInputLength: 10,
                         ),
                         const SizedBox(height: 10),
                         CustomFormInput(
-                          labelText: "Phone(other)",
-                          textInputType: TextInputType.name,
-                          validator: (value) {
-                            //logic
-                            return null;
-                          },
+                          labelText: "Landline / other",
+                          textInputType: TextInputType.number,
                           textInputAction: TextInputAction.next,
                           hintText: "Enter phone(other)",
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Landline or other phone is required";
+                            } else if (value.length > 11) {
+                              return "Enter a valid phone number";
+                            }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            formKey1.currentState!.validate();
+                          },
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
+                          ],
+                          maxInputLength: 10,
+                          suffixIcon: Icons.phone_android_rounded,
                         ),
                       ],
                     ),
@@ -162,52 +189,76 @@ class ExpoRegistration extends StatelessWidget {
                         CustomFormInput(
                           labelText: "Name",
                           textInputType: TextInputType.name,
+                          textInputAction: TextInputAction.next,
+                          hintText: "Enter Faculty name",
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return "phone number is required";
-                            } else if (value.length != 10) {
-                              return "Enter a valid 10-digit phone number";
+                              return "Name is required";
                             }
                             return null;
                           },
-                          textInputAction: TextInputAction.next,
-                          hintText: "Enter Faculty name",
+                          onChanged: (value) {
+                            formKey1.currentState!.validate();
+                          },
                         ),
                         const SizedBox(height: 10),
                         CustomFormInput(
                           labelText: "Email",
-                          textInputType: TextInputType.name,
+                          textInputType: TextInputType.emailAddress,
+                          textInputAction: TextInputAction.next,
+                          hintText: "Enter email",
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return "phone number is required";
-                            } else if (value.length != 10) {
-                              return "Enter a valid 10-digit phone number";
+                              return "Email is required";
+                            } else if (!EmailValidator.validate(value)) {
+                              return "Enter a valid email";
                             }
                             return null;
                           },
-                          textInputAction: TextInputAction.next,
-                          hintText: "Enter email",
+                          onChanged: (value) {
+                            formKey1.currentState!.validate();
+                          },
                         ),
                         CustomFormInput(
                           labelText: "Phone",
-                          textInputType: TextInputType.name,
-                          validator: (value) {
-                            //logic
-                            return null;
-                          },
+                          textInputType: TextInputType.number,
                           textInputAction: TextInputAction.next,
                           hintText: "Enter phone",
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Phone is required";
+                            }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            formKey1.currentState!.validate();
+                          },
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
+                          ],
+                          maxInputLength: 10,
                         ),
                         const SizedBox(height: 10),
                         CustomFormInput(
-                          labelText: "Phone(other)",
-                          textInputType: TextInputType.name,
-                          validator: (value) {
-                            //logic
-                            return null;
-                          },
+                          labelText: "Landline / other",
+                          textInputType: TextInputType.number,
                           textInputAction: TextInputAction.done,
                           hintText: "Enter phone(other)",
+                          validator: (value) {
+                            String patttern = r'(^(?:[+0]9)?[0-9]{10,11}$)';
+                            RegExp regExp = RegExp(patttern);
+                            if (value == null || value.isEmpty) {
+                              return 'Phone is required';
+                            } else if (!regExp.hasMatch(value)) {
+                              return 'Please enter valid mobile number';
+                            }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            formKey1.currentState!.validate();
+                          },
+                          maxInputLength: 11,
+                          suffixIcon: Icons.phone_android_outlined,
                         ),
                         const SizedBox(height: 10),
                       ],
@@ -223,25 +274,31 @@ class ExpoRegistration extends StatelessWidget {
                       SlotButton(
                         buttonText: "Pay Later",
                         onPressed: () {
-                          BookingScreen.isDateSelectedNotifier.value = false;
-                          BookingScreen.isTimeSelectedNotifier.value = false;
-                          Navigator.of(context).pushNamedAndRemoveUntil(
-                            App.bookingSuccessRoute,
-                            (route) => false,
-                          );
+                          if (formKey1.currentState!.validate()) {
+                            formKey1.currentState!.save();
+                            BookingScreen.isDateSelectedNotifier.value = false;
+                            BookingScreen.isTimeSelectedNotifier.value = false;
+                            Navigator.of(context).pushNamedAndRemoveUntil(
+                              App.bookingSuccessRoute,
+                              (route) => false,
+                            );
+                          }
                         },
                         screenWidth: screenWidth,
                       ),
                       SlotButton(
                         buttonText: "Pay Now",
                         onPressed: () {
-                          BookingScreen.isDateSelectedNotifier.value = false;
-                          BookingScreen.isTimeSelectedNotifier.value = false;
-                          Navigator.of(context).push(
-                            CupertinoPageRoute(
-                              builder: (context) => const PayNowPage(),
-                            ),
-                          );
+                          if (formKey1.currentState!.validate()) {
+                            formKey1.currentState!.save();
+                            BookingScreen.isDateSelectedNotifier.value = false;
+                            BookingScreen.isTimeSelectedNotifier.value = false;
+                            Navigator.of(context).push(
+                              CupertinoPageRoute(
+                                builder: (context) => const PayNowPage(),
+                              ),
+                            );
+                          }
                         },
                         bgColor: secondaryBlueShadeDark,
                         screenWidth: screenWidth,
@@ -257,6 +314,8 @@ class ExpoRegistration extends StatelessWidget {
       ),
     );
   }
+
+  //phone validator, email validator, name validator
 
   Future<bool?> shouldPopScreen(BuildContext context) => showDialog(
         context: context,

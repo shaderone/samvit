@@ -11,6 +11,7 @@ dependencies:
   animations: ^2.0.3
   cupertino_icons: ^1.0.2
   easy_splash_screen: ^1.0.4
+  email_validator: ^2.1.17
   flutter:
     sdk: flutter
   flutter_easyloading: ^3.0.5
