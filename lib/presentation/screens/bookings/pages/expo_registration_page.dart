@@ -18,17 +18,12 @@ class ExpoRegistration extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    // ignore: unused_local_variable
-    bool isDataChanged = false;
 
     return WillPopScope(
+      //if onWillPop is true, the route gets popped
       onWillPop: () async {
-        if (isDataChanged) {
-          final shouldPop = await shouldPopScreen(context);
-          return shouldPop ?? false;
-        } else {
-          return true;
-        }
+        final shouldPop = await shouldPopScreen(context);
+        return shouldPop ?? false;
       },
       child: Scaffold(
         appBar: AppBar(
@@ -75,16 +70,6 @@ class ExpoRegistration extends StatelessWidget {
                       children: [
                         const SizedBox(height: 20),
                         CustomFormInput(
-                          onChanged: (value) {
-                            if (value.isEmpty) {
-                              isDataChanged = false;
-                              print("ok to close");
-                              return;
-                            } else {
-                              isDataChanged = true;
-                              print("data found");
-                            }
-                          },
                           labelText: "Name",
                           textInputType: TextInputType.name,
                           validator: (value) {
@@ -99,16 +84,6 @@ class ExpoRegistration extends StatelessWidget {
                           hintText: "Enter institution name",
                         ),
                         CustomFormInput(
-                          onChanged: (value) {
-                            if (value.isEmpty) {
-                              isDataChanged = false;
-                              print("ok to close");
-                              return;
-                            } else {
-                              isDataChanged = true;
-                              print("data found");
-                            }
-                          },
                           labelText: "Email",
                           textInputType: TextInputType.name,
                           validator: (value) {
@@ -123,16 +98,6 @@ class ExpoRegistration extends StatelessWidget {
                           hintText: "Enter email",
                         ),
                         CustomFormInput(
-                          onChanged: (value) {
-                            if (value.isEmpty) {
-                              isDataChanged = false;
-                              print("ok to close");
-                              return;
-                            } else {
-                              isDataChanged = true;
-                              print("data found");
-                            }
-                          },
                           labelText: "Phone",
                           textInputType: TextInputType.name,
                           validator: (value) {
@@ -144,16 +109,6 @@ class ExpoRegistration extends StatelessWidget {
                         ),
                         const SizedBox(height: 10),
                         CustomFormInput(
-                          onChanged: (value) {
-                            if (value.isEmpty) {
-                              isDataChanged = false;
-                              print("ok to close");
-                              return;
-                            } else {
-                              isDataChanged = true;
-                              print("data found");
-                            }
-                          },
                           labelText: "Phone(other)",
                           textInputType: TextInputType.name,
                           validator: (value) {
@@ -205,16 +160,6 @@ class ExpoRegistration extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         CustomFormInput(
-                          onChanged: (value) {
-                            if (value.isEmpty) {
-                              isDataChanged = false;
-                              print("ok to close");
-                              return;
-                            } else {
-                              isDataChanged = true;
-                              print("data found");
-                            }
-                          },
                           labelText: "Name",
                           textInputType: TextInputType.name,
                           validator: (value) {
@@ -230,16 +175,6 @@ class ExpoRegistration extends StatelessWidget {
                         ),
                         const SizedBox(height: 10),
                         CustomFormInput(
-                          onChanged: (value) {
-                            if (value.isEmpty) {
-                              isDataChanged = false;
-                              print("ok to close");
-                              return;
-                            } else {
-                              isDataChanged = true;
-                              print("data found");
-                            }
-                          },
                           labelText: "Email",
                           textInputType: TextInputType.name,
                           validator: (value) {
@@ -254,16 +189,6 @@ class ExpoRegistration extends StatelessWidget {
                           hintText: "Enter email",
                         ),
                         CustomFormInput(
-                          onChanged: (value) {
-                            if (value.isEmpty) {
-                              isDataChanged = false;
-                              print("ok to close");
-                              return;
-                            } else {
-                              isDataChanged = true;
-                              print("data found");
-                            }
-                          },
                           labelText: "Phone",
                           textInputType: TextInputType.name,
                           validator: (value) {
@@ -275,16 +200,6 @@ class ExpoRegistration extends StatelessWidget {
                         ),
                         const SizedBox(height: 10),
                         CustomFormInput(
-                          onChanged: (value) {
-                            if (value.isEmpty) {
-                              isDataChanged = false;
-                              print("ok to close");
-                              return;
-                            } else {
-                              isDataChanged = true;
-                              print("data found");
-                            }
-                          },
                           labelText: "Phone(other)",
                           textInputType: TextInputType.name,
                           validator: (value) {
@@ -334,7 +249,7 @@ class ExpoRegistration extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: 30),
+                const SizedBox(height: 100),
               ],
             ),
           ),
@@ -346,9 +261,10 @@ class ExpoRegistration extends StatelessWidget {
   Future<bool?> shouldPopScreen(BuildContext context) => showDialog(
         context: context,
         builder: (context) => AlertDialog(
+          backgroundColor: primaryDark,
           title: const Text("Discard changes?"),
           titleTextStyle: const TextStyle(fontSize: 20),
-          content: const Text("edited changes will be lost"),
+          content: const Text("Any changes made will be lost"),
           contentTextStyle: const TextStyle(color: textWhiteShadeLight),
           contentPadding:
               const EdgeInsets.symmetric(vertical: 5, horizontal: 25),
@@ -356,13 +272,29 @@ class ExpoRegistration extends StatelessWidget {
           buttonPadding:
               const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
           actions: [
-            ElevatedButton(
+            TextButton(
               onPressed: () => Navigator.of(context).pop(false),
-              child: const Text("No"),
+              child: const Text(
+                "No",
+                style: TextStyle(
+                  color: secondaryBlueShadeLight,
+                ),
+              ),
             ),
-            ElevatedButton(
+            OutlinedButton(
               onPressed: () => Navigator.of(context).pop(true),
-              child: const Text("Discard"),
+              style: ButtonStyle(
+                side: MaterialStateProperty.all(
+                  const BorderSide(color: extraRed),
+                ),
+                backgroundColor: MaterialStateProperty.all(primaryDark),
+              ),
+              child: const Text(
+                "Discard",
+                style: TextStyle(
+                  color: pureWhite,
+                ),
+              ),
             ),
           ],
         ),
