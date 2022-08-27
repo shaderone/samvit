@@ -1,6 +1,7 @@
 import 'package:brechfete/presentation/root/app.dart';
 import 'package:brechfete/presentation/root/widgets/bottom_navbar.dart';
 import 'package:brechfete/presentation/screens/bookings/pages/expo_registration_page.dart';
+import 'package:brechfete/presentation/screens/login/login.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:brechfete/presentation/screens/bookings/widgets/slot_status_widgets/slot_info_container.dart';
@@ -41,87 +42,99 @@ class _BookingScreenState extends State<BookingScreen> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
 
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        elevation: 5,
-        title: Row(
-          children: [
-            Image.asset("assets/images/logo.png", width: 30),
-            const SizedBox(width: 15),
-            GradientText(
-              'Slot Booking',
-              style: GoogleFonts.ubuntu(
-                fontSize: screenWidth <= 320 ? 20 : 24,
+    return GestureDetector(
+      onTap: () {
+        final isKeyboardActive = MediaQuery.of(context).viewInsets.bottom != 0;
+        if (isKeyboardActive) {
+          return;
+        } else {
+          FocusScope.of(context).unfocus();
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          elevation: 5,
+          title: Row(
+            children: [
+              Image.asset("assets/images/logo.png", width: 30),
+              const SizedBox(width: 15),
+              GradientText(
+                'Slot Booking',
+                style: GoogleFonts.ubuntu(
+                  fontSize: screenWidth <= 320 ? 20 : 24,
+                ),
+                colors: const [
+                  Color(0xFF6E6F71),
+                  Color(0xFFECECEC),
+                ],
               ),
-              colors: const [
-                Color(0xFF6E6F71),
-                Color(0xFFECECEC),
-              ],
+            ],
+          ),
+          actions: [
+            IconButton(
+              onPressed: () => logout(mounted, context),
+              icon: const Icon(
+                Icons.logout_rounded,
+              ),
             ),
           ],
         ),
-        actions: [
-          IconButton(
-            onPressed: () => logout(mounted, context),
-            icon: const Icon(
-              Icons.logout_rounded,
-            ),
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(
-            vertical: 20, horizontal: screenWidth <= 340 ? 10 : 15),
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            const CalendarStatus(),
-            const SizedBox(height: 10),
-            const SlotCalender(),
-            SizedBox(
-              height: 90,
-              child: ValueListenableBuilder(
-                valueListenable: BookingScreen.isDateSelectedNotifier,
+        body: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(
+              vertical: 20, horizontal: screenWidth <= 340 ? 10 : 15),
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              const CalendarStatus(),
+              const SizedBox(height: 10),
+              const SlotCalender(),
+              SizedBox(
+                height: 90,
+                child: ValueListenableBuilder(
+                  valueListenable: BookingScreen.isDateSelectedNotifier,
+                  builder:
+                      (BuildContext context, bool isDateSelected, Widget? _) {
+                    return Visibility(
+                      visible: isDateSelected,
+                      child: TimeSlotList(
+                        maxHeight: 90,
+                        key: _timeSlotListStateKey,
+                      ),
+                    );
+                  },
+                ),
+              ),
+              const SizedBox(height: 10),
+              ValueListenableBuilder(
+                valueListenable: BookingScreen.isTimeSelectedNotifier,
                 builder:
-                    (BuildContext context, bool isDateSelected, Widget? _) {
+                    (BuildContext context, bool isTimeSelected, Widget? _) {
                   return Visibility(
-                    visible: isDateSelected,
-                    child: TimeSlotList(
-                      maxHeight: 90,
-                      key: _timeSlotListStateKey,
+                    visible: isTimeSelected,
+                    child: SlotInfoContainer(
+                      reOrderTimeSlotList: () {
+                        //function to re-order time-slotlist
+                        initiateTimeSlotScroll();
+                      },
                     ),
                   );
                 },
               ),
-            ),
-            const SizedBox(height: 10),
-            ValueListenableBuilder(
-              valueListenable: BookingScreen.isTimeSelectedNotifier,
-              builder: (BuildContext context, bool isTimeSelected, Widget? _) {
-                return Visibility(
-                  visible: isTimeSelected,
-                  child: SlotInfoContainer(
-                    reOrderTimeSlotList: () {
-                      //function to re-order time-slotlist
-                      initiateTimeSlotScroll();
-                    },
-                  ),
-                );
-              },
-            ),
-            const SizedBox(height: 30),
-            ValueListenableBuilder(
-              valueListenable: BookingScreen.isTimeSelectedNotifier,
-              builder: (BuildContext context, bool isTimeSelected, Widget? _) {
-                return Visibility(
-                  visible: isTimeSelected,
-                  child: const ConfirmButton(),
-                );
-              },
-            ),
-            const SizedBox(height: 30),
-          ],
+              const SizedBox(height: 30),
+              ValueListenableBuilder(
+                valueListenable: BookingScreen.isTimeSelectedNotifier,
+                builder:
+                    (BuildContext context, bool isTimeSelected, Widget? _) {
+                  return Visibility(
+                    visible: isTimeSelected,
+                    child: const ConfirmButton(),
+                  );
+                },
+              ),
+              const SizedBox(height: 30),
+            ],
+          ),
         ),
       ),
     );

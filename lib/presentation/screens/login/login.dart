@@ -76,7 +76,7 @@ class _LoginScreenState extends State<LoginScreen> {
       body: SafeArea(
         child: GestureDetector(
           behavior: HitTestBehavior.translucent,
-          onTap: hideKeyboard,
+          onTap: () => hideKeyboard(context),
           child: AbsorbPointer(
             absorbing: isAbsorbing,
             child: SingleChildScrollView(
@@ -210,7 +210,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       onPressed: isButtonActive
                           ? () async {
                               if (formKey.currentState!.validate()) {
-                                hideKeyboard();
+                                hideKeyboard(context);
                                 setState(() {
                                   autovalidateMode =
                                       AutovalidateMode.onUserInteraction;
@@ -343,11 +343,11 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
+}
 
-  void hideKeyboard() {
-    FocusScopeNode currentFocus = FocusScope.of(context);
-    if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
-      FocusManager.instance.primaryFocus?.unfocus();
-    }
+void hideKeyboard(context) {
+  FocusScopeNode currentFocus = FocusScope.of(context);
+  if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
+    FocusManager.instance.primaryFocus?.unfocus();
   }
 }
