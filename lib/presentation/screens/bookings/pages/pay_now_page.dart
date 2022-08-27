@@ -122,28 +122,32 @@ class _PayNowPageState extends State<PayNowPage> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  QrImage(
-                    data: 'This QR code has an embedded image as well',
-                    version: QrVersions.auto,
-                    size: 300,
-                    gapless: false,
-                    embeddedImage: const AssetImage('assets/images/sb100.png'),
-                    embeddedImageStyle: QrEmbeddedImageStyle(
-                      size: const Size(75, 75),
-                    ),
-                    backgroundColor: pureWhite,
-                    padding: const EdgeInsets.all(15),
-                    errorStateBuilder: (cxt, err) {
-                      return const Center(
-                        child: Text(
-                          "Uh oh! Something went wrong...",
-                          style: TextStyle(
-                            color: Colors.red,
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: QrImage(
+                      data: 'This QR code has an embedded image as well',
+                      version: QrVersions.auto,
+                      size: screenWidth <= 320 ? 150 : 250,
+                      gapless: false,
+                      embeddedImage:
+                          const AssetImage('assets/images/sb100.png'),
+                      embeddedImageStyle: QrEmbeddedImageStyle(
+                        size: const Size(50, 50),
+                      ),
+                      backgroundColor: pureWhite,
+                      padding: const EdgeInsets.all(15),
+                      errorStateBuilder: (cxt, err) {
+                        return const Center(
+                          child: Text(
+                            "Uh oh! Something went wrong...",
+                            style: TextStyle(
+                              color: Colors.red,
+                            ),
+                            textAlign: TextAlign.center,
                           ),
-                          textAlign: TextAlign.center,
-                        ),
-                      );
-                    },
+                        );
+                      },
+                    ),
                   )
                 ],
               ),
@@ -178,9 +182,7 @@ class _PayNowPageState extends State<PayNowPage> {
                   const SizedBox(height: 20),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      minimumSize: const Size.fromHeight(
-                        50,
-                      ), // fromHeight use double.infinity as width and 40 is the height
+                      minimumSize: const Size.fromHeight(50),
                     ),
                     onPressed: () {
                       Navigator.of(context).pushReplacement(
@@ -192,7 +194,7 @@ class _PayNowPageState extends State<PayNowPage> {
                         ),
                       );
                     },
-                    child: const Text("Send Payment Link"),
+                    child: const Text("Send Confirmation Link"),
                   ),
                   const SizedBox(height: 20),
                 ],

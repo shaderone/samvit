@@ -3,6 +3,7 @@ import 'package:brechfete/presentation/root/app.dart';
 import 'package:brechfete/presentation/root/widgets/bottom_navbar.dart';
 import 'package:brechfete/presentation/screens/bookings/booking_screen.dart';
 import 'package:brechfete/presentation/screens/bookings/pages/expo_registration_page.dart';
+import 'package:brechfete/presentation/screens/reservations/reservation_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
@@ -14,6 +15,7 @@ class BookingSuccessPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       body: SafeArea(
         child: Center(
@@ -28,9 +30,13 @@ class BookingSuccessPage extends StatelessWidget {
                 fit: BoxFit.contain,
               ),
               //show lottie animation
-              Text(
-                statusText ?? "Booking Confirmed!",
-                style: const TextStyle(fontSize: 32),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Text(
+                  statusText ?? "Booking Confirmed!",
+                  style: TextStyle(
+                      fontSize: screenWidth <= extraSmallScreenWidth ? 28 : 30),
+                ),
               ),
               const SizedBox(height: 20),
               Padding(

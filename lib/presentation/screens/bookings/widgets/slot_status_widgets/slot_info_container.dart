@@ -76,7 +76,7 @@ class SlotInputItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     return SizedBox(
-      width: screenWidth <= 340 ? 90 : 120,
+      width: screenWidth <= 340 ? 90 : 110,
       height: screenWidth <= 340 ? 60 : 70,
       child: TextFormField(
         textAlign: TextAlign.center,
@@ -107,7 +107,6 @@ class SlotInputItem extends StatelessWidget {
           floatingLabelBehavior: FloatingLabelBehavior.always,
           floatingLabelAlignment: FloatingLabelAlignment.center,
           floatingLabelStyle: const TextStyle(
-            backgroundColor: pureBlack,
             color: pureWhite,
             fontWeight: FontWeight.bold,
             fontSize: 22,
@@ -177,14 +176,14 @@ class SlotStatusItem extends StatelessWidget {
                 Text(
                   slotStatus,
                   style: TextStyle(
-                    fontSize: screenWidth <= 340 ? 10 : 12,
+                    fontSize: screenWidth <= 340 ? 8 : 12,
                   ),
                 ),
                 SizedBox(height: screenWidth <= 320 ? 0 : 5),
                 Text(
                   slotCount,
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: screenWidth <= 340 ? 16 : 18,
                     fontWeight: FontWeight.bold,
                     color: slotCountColor,
                   ),

@@ -11,17 +11,21 @@ dependencies:
   animations: ^2.0.3
   cupertino_icons: ^1.0.2
   easy_splash_screen: ^1.0.4
+  email_validator: ^2.1.17
   flutter:
     sdk: flutter
   flutter_easyloading: ^3.0.5
   flutter_staggered_animations: ^1.0.0
+  fluttertoast: ^8.0.9
   google_fonts: ^3.0.1
   http: ^0.13.5
   intl: ^0.17.0
   lottie: ^1.4.1
+  material_design_icons_flutter: ^5.0.6996
   qr_flutter: ^4.0.0
   shared_preferences: ^2.0.15
   simple_gradient_text: ^1.2.3
+  sticky_headers: ^0.3.0+2
   tabbed_sliverlist: ^0.1.0
   table_calendar: ^3.0.6
 

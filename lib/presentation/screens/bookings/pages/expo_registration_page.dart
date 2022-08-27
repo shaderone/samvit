@@ -1,15 +1,13 @@
 import 'package:brechfete/core/constants.dart';
-import 'package:brechfete/presentation/root/app.dart';
-import 'package:brechfete/presentation/root/widgets/custom_form_input.dart';
-import 'package:brechfete/presentation/screens/bookings/booking_screen.dart';
-import 'package:brechfete/presentation/screens/bookings/pages/booking_success_page.dart';
-import 'package:brechfete/presentation/screens/bookings/pages/pay_now_page.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:brechfete/presentation/screens/bookings/pages/widgets/registration_form_buttons.dart';
+import 'package:brechfete/presentation/screens/bookings/pages/widgets/registration_form_holder.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class ExpoRegistration extends StatelessWidget {
+  static final formKey1 = GlobalKey<FormState>();
   const ExpoRegistration({
     Key? key,
   }) : super(key: key);
@@ -18,219 +16,94 @@ class ExpoRegistration extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: GradientText(
-          'Registration',
-          style: GoogleFonts.ubuntu(
-            fontSize: screenWidth <= 320 ? 20 : 24,
-          ),
-          colors: const [
-            Color(0xFF6E6F71),
-            Color(0xFFECECEC),
-          ],
-        ),
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Form(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 10),
-              GradientText(
-                'Please fill out the form to book',
-                style: GoogleFonts.ubuntu(
-                  fontSize: 18.0,
-                ),
-                colors: const [
-                  Color(0xFF6E6F71),
-                  Color(0xFFECECEC),
-                ],
-              ),
-              GradientText(
-                'Expo slots',
-                style: GoogleFonts.ubuntu(
-                  fontSize: 28.0,
-                  fontWeight: FontWeight.bold,
-                ),
-                colors: const [
-                  Color(0xFF6E6F71),
-                  Color(0xFFECECEC),
-                ],
-              ),
-              const SizedBox(height: 20),
-              const Text(
-                "INSTITUTION INFO",
-                style: TextStyle(
-                  color: secondaryBlueShadeLight,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                ),
-              ),
-              const Divider(
-                color: textWhiteShadeLight,
-                thickness: 1,
-              ),
-              CustomFormInput(
-                labelText: "Name",
-                textInputType: TextInputType.name,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "phone number is required";
-                  } else if (value.length != 10) {
-                    return "Enter a valid 10-digit phone number";
-                  }
-                  return null;
-                },
-                textInputAction: TextInputAction.next,
-                hintText: "Enter institution name",
-              ),
-              CustomFormInput(
-                labelText: "Email or phone",
-                textInputType: TextInputType.name,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "phone number is required";
-                  } else if (value.length != 10) {
-                    return "Enter a valid 10-digit phone number";
-                  }
-                  return null;
-                },
-                textInputAction: TextInputAction.next,
-                hintText: "Enter email or phone",
-              ),
-              CustomFormInput(
-                labelText: "Phone(optional)",
-                textInputType: TextInputType.name,
-                validator: (value) {
-                  //logic
-                  return null;
-                },
-                textInputAction: TextInputAction.next,
-                hintText: "Enter phone(optional)",
-              ),
-              const SizedBox(height: 10),
-              const Text(
-                "FACULTY INFO",
-                style: TextStyle(
-                  color: secondaryBlueShadeLight,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                ),
-              ),
-              const Divider(
-                color: textWhiteShadeLight,
-                thickness: 1,
-              ),
-              CustomFormInput(
-                labelText: "Name",
-                textInputType: TextInputType.name,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "phone number is required";
-                  } else if (value.length != 10) {
-                    return "Enter a valid 10-digit phone number";
-                  }
-                  return null;
-                },
-                textInputAction: TextInputAction.next,
-                hintText: "Enter institution name",
-              ),
-              CustomFormInput(
-                labelText: "Email or phone",
-                textInputType: TextInputType.name,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "phone number is required";
-                  } else if (value.length != 10) {
-                    return "Enter a valid 10-digit phone number";
-                  }
-                  return null;
-                },
-                textInputAction: TextInputAction.next,
-                hintText: "Enter email or phone",
-              ),
-              CustomFormInput(
-                labelText: "Phone(optional)",
-                textInputType: TextInputType.name,
-                validator: (value) {
-                  //logic
-                  return null;
-                },
-                textInputAction: TextInputAction.next,
-                hintText: "Enter phone(optional)",
-              ),
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SlotButton(
-                    buttonText: "Pay Later",
-                    onPressed: () {
-                      BookingScreen.isDateSelectedNotifier.value = false;
-                      BookingScreen.isTimeSelectedNotifier.value = false;
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                        App.bookingSuccessRoute,
-                        (route) => false,
-                      );
-                    },
-                  ),
-                  SlotButton(
-                    buttonText: "Pay Now",
-                    onPressed: () {
-                      BookingScreen.isDateSelectedNotifier.value = false;
-                      BookingScreen.isTimeSelectedNotifier.value = false;
-                      Navigator.of(context).push(
-                        CupertinoPageRoute(
-                          builder: (context) => const PayNowPage(),
-                        ),
-                      );
-                    },
-                    bgColor: secondaryBlueShadeDark,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
+    return WillPopScope(
+      //if onWillPop is true, the route gets popped
+      onWillPop: () async {
+        final shouldPop = await shouldPopScreen(context);
+        return shouldPop ?? false;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: GradientText(
+            'Registration',
+            style: GoogleFonts.ubuntu(
+              fontSize: screenWidth <= 320 ? 20 : 24,
+            ),
+            colors: const [
+              Color(0xFF6E6F71),
+              Color(0xFFECECEC),
             ],
+          ),
+        ),
+        body: SingleChildScrollView(
+          child: Form(
+            key: formKey1,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                RegistrationFormHolder(
+                  formKey1: formKey1,
+                  isInstitution: true,
+                  suffixIcon: MdiIcons.phoneClassic,
+                ),
+                RegistrationFormHolder(
+                  formKey1: formKey1,
+                  isInstitution: false,
+                  suffixIcon: MdiIcons.phoneClassic,
+                ),
+                RegistrationFormButtons(
+                    formKey1: formKey1, screenWidth: screenWidth),
+                const SizedBox(height: 100),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
-}
 
-class SlotButton extends StatelessWidget {
-  final String buttonText;
-  final Color bgColor;
-  final void Function()? onPressed;
-  const SlotButton({
-    Key? key,
-    this.bgColor = primaryDarkShadeLight,
-    this.onPressed,
-    required this.buttonText,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 160,
-      child: ElevatedButton(
-        style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(bgColor),
+  Future<bool?> shouldPopScreen(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: primaryDark,
+        title: const Text("Discard changes?"),
+        titleTextStyle: const TextStyle(fontSize: 20),
+        content: const Text("Any changes made will be lost"),
+        contentTextStyle: const TextStyle(color: textWhiteShadeLight),
+        contentPadding: const EdgeInsets.symmetric(vertical: 5, horizontal: 25),
+        actionsPadding: const EdgeInsets.only(right: 10),
+        buttonPadding: const EdgeInsets.symmetric(
+          vertical: 5,
+          horizontal: 10,
         ),
-        onPressed: onPressed,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            vertical: 12,
-            horizontal: 20,
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text(
+              "No",
+              style: TextStyle(
+                color: secondaryBlueShadeLight,
+              ),
+            ),
           ),
-          child: Text(
-            buttonText,
-            style: const TextStyle(fontSize: 16),
+          OutlinedButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            style: ButtonStyle(
+              side: MaterialStateProperty.all(
+                const BorderSide(color: extraRed),
+              ),
+              backgroundColor: MaterialStateProperty.all(primaryDark),
+            ),
+            child: const Text(
+              "Discard",
+              style: TextStyle(
+                color: pureWhite,
+              ),
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
