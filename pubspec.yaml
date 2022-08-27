@@ -19,10 +19,10 @@ dependencies:
   fluttertoast: ^8.0.9
   google_fonts: ^3.0.1
   http: ^0.13.5
-  intl: ^0.17.0
   lottie: ^1.4.1
   material_design_icons_flutter: ^5.0.6996
   qr_flutter: ^4.0.0
+  scrollable_positioned_list: ^0.3.2
   shared_preferences: ^2.0.15
   simple_gradient_text: ^1.2.3
   sticky_headers: ^0.3.0+2
