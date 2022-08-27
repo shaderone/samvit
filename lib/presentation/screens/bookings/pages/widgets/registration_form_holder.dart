@@ -1,11 +1,13 @@
 import 'package:brechfete/core/constants.dart';
 import 'package:brechfete/presentation/root/widgets/custom_form_input.dart';
 import 'package:email_validator/email_validator.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:sticky_headers/sticky_headers/widget.dart';
 
-class RegistrationFormHolder extends StatelessWidget {
+class RegistrationFormHolder extends StatefulWidget {
   final bool isInstitution;
 
   final IconData suffixIcon;
@@ -19,6 +21,13 @@ class RegistrationFormHolder extends StatelessWidget {
   final GlobalKey<FormState> formKey1;
 
   @override
+  State<RegistrationFormHolder> createState() => _RegistrationFormHolderState();
+}
+
+class _RegistrationFormHolderState extends State<RegistrationFormHolder> {
+  bool isTelephoneSwitched = false;
+
+  @override
   Widget build(BuildContext context) {
     return StickyHeader(
       header: Container(
@@ -28,9 +37,9 @@ class RegistrationFormHolder extends StatelessWidget {
           color: bottomNavDark,
           borderRadius: BorderRadius.circular(5),
         ),
-        child: isInstitution
+        child: widget.isInstitution
             ? Text(
-                "${isInstitution ? "INSTITUTION" : "Faculty"} INFO",
+                "${widget.isInstitution ? "INSTITUTION" : "Faculty"} INFO",
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   color: secondaryBlueShadeLight,
@@ -71,7 +80,7 @@ class RegistrationFormHolder extends StatelessWidget {
               textInputType: TextInputType.name,
               textInputAction: TextInputAction.next,
               hintText:
-                  "Enter ${isInstitution ? "Institution" : "Faculty"} name",
+                  "Enter ${widget.isInstitution ? "Institution" : "Faculty"} name",
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return "Name is required";
@@ -79,7 +88,7 @@ class RegistrationFormHolder extends StatelessWidget {
                 return null;
               },
               onChanged: (value) {
-                formKey1.currentState!.validate();
+                widget.formKey1.currentState!.validate();
               },
             ),
             CustomFormInput(
@@ -87,7 +96,7 @@ class RegistrationFormHolder extends StatelessWidget {
               textInputType: TextInputType.emailAddress,
               textInputAction: TextInputAction.next,
               hintText:
-                  "Enter ${isInstitution ? "Institution" : "Faculty"} email",
+                  "Enter ${widget.isInstitution ? "Institution" : "Faculty"} email",
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return "Email is required";
@@ -97,7 +106,7 @@ class RegistrationFormHolder extends StatelessWidget {
                 return null;
               },
               onChanged: (value) {
-                formKey1.currentState!.validate();
+                widget.formKey1.currentState!.validate();
               },
             ),
             CustomFormInput(
@@ -105,7 +114,7 @@ class RegistrationFormHolder extends StatelessWidget {
               textInputType: TextInputType.number,
               textInputAction: TextInputAction.next,
               hintText:
-                  "Enter ${isInstitution ? "Institution" : "Faculty"} phone",
+                  "Enter ${widget.isInstitution ? "Institution" : "Faculty"} phone",
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return "Phone is required";
@@ -113,7 +122,7 @@ class RegistrationFormHolder extends StatelessWidget {
                 return null;
               },
               onChanged: (value) {
-                formKey1.currentState!.validate();
+                widget.formKey1.currentState!.validate();
               },
               inputFormatters: [
                 FilteringTextInputFormatter.digitsOnly,
@@ -126,23 +135,30 @@ class RegistrationFormHolder extends StatelessWidget {
               labelText: "Landline / other",
               textInputType: TextInputType.number,
               textInputAction: TextInputAction.next,
-              hintText: "Enter phone(other)",
+              hintText: "Enter ${isTelephoneSwitched ? "Phone" : "Landline"}",
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return "${isInstitution ? "Institution" : "Faculty"} Landline or other phone is required";
+                  return "${widget.isInstitution ? "Institution" : "Faculty"} Landline or other phone is required";
                 } else if (value.length > 11) {
                   return "Enter a valid phone number";
                 }
                 return null;
               },
               onChanged: (value) {
-                formKey1.currentState!.validate();
+                widget.formKey1.currentState!.validate();
               },
               inputFormatters: [
                 FilteringTextInputFormatter.digitsOnly,
               ],
-              maxInputLength: 11,
-              suffixIcon: suffixIcon,
+              maxInputLength: isTelephoneSwitched ? 10 : 11,
+              suffixIcon: isTelephoneSwitched
+                  ? Icons.phone_android_rounded
+                  : MdiIcons.phoneClassic,
+              suffixIconAction: () {
+                setState(() {
+                  isTelephoneSwitched = !isTelephoneSwitched;
+                });
+              },
             ),
           ],
         ),
