@@ -10,6 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:sticky_headers/sticky_headers/widget.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class ExpoRegistration extends StatelessWidget {
   static final formKey1 = GlobalKey<FormState>();
@@ -121,6 +122,7 @@ class ExpoRegistration extends StatelessWidget {
                             FilteringTextInputFormatter.digitsOnly,
                           ],
                           maxInputLength: 10,
+                          inputSpacing: 0,
                         ),
                         const SizedBox(height: 10),
                         CustomFormInput(
@@ -142,8 +144,8 @@ class ExpoRegistration extends StatelessWidget {
                           inputFormatters: [
                             FilteringTextInputFormatter.digitsOnly,
                           ],
-                          maxInputLength: 10,
-                          suffixIcon: Icons.phone_android_rounded,
+                          maxInputLength: 11,
+                          suffixIcon: MdiIcons.phoneClassic,
                         ),
                       ],
                     ),
@@ -237,6 +239,7 @@ class ExpoRegistration extends StatelessWidget {
                             FilteringTextInputFormatter.digitsOnly,
                           ],
                           maxInputLength: 10,
+                          inputSpacing: 0,
                         ),
                         const SizedBox(height: 10),
                         CustomFormInput(
@@ -258,7 +261,7 @@ class ExpoRegistration extends StatelessWidget {
                             formKey1.currentState!.validate();
                           },
                           maxInputLength: 11,
-                          suffixIcon: Icons.phone_android_outlined,
+                          suffixIcon: MdiIcons.phoneClassic,
                         ),
                         const SizedBox(height: 10),
                       ],
