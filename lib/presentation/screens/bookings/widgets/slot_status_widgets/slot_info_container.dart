@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 class SlotInfoContainer extends StatelessWidget {
-  const SlotInfoContainer({Key? key}) : super(key: key);
+  final Function()? reOrderTimeSlotList;
+  const SlotInfoContainer({Key? key, this.reOrderTimeSlotList})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -42,18 +44,20 @@ class SlotInfoContainer extends StatelessWidget {
                           ),
                         );
                       },
-                      children: const [
-                        SlotStatusItem(
+                      children: [
+                        const SlotStatusItem(
                           slotStatus: 'Available',
                           slotCount: "120",
                           slotCountColor: secondaryBlueShadeLight,
                         ),
-                        SlotStatusItem(
+                        const SlotStatusItem(
                           slotStatus: "Booked",
                           slotCount: "60",
                           slotCountColor: extraRed,
                         ),
-                        SlotInputItem(),
+                        SlotInputItem(
+                          reOrderTimeSlotList: reOrderTimeSlotList,
+                        ),
                       ],
                     ),
                   ),
@@ -68,8 +72,10 @@ class SlotInfoContainer extends StatelessWidget {
 }
 
 class SlotInputItem extends StatelessWidget {
+  final Function()? reOrderTimeSlotList;
   const SlotInputItem({
     Key? key,
+    this.reOrderTimeSlotList,
   }) : super(key: key);
 
   @override
@@ -114,6 +120,7 @@ class SlotInputItem extends StatelessWidget {
           filled: true,
           fillColor: pureBlack,
         ),
+        onTap: reOrderTimeSlotList,
       ),
     );
   }

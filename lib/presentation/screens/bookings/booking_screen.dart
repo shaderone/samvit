@@ -8,6 +8,7 @@ import 'package:brechfete/presentation/screens/bookings/widgets/time_slot_widget
 import 'package:brechfete/presentation/screens/bookings/widgets/calendar_widget.dart';
 import 'package:brechfete/presentation/screens/bookings/widgets/calendar_widgets/calendar_status_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
@@ -25,6 +26,17 @@ class BookingScreen extends StatefulWidget {
 }
 
 class _BookingScreenState extends State<BookingScreen> {
+  final GlobalKey<TimeSlotListState> _timeSlotListStateKey =
+      GlobalKey<TimeSlotListState>();
+  initiateTimeSlotScroll() {
+    if (_timeSlotListStateKey.currentState == null) {
+      print("object");
+      return;
+    } else {
+      _timeSlotListStateKey.currentState!.scrollToTimeSlot();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -75,8 +87,9 @@ class _BookingScreenState extends State<BookingScreen> {
                     (BuildContext context, bool isDateSelected, Widget? _) {
                   return Visibility(
                     visible: isDateSelected,
-                    child: const TimeSlotList(
+                    child: TimeSlotList(
                       maxHeight: 90,
+                      key: _timeSlotListStateKey,
                     ),
                   );
                 },
@@ -88,7 +101,12 @@ class _BookingScreenState extends State<BookingScreen> {
               builder: (BuildContext context, bool isTimeSelected, Widget? _) {
                 return Visibility(
                   visible: isTimeSelected,
-                  child: const SlotInfoContainer(),
+                  child: SlotInfoContainer(
+                    reOrderTimeSlotList: () {
+                      //function to re-order time-slotlist
+                      initiateTimeSlotScroll();
+                    },
+                  ),
                 );
               },
             ),

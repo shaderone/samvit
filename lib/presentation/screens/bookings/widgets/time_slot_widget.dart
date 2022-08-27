@@ -3,6 +3,7 @@ import 'package:brechfete/presentation/screens/bookings/booking_screen.dart';
 import 'package:brechfete/presentation/screens/reservations/widgets/reservation_chip.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class TimeSlotList extends StatefulWidget {
   final double maxHeight;
@@ -12,21 +13,29 @@ class TimeSlotList extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<TimeSlotList> createState() => _TimeSlotListState();
+  State<TimeSlotList> createState() => TimeSlotListState();
 }
 
-class _TimeSlotListState extends State<TimeSlotList> {
+class TimeSlotListState extends State<TimeSlotList> {
   int? selectedIndex;
+  final timeSlotScrollController = ItemScrollController();
 
-  List<String> tempArr = [];
+  Future scrollToTimeSlot() async {
+    timeSlotScrollController.scrollTo(
+      index: selectedIndex!,
+      curve: Curves.decelerate,
+      duration: const Duration(milliseconds: 1000),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return AnimationLimiter(
-      child: ListView.builder(
+      child: ScrollablePositionedList.builder(
         scrollDirection: Axis.horizontal,
         physics: const BouncingScrollPhysics(),
         shrinkWrap: true,
-        primary: false,
+        itemScrollController: timeSlotScrollController,
         itemBuilder: (context, index) {
           return AnimationConfiguration.staggeredList(
             position: index,
