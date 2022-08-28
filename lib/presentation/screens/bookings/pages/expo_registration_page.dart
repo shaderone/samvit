@@ -44,7 +44,7 @@ class _ExpoRegistrationState extends State<ExpoRegistration> {
           ),
         ),
         body: SingleChildScrollView(
-          //primary: false,
+          reverse: true,
           child: Form(
             key: ExpoRegistration.formKey1,
             child: ValueListenableBuilder(
@@ -55,6 +55,7 @@ class _ExpoRegistrationState extends State<ExpoRegistration> {
                     Theme(
                       data: ThemeData.dark(),
                       child: Stepper(
+                        physics: const ClampingScrollPhysics(),
                         controlsBuilder:
                             (context, ControlsDetails actionButtons) {
                           if (currentStep == 2) {
@@ -222,6 +223,7 @@ class _ExpoRegistrationState extends State<ExpoRegistration> {
                           formKey1: ExpoRegistration.formKey1,
                           screenWidth: screenWidth,
                         ),
+                        const SizedBox(height: 30),
                       ],
                     ),
                   ],
