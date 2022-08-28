@@ -26,6 +26,7 @@ class RegistrationFormButtons extends StatelessWidget {
           RegistrationButton(
             buttonText: "Pay Later",
             onPressed: () {
+              print("pay later");
               if (formKey1.currentState!.validate()) {
                 formKey1.currentState!.save();
                 BookingScreen.isDateSelectedNotifier.value = false;

@@ -153,7 +153,7 @@ class ConfirmButton extends StatelessWidget {
         //After saving, go to next page
         Navigator.of(context).push(
           CupertinoPageRoute(
-            builder: (context) => const ExpoRegistration(),
+            builder: (context) => ExpoRegistration(),
           ),
         );
       },

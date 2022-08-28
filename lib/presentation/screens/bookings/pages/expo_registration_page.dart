@@ -4,13 +4,21 @@ import 'package:brechfete/presentation/screens/bookings/pages/widgets/registrati
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-class ExpoRegistration extends StatelessWidget {
+class ExpoRegistration extends StatefulWidget {
   static final formKey1 = GlobalKey<FormState>();
+
   const ExpoRegistration({
     Key? key,
   }) : super(key: key);
+
+  @override
+  State<ExpoRegistration> createState() => _ExpoRegistrationState();
+}
+
+class _ExpoRegistrationState extends State<ExpoRegistration> {
+  final ValueNotifier<int> currentStepNotifier = ValueNotifier(0);
+  bool isCompleted = false;
 
   @override
   Widget build(BuildContext context) {
@@ -36,26 +44,189 @@ class ExpoRegistration extends StatelessWidget {
           ),
         ),
         body: SingleChildScrollView(
+          //primary: false,
           child: Form(
-            key: formKey1,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                RegistrationFormHolder(
-                  formKey1: formKey1,
-                  isInstitution: true,
-                  suffixIcon: MdiIcons.phoneClassic,
-                ),
-                RegistrationFormHolder(
-                  formKey1: formKey1,
-                  isInstitution: false,
-                  suffixIcon: MdiIcons.phoneClassic,
-                ),
-                RegistrationFormButtons(
-                    formKey1: formKey1, screenWidth: screenWidth),
-                const SizedBox(height: 100),
-              ],
+            key: ExpoRegistration.formKey1,
+            child: ValueListenableBuilder(
+              valueListenable: currentStepNotifier,
+              builder: (BuildContext context, int currentStep, Widget? _) {
+                return Column(
+                  children: [
+                    Theme(
+                      data: ThemeData.dark(),
+                      child: Stepper(
+                        controlsBuilder:
+                            (context, ControlsDetails actionButtons) {
+                          if (currentStep == 2) {
+                            return Row(
+                              children: [
+                                Expanded(
+                                  child: SizedBox(
+                                    height: 50,
+                                    child: ElevatedButton(
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all(
+                                          primaryDark,
+                                        ),
+                                        shape: MaterialStateProperty.all(
+                                          RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                            side: const BorderSide(
+                                              color: strokeLight,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      onPressed: actionButtons.onStepCancel,
+                                      child: const Text(
+                                        "Edit again",
+                                        style: TextStyle(
+                                          color: textWhiteShadeLight,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          } else {
+                            return Row(
+                              children: [
+                                Expanded(
+                                  child: ElevatedButton(
+                                    style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                        secondaryBlueShadeDark,
+                                      ),
+                                    ),
+                                    onPressed: actionButtons.onStepContinue,
+                                    child: Text(
+                                      currentStep == 1 ? "Pay Fee" : "Continue",
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 10),
+                                if (currentStep != 0)
+                                  Expanded(
+                                    child: ElevatedButton(
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all(
+                                          bgDark,
+                                        ),
+                                      ),
+                                      onPressed: actionButtons.onStepCancel,
+                                      child: const Text("previous"),
+                                    ),
+                                  ),
+                              ],
+                            );
+                          }
+                        },
+                        currentStep: currentStep,
+                        onStepContinue: () {
+                          final bool isAtLastStep = currentStep == 2;
+                          if (isAtLastStep) {
+                            print("nulldone");
+                            setState(() {
+                              isCompleted = true;
+                            });
+                            //send data
+                          } else {
+                            currentStepNotifier.value += 1;
+                          }
+                        },
+                        onStepCancel: currentStep == 0
+                            ? null
+                            : () {
+                                setState(() {
+                                  isCompleted = false;
+                                });
+                                currentStepNotifier.value -= 1;
+                                print(currentStep);
+                                //if (currentStep == 1) {
+                                //}
+                              },
+                        steps: [
+                          Step(
+                            state: currentStep > 0
+                                ? StepState.complete
+                                : StepState.editing,
+                            isActive: currentStep > 0,
+                            title: const Text(
+                              "INSTITUTION INFO",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: secondaryBlueShadeLight,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
+                            ),
+                            content: RegistrationFormHolder(
+                              formKey1: ExpoRegistration.formKey1,
+                              isInstitution: true,
+                            ),
+                          ),
+                          Step(
+                            state: currentStep > 0
+                                ? StepState.complete
+                                : StepState.editing,
+                            isActive: currentStep > 1,
+                            title: const Text(
+                              "FACULTY INFO",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: secondaryBlueShadeLight,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
+                            ),
+                            content: RegistrationFormHolder(
+                              formKey1: ExpoRegistration.formKey1,
+                              isInstitution: false,
+                            ),
+                          ),
+                          Step(
+                            state: StepState.complete,
+                            isActive: currentStep > 1,
+                            title: const Text("complete"),
+                            content: const SizedBox(),
+                          )
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Column(
+                      children: [
+                        ColoredBox(
+                          color: primaryDark,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 20),
+                            child: Text(
+                              "Please select a payment option to continue",
+                              textAlign: TextAlign.center,
+                              style: GoogleFonts.ubuntu(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: textWhiteShadeLight,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        RegistrationFormButtons(
+                          formKey1: ExpoRegistration.formKey1,
+                          screenWidth: screenWidth,
+                        ),
+                      ],
+                    ),
+                  ],
+                );
+              },
             ),
           ),
         ),
