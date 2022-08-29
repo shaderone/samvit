@@ -17,8 +17,9 @@ class ExpoRegistration extends StatefulWidget {
 }
 
 class _ExpoRegistrationState extends State<ExpoRegistration> {
-  final ValueNotifier<int> currentStepNotifier = ValueNotifier(0);
-  bool isCompleted = false;
+  ValueNotifier<int> currentStepNotifier = ValueNotifier(0);
+  final _institutionKey = GlobalKey<FormState>();
+  final _facultyKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -44,196 +45,162 @@ class _ExpoRegistrationState extends State<ExpoRegistration> {
           ),
         ),
         body: SingleChildScrollView(
-          reverse: true,
-          child: Form(
-            key: ExpoRegistration.formKey1,
-            child: ValueListenableBuilder(
-              valueListenable: currentStepNotifier,
-              builder: (BuildContext context, int currentStep, Widget? _) {
-                return Column(
+          child: ValueListenableBuilder(
+            valueListenable: currentStepNotifier,
+            builder: (BuildContext context, int currentStep, Widget? _) {
+              const firstStep = 0, secondStep = 1, thirdStep = 2;
+              return Theme(
+                data: ThemeData.dark(),
+                child: Column(
                   children: [
-                    Theme(
-                      data: ThemeData.dark(),
-                      child: Stepper(
-                        physics: const ClampingScrollPhysics(),
-                        controlsBuilder:
-                            (context, ControlsDetails actionButtons) {
-                          if (currentStep == 2) {
-                            return Row(
-                              children: [
-                                Expanded(
-                                  child: SizedBox(
-                                    height: 50,
-                                    child: ElevatedButton(
-                                      style: ButtonStyle(
-                                        backgroundColor:
-                                            MaterialStateProperty.all(
-                                          primaryDark,
-                                        ),
-                                        shape: MaterialStateProperty.all(
-                                          RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(5),
-                                            side: const BorderSide(
-                                              color: strokeLight,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      onPressed: actionButtons.onStepCancel,
-                                      child: const Text(
-                                        "Edit again",
-                                        style: TextStyle(
-                                          color: textWhiteShadeLight,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            );
-                          } else {
-                            return Row(
-                              children: [
-                                Expanded(
-                                  child: ElevatedButton(
-                                    style: ButtonStyle(
-                                      backgroundColor:
-                                          MaterialStateProperty.all(
-                                        secondaryBlueShadeDark,
-                                      ),
-                                    ),
-                                    onPressed: actionButtons.onStepContinue,
+                    Stepper(
+                      currentStep: currentStep,
+                      onStepContinue: onStepContinue,
+                      onStepCancel: onStepCancel,
+                      controlsBuilder: (context, buttonActions) {
+                        return StepperActions(
+                          buttonActions: buttonActions,
+                          currentStep: currentStep,
+                          isLastStep: currentStep == thirdStep ? true : false,
+                        );
+                      },
+                      physics: const ClampingScrollPhysics(),
+                      steps: buildSteps(
+                          currentStep, firstStep, secondStep, thirdStep),
+                    ),
+                    Visibility(
+                      visible: currentStep == thirdStep ? true : false,
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                child: ColoredBox(
+                                  color: primaryDark,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(15.0),
                                     child: Text(
-                                      currentStep == 1 ? "Pay Fee" : "Continue",
+                                      "Please select a payment option to continue",
+                                      textAlign: TextAlign.center,
+                                      style: GoogleFonts.ubuntu(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: textWhiteShadeLight,
+                                      ),
                                     ),
                                   ),
                                 ),
-                                const SizedBox(width: 10),
-                                if (currentStep != 0)
-                                  Expanded(
-                                    child: ElevatedButton(
-                                      style: ButtonStyle(
-                                        backgroundColor:
-                                            MaterialStateProperty.all(
-                                          bgDark,
-                                        ),
-                                      ),
-                                      onPressed: actionButtons.onStepCancel,
-                                      child: const Text("previous"),
-                                    ),
-                                  ),
-                              ],
-                            );
-                          }
-                        },
-                        currentStep: currentStep,
-                        onStepContinue: () {
-                          final bool isAtLastStep = currentStep == 2;
-                          if (isAtLastStep) {
-                            print("nulldone");
-                            setState(() {
-                              isCompleted = true;
-                            });
-                            //send data
-                          } else {
-                            currentStepNotifier.value += 1;
-                          }
-                        },
-                        onStepCancel: currentStep == 0
-                            ? null
-                            : () {
-                                setState(() {
-                                  isCompleted = false;
-                                });
-                                currentStepNotifier.value -= 1;
-                                print(currentStep);
-                                //if (currentStep == 1) {
-                                //}
-                              },
-                        steps: [
-                          Step(
-                            state: currentStep > 0
-                                ? StepState.complete
-                                : StepState.editing,
-                            isActive: currentStep > 0,
-                            title: const Text(
-                              "INSTITUTION INFO",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: secondaryBlueShadeLight,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
                               ),
-                            ),
-                            content: RegistrationFormHolder(
-                              formKey1: ExpoRegistration.formKey1,
-                              isInstitution: true,
-                            ),
+                            ],
                           ),
-                          Step(
-                            state: currentStep > 0
-                                ? StepState.complete
-                                : StepState.editing,
-                            isActive: currentStep > 1,
-                            title: const Text(
-                              "FACULTY INFO",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: secondaryBlueShadeLight,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
+                          const SizedBox(height: 20),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              RegistrationButton(
+                                buttonText: "Pay Later",
+                                screenWidth: screenWidth,
+                                onPressed: onPayLaterPressed,
                               ),
-                            ),
-                            content: RegistrationFormHolder(
-                              formKey1: ExpoRegistration.formKey1,
-                              isInstitution: false,
-                            ),
-                          ),
-                          Step(
-                            state: StepState.complete,
-                            isActive: currentStep > 1,
-                            title: const Text("complete"),
-                            content: const SizedBox(),
+                              const SizedBox(width: 10),
+                              RegistrationButton(
+                                buttonText: "Pay Now",
+                                screenWidth: screenWidth,
+                                bgColor: secondaryBlueShadeDark,
+                                onPressed: onPayNowPressed,
+                              ),
+                            ],
                           )
                         ],
                       ),
                     ),
-                    const SizedBox(height: 20),
-                    Column(
-                      children: [
-                        ColoredBox(
-                          color: primaryDark,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 20),
-                            child: Text(
-                              "Please select a payment option to continue",
-                              textAlign: TextAlign.center,
-                              style: GoogleFonts.ubuntu(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: textWhiteShadeLight,
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        RegistrationFormButtons(
-                          formKey1: ExpoRegistration.formKey1,
-                          screenWidth: screenWidth,
-                        ),
-                        const SizedBox(height: 30),
-                      ],
-                    ),
                   ],
-                );
-              },
-            ),
+                ),
+              );
+            },
           ),
         ),
       ),
     );
+  }
+
+  List<Step> buildSteps(
+      int currentStep, int firstStep, int secondStep, int thirdStep) {
+    return [
+      Step(
+        state: currentStep > firstStep
+            ? StepState.complete
+            : currentStep == firstStep
+                ? StepState.editing
+                : StepState.disabled,
+        isActive: currentStep >= firstStep ? true : false,
+        title: Text(
+          "INSTITUTION INFO",
+          style: currentStep > firstStep
+              ? const TextStyle(
+                  color: secondaryBlueShadeLight,
+                  fontWeight: FontWeight.bold,
+                )
+              : null,
+        ),
+        content: InstitutionFormHolder(
+          institutionFormKey: _institutionKey,
+        ),
+      ),
+      Step(
+        state: currentStep > secondStep
+            ? StepState.complete
+            : currentStep == secondStep
+                ? StepState.editing
+                : StepState.disabled,
+        isActive: currentStep >= secondStep ? true : false,
+        title: Text(
+          "FACULTY INFO",
+          style: currentStep > secondStep
+              ? const TextStyle(
+                  color: secondaryBlueShadeLight,
+                  fontWeight: FontWeight.bold,
+                )
+              : null,
+        ),
+        content: FacultyFormHolder(
+          facultyFormKey: _facultyKey,
+        ),
+      ),
+      Step(
+        state:
+            currentStep == thirdStep ? StepState.complete : StepState.disabled,
+        isActive: currentStep == thirdStep ? true : false,
+        title: Text(
+          "FINISH",
+          style: currentStep > secondStep
+              ? const TextStyle(
+                  color: secondaryBlueShadeLight,
+                  fontWeight: FontWeight.bold,
+                )
+              : null,
+        ),
+        content: const SizedBox(),
+      ),
+    ];
+  }
+
+  void onStepContinue() {
+    currentStepNotifier.value += 1;
+  }
+
+  void onStepCancel() {
+    currentStepNotifier.value -= 1;
+  }
+
+  void onPayLaterPressed() {
+    print("show popup and confirm");
+    showCustomAlertDialog(context, "Pay Later");
+  }
+
+  void onPayNowPressed() {
+    print("go to payment mode and book");
+    showCustomAlertDialog(context, "Pay Now");
   }
 
   Future<bool?> shouldPopScreen(BuildContext context) {
@@ -280,4 +247,98 @@ class _ExpoRegistrationState extends State<ExpoRegistration> {
       ),
     );
   }
+}
+
+class StepperActions extends StatelessWidget {
+  final int currentStep;
+  final bool isLastStep;
+  final ControlsDetails buttonActions;
+  const StepperActions({
+    Key? key,
+    required this.buttonActions,
+    required this.currentStep,
+    required this.isLastStep,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Visibility(
+          visible: isLastStep ? false : true,
+          child: Expanded(
+            child: ElevatedButton(
+              onPressed: buttonActions.onStepContinue,
+              child: const Text("Next"),
+            ),
+          ),
+        ),
+        const SizedBox(width: 10),
+        Expanded(
+          child: ElevatedButton(
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(bgDark),
+                side: MaterialStateProperty.all(
+                  const BorderSide(
+                    color: textWhiteShadeDark,
+                  ),
+                )),
+            onPressed: currentStep == 0 ? null : buttonActions.onStepCancel,
+            child: Text(isLastStep ? "Edit again" : "Previous"),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+showCustomAlertDialog(BuildContext context, String paymentOption) {
+  showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      backgroundColor: primaryDark,
+      title: const Text("Are you sure?"),
+      titleTextStyle: const TextStyle(fontSize: 20),
+      content: Text("Selected : $paymentOption"),
+      contentTextStyle: const TextStyle(color: textWhiteShadeLight),
+      contentPadding: const EdgeInsets.symmetric(vertical: 5, horizontal: 25),
+      actionsPadding: const EdgeInsets.only(right: 10),
+      buttonPadding: const EdgeInsets.symmetric(
+        vertical: 5,
+        horizontal: 10,
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: const Text(
+            "No",
+            style: TextStyle(
+              color: secondaryBlueShadeLight,
+            ),
+          ),
+        ),
+        OutlinedButton(
+          onPressed: () {
+            print("$paymentOption succeess");
+            Navigator.of(context).pop();
+          },
+          style: ButtonStyle(
+            side: MaterialStateProperty.all(
+              const BorderSide(color: Colors.transparent),
+            ),
+            backgroundColor: MaterialStateProperty.all(secondaryBlueShadeDark),
+          ),
+          child: const Text(
+            "Proceed",
+            style: TextStyle(
+              color: pureWhite,
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
 }
