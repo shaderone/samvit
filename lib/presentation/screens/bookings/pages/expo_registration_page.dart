@@ -39,7 +39,15 @@ class _ExpoRegistrationState extends State<ExpoRegistration> {
     return WillPopScope(
       //if onWillPop is true, the route gets popped
       onWillPop: () async {
-        final shouldPop = await shouldPopScreen(context);
+        final shouldPop = await showCustomAlertDialog(
+          context,
+          "Discard Changes?",
+          "Any Changes Made will be lost",
+          "No",
+          "Discard",
+          extraRed,
+          primaryDark,
+        );
         return shouldPop ?? false;
       },
       child: Scaffold(
@@ -242,7 +250,15 @@ class _ExpoRegistrationState extends State<ExpoRegistration> {
 
   void onPayLaterPressed() async {
     print("show popup and confirm");
-    final shouldProceed = await showCustomAlertDialog(context, "Pay Later");
+    final shouldProceed = await showCustomAlertDialog(
+      context,
+      "Are you sure?",
+      "Selected : Pay Later",
+      "No",
+      "Proceed",
+      Colors.transparent,
+      secondaryBlueShadeDark,
+    );
     BookingScreen.isDateSelectedNotifier.value = false;
     BookingScreen.isTimeSelectedNotifier.value = false;
     if (!mounted) {
@@ -258,7 +274,15 @@ class _ExpoRegistrationState extends State<ExpoRegistration> {
 
   void onPayNowPressed() async {
     print("go to payment mode and book");
-    final shouldProceed = await showCustomAlertDialog(context, "Pay Now");
+    final shouldProceed = await showCustomAlertDialog(
+      context,
+      "Are you sure?",
+      "Selected : Pay Now",
+      "No",
+      "Proceed",
+      Colors.transparent,
+      secondaryBlueShadeDark,
+    );
     BookingScreen.isDateSelectedNotifier.value = false;
     BookingScreen.isTimeSelectedNotifier.value = false;
     if (!mounted) {
@@ -272,51 +296,65 @@ class _ExpoRegistrationState extends State<ExpoRegistration> {
       );
     }
   }
+}
 
-  Future<bool?> shouldPopScreen(BuildContext context) {
-    return showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: primaryDark,
-        title: const Text("Discard changes?"),
-        titleTextStyle: const TextStyle(fontSize: 20),
-        content: const Text("Any changes made will be lost"),
-        contentTextStyle: const TextStyle(color: textWhiteShadeLight),
-        contentPadding: const EdgeInsets.symmetric(vertical: 5, horizontal: 25),
-        actionsPadding: const EdgeInsets.only(right: 10),
-        buttonPadding: const EdgeInsets.symmetric(
-          vertical: 5,
-          horizontal: 10,
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: const Text(
-              "No",
-              style: TextStyle(
-                color: secondaryBlueShadeLight,
-              ),
-            ),
-          ),
-          OutlinedButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            style: ButtonStyle(
-              side: MaterialStateProperty.all(
-                const BorderSide(color: extraRed),
-              ),
-              backgroundColor: MaterialStateProperty.all(primaryDark),
-            ),
-            child: const Text(
-              "Discard",
-              style: TextStyle(
-                color: pureWhite,
-              ),
-            ),
-          ),
-        ],
+Future<bool?> showCustomAlertDialog(
+  BuildContext context,
+  String heading,
+  String subHeading,
+  String subText,
+  String mainText,
+  Color borderColor,
+  Color backgroundColor,
+) {
+  return showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      backgroundColor: primaryDark,
+      title: Text(heading),
+      titleTextStyle: const TextStyle(fontSize: 20),
+      content: Text(subHeading),
+      contentTextStyle: const TextStyle(color: textWhiteShadeLight),
+      contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 25),
+      actionsPadding: const EdgeInsets.only(right: 10),
+      buttonPadding: const EdgeInsets.symmetric(
+        vertical: 5,
+        horizontal: 10,
       ),
-    );
-  }
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop(false);
+          },
+          child: Text(
+            subText,
+            style: const TextStyle(
+              color: secondaryBlueShadeLight,
+            ),
+          ),
+        ),
+        OutlinedButton(
+          onPressed: () {
+            print(
+                "${subHeading.split(" ")[2] + subHeading.split(" ")[3]} succeess");
+            Navigator.of(context).pop(true);
+          },
+          style: ButtonStyle(
+            side: MaterialStateProperty.all(
+              BorderSide(color: borderColor),
+            ),
+            backgroundColor: MaterialStateProperty.all(backgroundColor),
+          ),
+          child: Text(
+            mainText,
+            style: const TextStyle(
+              color: pureWhite,
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
 }
 
 class StepperActions extends StatelessWidget {
@@ -361,55 +399,4 @@ class StepperActions extends StatelessWidget {
       ],
     );
   }
-}
-
-Future<bool?> showCustomAlertDialog(
-    BuildContext context, String paymentOption) {
-  return showDialog(
-    context: context,
-    builder: (context) => AlertDialog(
-      backgroundColor: primaryDark,
-      title: const Text("Are you sure?"),
-      titleTextStyle: const TextStyle(fontSize: 20),
-      content: Text("Selected : $paymentOption"),
-      contentTextStyle: const TextStyle(color: textWhiteShadeLight),
-      contentPadding: const EdgeInsets.symmetric(vertical: 5, horizontal: 25),
-      actionsPadding: const EdgeInsets.only(right: 10),
-      buttonPadding: const EdgeInsets.symmetric(
-        vertical: 5,
-        horizontal: 10,
-      ),
-      actions: [
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop(false);
-          },
-          child: const Text(
-            "No",
-            style: TextStyle(
-              color: secondaryBlueShadeLight,
-            ),
-          ),
-        ),
-        OutlinedButton(
-          onPressed: () {
-            print("$paymentOption succeess");
-            Navigator.of(context).pop(true);
-          },
-          style: ButtonStyle(
-            side: MaterialStateProperty.all(
-              const BorderSide(color: Colors.transparent),
-            ),
-            backgroundColor: MaterialStateProperty.all(secondaryBlueShadeDark),
-          ),
-          child: const Text(
-            "Proceed",
-            style: TextStyle(
-              color: pureWhite,
-            ),
-          ),
-        ),
-      ],
-    ),
-  );
 }
