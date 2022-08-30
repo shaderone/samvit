@@ -1,12 +1,17 @@
 import 'package:brechfete/core/constants.dart';
+import 'package:brechfete/presentation/root/app.dart';
 import 'package:brechfete/presentation/root/widgets/custom_form_input.dart';
+import 'package:brechfete/presentation/screens/bookings/pages/pay_now_page.dart';
 import 'package:brechfete/presentation/screens/bookings/pages/widgets/registration_form_buttons.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
+
+import '../booking_screen.dart';
 
 class ExpoRegistration extends StatefulWidget {
   static final formKey1 = GlobalKey<FormState>();
@@ -254,14 +259,37 @@ class _ExpoRegistrationState extends State<ExpoRegistration> {
     currentStepNotifier.value -= 1;
   }
 
-  void onPayLaterPressed() {
+  void onPayLaterPressed() async {
     print("show popup and confirm");
-    showCustomAlertDialog(context, "Pay Later");
+    final shouldProceed = await showCustomAlertDialog(context, "Pay Later");
+    BookingScreen.isDateSelectedNotifier.value = false;
+    BookingScreen.isTimeSelectedNotifier.value = false;
+    if (!mounted) {
+      return;
+    }
+    if (shouldProceed ?? false) {
+      Navigator.of(context).pushNamedAndRemoveUntil(
+        App.bookingSuccessRoute,
+        (route) => false,
+      );
+    }
   }
 
-  void onPayNowPressed() {
+  void onPayNowPressed() async {
     print("go to payment mode and book");
-    showCustomAlertDialog(context, "Pay Now");
+    final shouldProceed = await showCustomAlertDialog(context, "Pay Now");
+    BookingScreen.isDateSelectedNotifier.value = false;
+    BookingScreen.isTimeSelectedNotifier.value = false;
+    if (!mounted) {
+      return;
+    }
+    if (shouldProceed ?? false) {
+      Navigator.of(context).push(
+        CupertinoPageRoute(
+          builder: (context) => const PayNowPage(),
+        ),
+      );
+    }
   }
 
   Future<bool?> shouldPopScreen(BuildContext context) {
@@ -354,8 +382,9 @@ class StepperActions extends StatelessWidget {
   }
 }
 
-showCustomAlertDialog(BuildContext context, String paymentOption) {
-  showDialog(
+Future<bool?> showCustomAlertDialog(
+    BuildContext context, String paymentOption) {
+  return showDialog(
     context: context,
     builder: (context) => AlertDialog(
       backgroundColor: primaryDark,
@@ -372,7 +401,7 @@ showCustomAlertDialog(BuildContext context, String paymentOption) {
       actions: [
         TextButton(
           onPressed: () {
-            Navigator.of(context).pop();
+            Navigator.of(context).pop(false);
           },
           child: const Text(
             "No",
@@ -384,7 +413,7 @@ showCustomAlertDialog(BuildContext context, String paymentOption) {
         OutlinedButton(
           onPressed: () {
             print("$paymentOption succeess");
-            Navigator.of(context).pop();
+            Navigator.of(context).pop(true);
           },
           style: ButtonStyle(
             side: MaterialStateProperty.all(
