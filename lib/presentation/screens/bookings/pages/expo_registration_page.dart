@@ -1,8 +1,11 @@
 import 'package:brechfete/core/constants.dart';
+import 'package:brechfete/presentation/root/widgets/custom_form_input.dart';
 import 'package:brechfete/presentation/screens/bookings/pages/widgets/registration_form_buttons.dart';
-import 'package:brechfete/presentation/screens/bookings/pages/widgets/registration_form_holder.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
 class ExpoRegistration extends StatefulWidget {
@@ -16,10 +19,12 @@ class ExpoRegistration extends StatefulWidget {
   State<ExpoRegistration> createState() => _ExpoRegistrationState();
 }
 
+ValueNotifier<bool> isValidatedNotifier = ValueNotifier(false);
+
 class _ExpoRegistrationState extends State<ExpoRegistration> {
   ValueNotifier<int> currentStepNotifier = ValueNotifier(0);
-  final _institutionKey = GlobalKey<FormState>();
-  final _facultyKey = GlobalKey<FormState>();
+  ValueNotifier<bool> institutionAutoValidateNotifier = ValueNotifier(false);
+  ValueNotifier<bool> facultyAutoValidateNotifier = ValueNotifier(false);
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +60,31 @@ class _ExpoRegistrationState extends State<ExpoRegistration> {
                   children: [
                     Stepper(
                       currentStep: currentStep,
-                      onStepContinue: onStepContinue,
+                      onStepContinue: !isValidatedNotifier.value
+                          ? () {
+                              final showWarning = SnackBar(
+                                backgroundColor: primaryDark,
+                                content: Text(
+                                  'Please fill all the fields!',
+                                  style: GoogleFonts.poppins(
+                                    color: extraRed,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                action: SnackBarAction(
+                                  label: 'OK',
+                                  onPressed: () {}, //close
+                                  textColor: secondaryBlueShadeLight,
+                                ),
+                              );
+
+                              // Find the ScaffoldMessenger in the widget tree
+                              // and use it to show a SnackBar.
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(showWarning);
+                            }
+                          : () => onStepContinue(
+                              currentStep, firstStep, secondStep, thirdStep),
                       onStepCancel: onStepCancel,
                       controlsBuilder: (context, buttonActions) {
                         return StepperActions(
@@ -143,8 +172,13 @@ class _ExpoRegistrationState extends State<ExpoRegistration> {
                 )
               : null,
         ),
-        content: InstitutionFormHolder(
-          institutionFormKey: _institutionKey,
+        content: ValueListenableBuilder(
+          valueListenable: institutionAutoValidateNotifier,
+          builder: (BuildContext context, bool shouldAutoValidate, Widget? _) {
+            return InstitutionFormHolder(
+              autoValidate: shouldAutoValidate,
+            );
+          },
         ),
       ),
       Step(
@@ -163,8 +197,13 @@ class _ExpoRegistrationState extends State<ExpoRegistration> {
                 )
               : null,
         ),
-        content: FacultyFormHolder(
-          facultyFormKey: _facultyKey,
+        content: ValueListenableBuilder(
+          valueListenable: facultyAutoValidateNotifier,
+          builder: (BuildContext context, bool shouldAutoValidate, Widget? _) {
+            return InstitutionFormHolder(
+              autoValidate: shouldAutoValidate,
+            );
+          },
         ),
       ),
       Step(
@@ -185,11 +224,33 @@ class _ExpoRegistrationState extends State<ExpoRegistration> {
     ];
   }
 
-  void onStepContinue() {
-    currentStepNotifier.value += 1;
+  void onStepContinue(
+      int currentStep, int firstStep, int secondStep, int thirdStep) {
+    if (currentStep == firstStep) {
+      final isValidated = isValidatedNotifier.value;
+      if (isValidated) {
+        currentStepNotifier.value += 1;
+      } else {
+        institutionAutoValidateNotifier.value = true;
+      }
+      isValidatedNotifier.value =
+          !isValidatedNotifier.value ? false : true; //reseting for next field
+    } else if (currentStep == secondStep) {
+      final isValidated = isValidatedNotifier.value;
+      if (isValidated) {
+        currentStepNotifier.value += 1;
+      } else {
+        facultyAutoValidateNotifier.value = true;
+      }
+      isValidatedNotifier.value = false; //reseting for next field
+    }
   }
 
   void onStepCancel() {
+    //facultyAutoValidateNotifier.value = false;
+    //institutionAutoValidateNotifier.value = false;
+    //validate this based on currentstep like above
+    isValidatedNotifier.value = true; //
     currentStepNotifier.value -= 1;
   }
 
@@ -341,4 +402,247 @@ showCustomAlertDialog(BuildContext context, String paymentOption) {
       ],
     ),
   );
+}
+
+class InstitutionFormHolder extends StatefulWidget {
+  final bool autoValidate;
+  const InstitutionFormHolder({
+    Key? key,
+    required this.autoValidate,
+  }) : super(key: key);
+
+  @override
+  State<InstitutionFormHolder> createState() => _InstitutionFormHolderState();
+}
+
+class _InstitutionFormHolderState extends State<InstitutionFormHolder> {
+  final _institutionKey = GlobalKey<FormState>();
+  bool isTelephoneSwitched = false;
+  late bool autoValidate;
+
+  @override
+  void initState() {
+    super.initState();
+    autoValidate = widget.autoValidate;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      key: _institutionKey,
+      onChanged: () {
+        if (_institutionKey.currentState!.validate()) {
+          print("success");
+          //_institutionKey.currentState!.save();
+          //return true to validate insittution
+          isValidatedNotifier.value = true;
+        } else {
+          print("failed");
+          //return false to validate insittution
+          isValidatedNotifier.value = false;
+
+          //Also disable the next button if not
+        }
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CustomFormInput(
+            autoValidateMode: autoValidate
+                ? AutovalidateMode.onUserInteraction
+                : AutovalidateMode.disabled,
+            labelText: "Name",
+            textInputType: TextInputType.name,
+            textInputAction: TextInputAction.next,
+            hintText: "Enter Institution name",
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return "Name is required";
+              }
+              return null;
+            },
+          ),
+          CustomFormInput(
+            autoValidateMode: autoValidate
+                ? AutovalidateMode.onUserInteraction
+                : AutovalidateMode.disabled,
+            labelText: "Email",
+            textInputType: TextInputType.emailAddress,
+            textInputAction: TextInputAction.next,
+            hintText: "Enter Institution email",
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return "Email is required";
+              } else if (!EmailValidator.validate(value)) {
+                return "Enter a valid email";
+              }
+              return null;
+            },
+          ),
+          CustomFormInput(
+            autoValidateMode: autoValidate
+                ? AutovalidateMode.onUserInteraction
+                : AutovalidateMode.disabled,
+            labelText: "Phone",
+            textInputType: TextInputType.number,
+            textInputAction: TextInputAction.next,
+            hintText: "Enter Institution phone",
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return "Phone is required";
+              }
+              return null;
+            },
+            inputFormatters: [
+              FilteringTextInputFormatter.digitsOnly,
+            ],
+            maxInputLength: 10,
+            inputSpacing: 0,
+          ),
+          const SizedBox(height: 10),
+          CustomFormInput(
+            autoValidateMode: autoValidate
+                ? AutovalidateMode.onUserInteraction
+                : AutovalidateMode.disabled,
+            labelText: "Landline / other",
+            textInputType: TextInputType.number,
+            textInputAction: TextInputAction.next,
+            hintText: "Enter ${isTelephoneSwitched ? "Phone" : "Landline"}",
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return "Institution Landline/phone is required";
+              } else if (value.length > 11) {
+                return "Enter a valid phone number";
+              }
+              return null;
+            },
+            inputFormatters: [
+              FilteringTextInputFormatter.digitsOnly,
+            ],
+            maxInputLength: isTelephoneSwitched ? 10 : 11,
+            suffixIcon: isTelephoneSwitched
+                ? Icons.phone_android_rounded
+                : MdiIcons.phoneClassic,
+            suffixIconAction: () {
+              setState(() {
+                isTelephoneSwitched = !isTelephoneSwitched;
+              });
+            },
+            inputSpacing: 0,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class FacultyFormHolder extends StatefulWidget {
+  const FacultyFormHolder({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<FacultyFormHolder> createState() => _FacultyFormHolderState();
+}
+
+class _FacultyFormHolderState extends State<FacultyFormHolder> {
+  final _facultyKey = GlobalKey<FormState>();
+  bool isTelephoneSwitched = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      key: _facultyKey,
+      onChanged: () {
+        if (_facultyKey.currentState!.validate()) {
+          print("success");
+          //_institutionKey.currentState!.save();
+          //return true to validate insittution
+          isValidatedNotifier.value = true;
+        } else {
+          print("failed");
+          //return false to validate insittution
+          isValidatedNotifier.value = false;
+
+          //Also disable the next button if not
+        }
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CustomFormInput(
+            labelText: "Name",
+            textInputType: TextInputType.name,
+            textInputAction: TextInputAction.next,
+            hintText: "Enter Faculty name",
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return "Name is required";
+              }
+              return null;
+            },
+          ),
+          CustomFormInput(
+            labelText: "Email",
+            textInputType: TextInputType.emailAddress,
+            textInputAction: TextInputAction.next,
+            hintText: "Enter Faculty email",
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return "Email is required";
+              } else if (!EmailValidator.validate(value)) {
+                return "Enter a valid email";
+              }
+              return null;
+            },
+          ),
+          CustomFormInput(
+            labelText: "Phone",
+            textInputType: TextInputType.number,
+            textInputAction: TextInputAction.next,
+            hintText: "Enter Faculty phone",
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return "Phone is required";
+              }
+              return null;
+            },
+            inputFormatters: [
+              FilteringTextInputFormatter.digitsOnly,
+            ],
+            maxInputLength: 10,
+            inputSpacing: 0,
+          ),
+          const SizedBox(height: 10),
+          CustomFormInput(
+            labelText: "Landline / other",
+            textInputType: TextInputType.number,
+            textInputAction: TextInputAction.next,
+            hintText: "Enter ${isTelephoneSwitched ? "Phone" : "Landline"}",
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return "Faculty Landline/phone is required";
+              } else if (value.length > 11) {
+                return "Enter a valid phone number";
+              }
+              return null;
+            },
+            inputFormatters: [
+              FilteringTextInputFormatter.digitsOnly,
+            ],
+            maxInputLength: isTelephoneSwitched ? 10 : 11,
+            suffixIcon: isTelephoneSwitched
+                ? Icons.phone_android_rounded
+                : MdiIcons.phoneClassic,
+            suffixIconAction: () {
+              setState(() {
+                isTelephoneSwitched = !isTelephoneSwitched;
+              });
+            },
+            inputSpacing: 0,
+          ),
+        ],
+      ),
+    );
+  }
 }

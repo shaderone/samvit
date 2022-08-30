@@ -1,7 +1,6 @@
 import 'package:brechfete/presentation/root/app.dart';
 import 'package:brechfete/presentation/root/widgets/bottom_navbar.dart';
 import 'package:brechfete/presentation/screens/bookings/pages/expo_registration_page.dart';
-import 'package:brechfete/presentation/screens/login/login.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:brechfete/presentation/screens/bookings/widgets/slot_status_widgets/slot_info_container.dart';
@@ -9,7 +8,6 @@ import 'package:brechfete/presentation/screens/bookings/widgets/time_slot_widget
 import 'package:brechfete/presentation/screens/bookings/widgets/calendar_widget.dart';
 import 'package:brechfete/presentation/screens/bookings/widgets/calendar_widgets/calendar_status_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
@@ -153,7 +151,7 @@ class ConfirmButton extends StatelessWidget {
         //After saving, go to next page
         Navigator.of(context).push(
           CupertinoPageRoute(
-            builder: (context) => ExpoRegistration(),
+            builder: (context) => const ExpoRegistration(),
           ),
         );
       },
