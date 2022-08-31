@@ -1,5 +1,6 @@
 import 'package:brechfete/core/constants.dart';
 import 'package:brechfete/presentation/root/app.dart';
+import 'package:brechfete/presentation/screens/bookings/booking_screen.dart';
 import 'package:brechfete/presentation/screens/bookings/pages/pay_now_page.dart';
 import 'package:brechfete/presentation/screens/bookings/pages/widgets/registration_form_builder.dart';
 import 'package:brechfete/presentation/screens/bookings/pages/widgets/registration_form_buttons.dart';
@@ -7,8 +8,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
-
-import '../booking_screen.dart';
 
 class ExpoRegistration extends StatefulWidget {
   const ExpoRegistration({
@@ -220,11 +219,9 @@ class _ExpoRegistrationState extends State<ExpoRegistration> {
   }
 
   void onStepContinue(int currentStep) {
-    //print("onnext - currentStep = $currentStep");
     if (isValidatedNotifier.value) {
-      //print("\nonnextIsValidated - currentStep = $currentStep");
       currentStepNotifier.value += 1;
-      //reseting for next field
+      //reseting for next field and checking whether secondField is validated or not to see if it should undergo validation in the next step
       if (currentStep == 0 && isSecondStepValidated) {
         isValidatedNotifier.value = true;
       } else {
@@ -234,7 +231,6 @@ class _ExpoRegistrationState extends State<ExpoRegistration> {
   }
 
   void onStepCancel(int currentStep) {
-    //print("\noncancel - currentStep = $currentStep");
     if (currentStep == 1) {
       setState(() {
         isValidatedNotifier.value
@@ -247,7 +243,6 @@ class _ExpoRegistrationState extends State<ExpoRegistration> {
   }
 
   void onPayLaterPressed() async {
-    //print("show popup and confirm");
     final shouldProceed = await showCustomAlertDialog(
       context,
       "Are you sure?",
@@ -271,7 +266,6 @@ class _ExpoRegistrationState extends State<ExpoRegistration> {
   }
 
   void onPayNowPressed() async {
-    //print("go to payment mode and book");
     final shouldProceed = await showCustomAlertDialog(
       context,
       "Are you sure?",

@@ -27,12 +27,10 @@ class _RegistrationFormHolderState extends State<RegistrationFormHolder> {
       autovalidateMode: AutovalidateMode.always,
       onChanged: () {
         if (_formKey.currentState!.validate()) {
-          print("success");
           //_formKey.currentState!.save();
           //return true to validate insittution
           isValidatedNotifier.value = true;
         } else {
-          print("failed");
           //return false to validate insittution
           isValidatedNotifier.value = false;
         }
