@@ -24,6 +24,7 @@ class _RegistrationFormHolderState extends State<RegistrationFormHolder> {
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
+      autovalidateMode: AutovalidateMode.always,
       onChanged: () {
         if (_formKey.currentState!.validate()) {
           print("success");
@@ -89,7 +90,7 @@ class _RegistrationFormHolderState extends State<RegistrationFormHolder> {
           CustomFormInput(
             labelText: "Landline / other",
             textInputType: TextInputType.number,
-            textInputAction: TextInputAction.next,
+            textInputAction: TextInputAction.done,
             hintText: "Enter ${isTelephoneSwitched ? "Phone" : "Landline"}",
             validator: (value) {
               if (value == null || value.isEmpty) {

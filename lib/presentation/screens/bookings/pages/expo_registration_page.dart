@@ -1,22 +1,16 @@
 import 'package:brechfete/core/constants.dart';
 import 'package:brechfete/presentation/root/app.dart';
-import 'package:brechfete/presentation/root/widgets/custom_form_input.dart';
 import 'package:brechfete/presentation/screens/bookings/pages/pay_now_page.dart';
 import 'package:brechfete/presentation/screens/bookings/pages/widgets/registration_form_builder.dart';
 import 'package:brechfete/presentation/screens/bookings/pages/widgets/registration_form_buttons.dart';
-import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
 import '../booking_screen.dart';
 
 class ExpoRegistration extends StatefulWidget {
-  static final formKey1 = GlobalKey<FormState>();
-
   const ExpoRegistration({
     Key? key,
   }) : super(key: key);
@@ -29,8 +23,8 @@ ValueNotifier<bool> isValidatedNotifier = ValueNotifier(false);
 
 class _ExpoRegistrationState extends State<ExpoRegistration> {
   ValueNotifier<int> currentStepNotifier = ValueNotifier(0);
-  //ValueNotifier<bool> institutionAutoValidateNotifier = ValueNotifier(false);
-  //ValueNotifier<bool> facultyAutoValidateNotifier = ValueNotifier(false);
+
+  bool isSecondStepValidated = false;
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +42,10 @@ class _ExpoRegistrationState extends State<ExpoRegistration> {
           extraRed,
           primaryDark,
         );
+        if (shouldPop != null && shouldPop) {
+          currentStepNotifier.value = 0;
+          isValidatedNotifier.value = false;
+        }
         return shouldPop ?? false;
       },
       child: Scaffold(
@@ -97,9 +95,8 @@ class _ExpoRegistrationState extends State<ExpoRegistration> {
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(showWarning);
                             }
-                          : () => onStepContinue(
-                              currentStep, firstStep, secondStep, thirdStep),
-                      onStepCancel: onStepCancel,
+                          : () => onStepContinue(currentStep),
+                      onStepCancel: () => onStepCancel(currentStep),
                       controlsBuilder: (context, buttonActions) {
                         return StepperActions(
                           buttonActions: buttonActions,
@@ -222,34 +219,35 @@ class _ExpoRegistrationState extends State<ExpoRegistration> {
     ];
   }
 
-  void onStepContinue(
-      int currentStep, int firstStep, int secondStep, int thirdStep) {
-    if (currentStep == firstStep) {
-      final isValidated = isValidatedNotifier.value;
-      if (isValidated) {
-        currentStepNotifier.value += 1;
+  void onStepContinue(int currentStep) {
+    //print("onnext - currentStep = $currentStep");
+    if (isValidatedNotifier.value) {
+      //print("\nonnextIsValidated - currentStep = $currentStep");
+      currentStepNotifier.value += 1;
+      //reseting for next field
+      if (currentStep == 0 && isSecondStepValidated) {
+        isValidatedNotifier.value = true;
+      } else {
+        isValidatedNotifier.value = false;
       }
-      isValidatedNotifier.value =
-          !isValidatedNotifier.value ? false : true; //reseting for next field
-    } else if (currentStep == secondStep) {
-      final isValidated = isValidatedNotifier.value;
-      if (isValidated) {
-        currentStepNotifier.value += 1;
-      }
-      isValidatedNotifier.value = false; //reseting for next field
     }
   }
 
-  void onStepCancel() {
-    //facultyAutoValidateNotifier.value = false;
-    //institutionAutoValidateNotifier.value = false;
-    //validate this based on currentstep like above
-    isValidatedNotifier.value = true; //
+  void onStepCancel(int currentStep) {
+    //print("\noncancel - currentStep = $currentStep");
+    if (currentStep == 1) {
+      setState(() {
+        isValidatedNotifier.value
+            ? isSecondStepValidated = true
+            : isSecondStepValidated = false;
+      });
+    }
+    isValidatedNotifier.value = true;
     currentStepNotifier.value -= 1;
   }
 
   void onPayLaterPressed() async {
-    print("show popup and confirm");
+    //print("show popup and confirm");
     final shouldProceed = await showCustomAlertDialog(
       context,
       "Are you sure?",
@@ -273,7 +271,7 @@ class _ExpoRegistrationState extends State<ExpoRegistration> {
   }
 
   void onPayNowPressed() async {
-    print("go to payment mode and book");
+    //print("go to payment mode and book");
     final shouldProceed = await showCustomAlertDialog(
       context,
       "Are you sure?",
