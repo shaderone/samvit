@@ -6,10 +6,12 @@ import 'package:flutter/services.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class RegistrationFormHolder extends StatefulWidget {
+  final ValueChanged<BuildContext> sendContext;
   final bool isInstitution;
   const RegistrationFormHolder({
     Key? key,
     required this.isInstitution,
+    required this.sendContext,
   }) : super(key: key);
 
   @override
@@ -20,15 +22,20 @@ class _RegistrationFormHolderState extends State<RegistrationFormHolder> {
   final _formKey = GlobalKey<FormState>();
   bool isTelephoneSwitched = false;
 
+  void manageContext() {
+    widget.sendContext(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
-      autovalidateMode: AutovalidateMode.always,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       onChanged: () {
         if (_formKey.currentState!.validate()) {
           //_formKey.currentState!.save();
           //return true to validate insittution
+          manageContext();
           isValidatedNotifier.value = true;
         } else {
           //return false to validate insittution

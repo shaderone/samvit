@@ -25,6 +25,16 @@ class _ExpoRegistrationState extends State<ExpoRegistration> {
 
   bool isSecondStepValidated = false;
 
+  // Manages the _inActive state for ChildWidget.
+  late BuildContext _registrationFormContext;
+
+  // Implements _manageStateForChildWidget(), the method called when the box is tapped.
+  void _manageRegistrationFormContext(BuildContext newValue) {
+    setState(() {
+      _registrationFormContext = newValue;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -167,39 +177,47 @@ class _ExpoRegistrationState extends State<ExpoRegistration> {
       int currentStep, int firstStep, int secondStep, int thirdStep) {
     return [
       Step(
-          state: currentStep > firstStep
-              ? StepState.complete
-              : currentStep == firstStep
-                  ? StepState.editing
-                  : StepState.disabled,
-          isActive: currentStep >= firstStep ? true : false,
-          title: Text(
-            "INSTITUTION INFO",
-            style: currentStep > firstStep
-                ? const TextStyle(
-                    color: secondaryBlueShadeLight,
-                    fontWeight: FontWeight.bold,
-                  )
-                : null,
-          ),
-          content: const RegistrationFormHolder(isInstitution: true)),
+        state: currentStep > firstStep
+            ? StepState.complete
+            : currentStep == firstStep
+                ? StepState.editing
+                : StepState.disabled,
+        isActive: currentStep >= firstStep ? true : false,
+        title: Text(
+          "INSTITUTION INFO",
+          style: currentStep > firstStep
+              ? const TextStyle(
+                  color: secondaryBlueShadeLight,
+                  fontWeight: FontWeight.bold,
+                )
+              : null,
+        ),
+        content: RegistrationFormHolder(
+          isInstitution: true,
+          sendContext: _manageRegistrationFormContext,
+        ),
+      ),
       Step(
-          state: currentStep > secondStep
-              ? StepState.complete
-              : currentStep == secondStep
-                  ? StepState.editing
-                  : StepState.disabled,
-          isActive: currentStep >= secondStep ? true : false,
-          title: Text(
-            "FACULTY INFO",
-            style: currentStep > secondStep
-                ? const TextStyle(
-                    color: secondaryBlueShadeLight,
-                    fontWeight: FontWeight.bold,
-                  )
-                : null,
-          ),
-          content: const RegistrationFormHolder(isInstitution: false)),
+        state: currentStep > secondStep
+            ? StepState.complete
+            : currentStep == secondStep
+                ? StepState.editing
+                : StepState.disabled,
+        isActive: currentStep >= secondStep ? true : false,
+        title: Text(
+          "FACULTY INFO",
+          style: currentStep > secondStep
+              ? const TextStyle(
+                  color: secondaryBlueShadeLight,
+                  fontWeight: FontWeight.bold,
+                )
+              : null,
+        ),
+        content: RegistrationFormHolder(
+          isInstitution: false,
+          sendContext: _manageRegistrationFormContext,
+        ),
+      ),
       Step(
         state:
             currentStep == thirdStep ? StepState.complete : StepState.disabled,
