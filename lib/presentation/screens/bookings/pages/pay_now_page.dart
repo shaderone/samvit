@@ -123,6 +123,48 @@ class PayNowPage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: extraYellow.withOpacity(.05),
+                              borderRadius: BorderRadius.circular(5),
+                              border: Border.all(
+                                color: extraYellow.withOpacity(.5),
+                              ),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(15.0),
+                              child: RichText(
+                                textAlign: TextAlign.center,
+                                text: TextSpan(
+                                  style: DefaultTextStyle.of(context).style,
+                                  children: const [
+                                    TextSpan(
+                                      text:
+                                          "Amount to Pay : 20 x 40 (slots) = ",
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: textWhiteShadeLight,
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text: "800 ₹",
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
                     Column(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
