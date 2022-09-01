@@ -9,6 +9,7 @@ class CardMiddleNormalRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -28,14 +29,15 @@ class CardMiddleNormalRow extends StatelessWidget {
             ),
           ],
         ),
-        const ReservationChip(
+        ReservationChip(
           chipCrossAxisAlignment: CrossAxisAlignment.start,
           chipTitle: "Time",
           chipText: "10:00",
-          chipWidth: 90,
+          chipWidth: screenWidth < 320 ? 90 : 110,
           chipBgColor: primaryDarkShadeLight,
           chipStrokeColor: strokeLight,
           chipTimePeriod: "AM",
+          chipTextColor: pureWhite,
         ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,

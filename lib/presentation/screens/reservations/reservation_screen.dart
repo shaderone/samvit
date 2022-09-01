@@ -90,20 +90,17 @@ class ReservationCard extends StatelessWidget {
             ? const EdgeInsets.symmetric(vertical: 20, horizontal: 10)
             : const EdgeInsets.all(10),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Column(
-              children: [
-                const CardTop(),
-                screenWidth <= extraSmallScreenWidth
-                    ? const SizedBox(height: 10)
-                    : const SizedBox(height: 15),
-                const CardMiddle(),
-                screenWidth <= extraSmallScreenWidth
-                    ? const SizedBox(height: 10)
-                    : const SizedBox(height: 15),
-                const CardBottom(),
-              ],
-            )
+            const CardTop(),
+            screenWidth <= extraSmallScreenWidth
+                ? const SizedBox(height: 10)
+                : const SizedBox(height: 15),
+            const CardMiddle(),
+            screenWidth <= extraSmallScreenWidth
+                ? const SizedBox(height: 10)
+                : const SizedBox(height: 15),
+            const CardBottom(),
           ],
         ),
       ),
@@ -119,44 +116,22 @@ class CardTop extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    return Row(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded(
-          flex: 7,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "St.Joseph HSS",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: pureWhite.withOpacity(.85),
-                ),
-              ),
-              const SizedBox(height: 5),
-              Text(
-                "Near market roard, changanacherry",
-                style: TextStyle(
-                  fontSize: screenWidth <= 320 ? 12 : 14,
-                ),
-              ),
-            ],
+        Text(
+          "St.Joseph HSS",
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: pureWhite.withOpacity(.85),
           ),
         ),
-        Flexible(
-          flex: 1,
-          child: CircleAvatar(
-            radius: 22,
-            backgroundColor: const Color(0xFFEC5146),
-            child: IconButton(
-              icon: Icon(
-                Icons.delete_forever,
-                size: screenWidth <= 320 ? 18 : 23,
-                color: pureWhite,
-              ),
-              onPressed: () {},
-            ),
+        const SizedBox(height: 5),
+        Text(
+          "Near market roard, changanacherry",
+          style: TextStyle(
+            fontSize: screenWidth <= 320 ? 12 : 14,
           ),
         ),
       ],
@@ -175,19 +150,5 @@ class CardMiddle extends StatelessWidget {
     return screenWidth <= extraSmallScreenWidth
         ? const CardMiddleWrappedRow()
         : const CardMiddleNormalRow();
-  }
-}
-
-class CardBottom extends StatelessWidget {
-  const CardBottom({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    return screenWidth <= extraSmallScreenWidth
-        ? const CardBottomWrappedRow()
-        : const CardBottomNormalRow();
   }
 }
