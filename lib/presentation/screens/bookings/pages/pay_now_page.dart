@@ -1,7 +1,6 @@
 import 'package:brechfete/core/constants.dart';
 import 'package:brechfete/presentation/root/widgets/custom_form_input.dart';
 import 'package:brechfete/presentation/screens/bookings/pages/booking_success_page.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -17,7 +16,6 @@ class PayNowPage extends StatefulWidget {
 }
 
 class _PayNowPageState extends State<PayNowPage> {
-  Pet _pet = Pet.dog;
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -168,6 +166,7 @@ class _PayNowPageState extends State<PayNowPage> {
                           if (value == null || value.isEmpty) {
                             return "Amount is required";
                           }
+                          return null;
                         },
                         textInputAction: TextInputAction.done,
                         hintText: "Enter cash recived",

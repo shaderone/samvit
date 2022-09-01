@@ -10,11 +10,10 @@ class SlotCalender extends StatefulWidget {
 }
 
 class _SlotCalenderState extends State<SlotCalender> {
-  CalendarFormat _calendarFormat = CalendarFormat.week;
+  final CalendarFormat _calendarFormat = CalendarFormat.week;
   DateTime _focusedDay = DateTime.utc(2022, 9, 20);
   DateTime? _selectedDay;
-  DateTime?
-      _previousSelectedDay; // to compare dates to decide whether to show time cards or not
+  // to compare dates to decide whether to show time cards or not
   //set holiday and booked days styles (unavailable days)
   //set today style
   @override

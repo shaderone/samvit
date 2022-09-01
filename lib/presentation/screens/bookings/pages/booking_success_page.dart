@@ -1,8 +1,6 @@
 import 'package:brechfete/core/constants.dart';
 import 'package:brechfete/presentation/root/app.dart';
 import 'package:brechfete/presentation/root/widgets/bottom_navbar.dart';
-import 'package:brechfete/presentation/screens/bookings/booking_screen.dart';
-import 'package:brechfete/presentation/screens/bookings/pages/expo_registration_page.dart';
 import 'package:brechfete/presentation/screens/reservations/reservation_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';

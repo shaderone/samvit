@@ -25,10 +25,8 @@ class _ExpoRegistrationState extends State<ExpoRegistration> {
 
   bool isSecondStepValidated = false;
 
-  // Manages the _inActive state for ChildWidget.
   late BuildContext _registrationFormContext;
 
-  // Implements _manageStateForChildWidget(), the method called when the box is tapped.
   void _manageRegistrationFormContext(BuildContext newValue) {
     setState(() {
       _registrationFormContext = newValue;
