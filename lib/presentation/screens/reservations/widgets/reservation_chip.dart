@@ -58,11 +58,7 @@ class ReservationChip extends StatelessWidget {
             : SizedBox(height: chipTitle == "" ? 0 : 3),
         SizedBox(
           width: chipWidth,
-          height: isPaymentChip
-              ? 40
-              : chipTitle == ""
-                  ? 50
-                  : 40,
+          height: isPaymentChip ? 40 : 45,
           child: Card(
             color: chipBgColor,
             shape: RoundedRectangleBorder(
@@ -83,15 +79,15 @@ class ReservationChip extends StatelessWidget {
                       TextSpan(
                         text: chipText,
                         style: TextStyle(
-                          fontSize: chipTitle == "" ? 14 : 12,
+                          fontSize: 14,
                           fontWeight: FontWeight.bold,
                           color: chipTextColor,
                         ),
                       ),
                       TextSpan(
                         text: " $chipTimePeriod",
-                        style: TextStyle(
-                          fontSize: chipTitle == "" ? 14 : 12,
+                        style: const TextStyle(
+                          fontSize: 14,
                           fontWeight: FontWeight.bold,
                           color: secondaryBlueShadeLight,
                         ),

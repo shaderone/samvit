@@ -20,16 +20,15 @@ class CardTop extends StatelessWidget {
             children: [
               Text(
                 "St.Joseph HSS",
-                style: GoogleFonts.poppins(
+                style: GoogleFonts.montserrat(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: pureWhite.withOpacity(.85),
                 ),
               ),
               const SizedBox(height: 5),
               Text(
                 "Near market roard, changanacherry",
-                style: GoogleFonts.montserrat(
+                style: GoogleFonts.poppins(
                   fontSize: screenWidth <= 320 ? 12 : 14,
                 ),
               ),
@@ -42,14 +41,14 @@ class CardTop extends StatelessWidget {
             child: ElevatedButton(
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(
-                  secondaryBlueShadeDark.withOpacity(.5),
+                  secondaryBlueShadeDark,
                 ),
                 padding: MaterialStateProperty.all(
                   const EdgeInsets.symmetric(horizontal: 10),
                 ),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(50),
+                    borderRadius: BorderRadius.circular(12),
                   ),
                 ),
               ),
@@ -81,131 +80,40 @@ class CardMiddle extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              "Date",
-              style: TextStyle(
-                fontSize: 16,
-                color: textWhiteShadeDark,
-                fontWeight: FontWeight.w800,
-              ),
-            ),
-            //replace with somthing more dynamic
-            const SizedBox(height: 10),
-            Text(
-              "Tue, 22 september",
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: pureWhite.withOpacity(.85),
-              ),
-            ),
-          ],
+        ReservationChip(
+          chipCrossAxisAlignment: CrossAxisAlignment.start,
+          chipTitle: "Date",
+          chipText: "Tue, 22 September",
+          chipWidth: screenWidth < 320 ? 90 : 160,
+          chipBgColor: primaryDarkShadeLight,
+          chipStrokeColor: textWhiteShadeDark,
+          chipTimePeriod: "",
+          chipTextColor: pureWhite,
+          chipTitleColor: secondaryBlueShadeLight.withOpacity(.8),
         ),
         ReservationChip(
           chipCrossAxisAlignment: CrossAxisAlignment.start,
           chipTitle: "Time",
           chipText: "10:00",
-          chipWidth: screenWidth < 320 ? 90 : 110,
+          chipWidth: screenWidth < 320 ? 90 : 100,
           chipBgColor: primaryDarkShadeLight,
-          chipStrokeColor: textWhiteShadeLight,
+          chipStrokeColor: textWhiteShadeDark,
           chipTimePeriod: "AM",
           chipTextColor: pureWhite,
           chipTitleColor: secondaryBlueShadeLight.withOpacity(.8),
         ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              "Slots",
-              style: TextStyle(
-                fontSize: 16,
-                color: textWhiteShadeDark,
-                fontWeight: FontWeight.w800,
-              ),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              "300",
-              style: TextStyle(
-                letterSpacing: 1,
-                fontSize: 20,
-                fontWeight: FontWeight.w900,
-                color: pureWhite.withOpacity(.85),
-              ),
-            ),
-          ],
+        ReservationChip(
+          chipCrossAxisAlignment: CrossAxisAlignment.start,
+          chipTitle: "Slots",
+          chipText: "300",
+          chipWidth: screenWidth < 320 ? 90 : 70,
+          chipBgColor: primaryDarkShadeLight,
+          chipStrokeColor: textWhiteShadeDark,
+          chipTimePeriod: "",
+          chipTextColor: pureWhite,
+          chipTitleColor: secondaryBlueShadeLight.withOpacity(.8),
         ),
       ],
     );
   }
 }
-
-//class CardBottom extends StatelessWidget {
-//  const CardBottom({
-//    Key? key,
-//  }) : super(key: key);
-//
-//  @override
-//  Widget build(BuildContext context) {
-//    return Column(
-//      children: [
-//        const Divider(thickness: 2),
-//        const SizedBox(height: 5),
-//        Row(
-//          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//          children: [
-//            Expanded(
-//              child: SizedBox(
-//                height: 50,
-//                child: ElevatedButton(
-//                  style: ButtonStyle(
-//                    padding: MaterialStateProperty.all(
-//                      const EdgeInsets.symmetric(horizontal: 10),
-//                    ),
-//                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-//                      RoundedRectangleBorder(
-//                        borderRadius: BorderRadius.circular(5),
-//                      ),
-//                    ),
-//                  ),
-//                  onPressed: () {
-//                    //reshedule
-//                  },
-//                  child: Row(
-//                    mainAxisAlignment: MainAxisAlignment.center,
-//                    children: const [
-//                      Text("Cancel & Reshedule"),
-//                      SizedBox(width: 10),
-//                      Icon(Icons.event_repeat),
-//                    ],
-//                  ),
-//                ),
-//              ),
-//            ),
-//          ],
-//        ),
-//      ],
-//    );
-//  }
-//}
-//
-//class CardBottome extends StatelessWidget {
-//  const CardBottome({
-//    Key? key,
-//  }) : super(key: key);
-//
-//  @override
-//  Widget build(BuildContext context) {
-//    return Column(
-//      children: [
-//        Row(
-//          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//          children: [],
-//        ),
-//      ],
-//    );
-//  }
-//}

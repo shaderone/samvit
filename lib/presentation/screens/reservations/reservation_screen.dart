@@ -79,7 +79,7 @@ class ReservationCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     return Card(
-      color: primaryDarkShadeLight.withOpacity(.35),
+      color: textWhiteShadeDark.withOpacity(.075),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
       ),
@@ -91,17 +91,14 @@ class ReservationCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const SizedBox(height: 5),
             const CardTop(),
             screenWidth <= extraSmallScreenWidth
                 ? const SizedBox(height: 10)
-                : const SizedBox(height: 15),
-            const Divider(),
-            //const SizedBox(height: 5),
+                : const SizedBox(height: 5),
+            Divider(color: textWhiteShadeDark.withOpacity(.5)),
+            const SizedBox(height: 5),
             const CardMiddle(),
-            //screenWidth <= extraSmallScreenWidth
-            //    ? const SizedBox(height: 10)
-            //    : const SizedBox(height: 15),
-            //const CardBottom(),
           ],
         ),
       ),
