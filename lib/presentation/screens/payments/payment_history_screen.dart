@@ -1,5 +1,6 @@
 import 'package:brechfete/core/constants.dart';
 import 'package:brechfete/presentation/screens/bookings/booking_screen.dart';
+import 'package:brechfete/presentation/screens/reservations/widgets/reservation_chip.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
@@ -67,11 +68,31 @@ class _PaymentHistoryScreenState extends State<PaymentHistoryScreen> {
             uniquePageKey: 'page1',
             length: 15,
             builder: (BuildContext context, index) {
-              return const Padding(
-                padding: EdgeInsets.only(top: 10),
-                child: ListTile(
-                  leading: Text("payment data"),
-                  trailing: Icon(Icons.money),
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 5),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ListTile(
+                      leading: const Text(
+                        "St.Joseph Hss",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                      trailing: ReservationChip(
+                        chipCrossAxisAlignment: CrossAxisAlignment.center,
+                        chipTitle: "",
+                        chipText: "PAID",
+                        chipWidth: 110,
+                        chipBgColor: extraGreen.withOpacity(0.1),
+                        chipStrokeColor: extraGreen,
+                        isPaymentChip: true,
+                      ),
+                    ),
+                    const Divider(thickness: 2)
+                  ],
                 ),
               );
             },
@@ -80,11 +101,31 @@ class _PaymentHistoryScreenState extends State<PaymentHistoryScreen> {
             uniquePageKey: 'page2',
             length: 5,
             builder: (context, index) {
-              return const Padding(
-                padding: EdgeInsets.only(top: 10),
-                child: ListTile(
-                  leading: Text("payment data"),
-                  trailing: Icon(Icons.money),
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 5),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ListTile(
+                      leading: const Text(
+                        "St.Joseph Hss",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                      trailing: ReservationChip(
+                        chipCrossAxisAlignment: CrossAxisAlignment.center,
+                        chipTitle: "",
+                        chipText: "PENDING",
+                        chipWidth: 110,
+                        chipBgColor: extraYellow.withOpacity(0.1),
+                        chipStrokeColor: extraYellow,
+                        isPaymentChip: true,
+                      ),
+                    ),
+                    const Divider(thickness: 2)
+                  ],
                 ),
               );
             },
@@ -93,11 +134,31 @@ class _PaymentHistoryScreenState extends State<PaymentHistoryScreen> {
             uniquePageKey: 'page3',
             length: 3,
             builder: (context, index) {
-              return const Padding(
-                padding: EdgeInsets.only(top: 10),
-                child: ListTile(
-                  leading: Text("payment data"),
-                  trailing: Icon(Icons.money),
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 5),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ListTile(
+                      leading: const Text(
+                        "St.Joseph Hss",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                      trailing: ReservationChip(
+                        chipCrossAxisAlignment: CrossAxisAlignment.center,
+                        chipTitle: "",
+                        chipText: "PROCESSING",
+                        chipWidth: 130,
+                        chipBgColor: secondaryBlueShadeDark.withOpacity(0.1),
+                        chipStrokeColor: secondaryBlueShadeDark,
+                        isPaymentChip: true,
+                      ),
+                    ),
+                    const Divider(thickness: 2)
+                  ],
                 ),
               );
             },

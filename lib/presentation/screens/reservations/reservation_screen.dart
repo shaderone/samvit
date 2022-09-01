@@ -1,10 +1,9 @@
 import 'package:brechfete/presentation/screens/bookings/booking_screen.dart';
+import 'package:brechfete/presentation/screens/reservations/widgets/reservation_card_widgets/reservation_cards.dart';
 import 'package:flutter/material.dart';
 import 'package:brechfete/core/constants.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'widgets/reservation_card_widgets/card_bottom_widget.dart';
-import 'widgets/reservation_card_widgets/card_middle_widget.dart';
 
 const extraSmallScreenWidth = 320;
 
@@ -105,50 +104,5 @@ class ReservationCard extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-class CardTop extends StatelessWidget {
-  const CardTop({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          "St.Joseph HSS",
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: pureWhite.withOpacity(.85),
-          ),
-        ),
-        const SizedBox(height: 5),
-        Text(
-          "Near market roard, changanacherry",
-          style: TextStyle(
-            fontSize: screenWidth <= 320 ? 12 : 14,
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class CardMiddle extends StatelessWidget {
-  const CardMiddle({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    return screenWidth <= extraSmallScreenWidth
-        ? const CardMiddleWrappedRow()
-        : const CardMiddleNormalRow();
   }
 }
