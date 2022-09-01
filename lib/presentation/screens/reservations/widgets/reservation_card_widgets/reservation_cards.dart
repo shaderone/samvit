@@ -41,6 +41,9 @@ class CardTop extends StatelessWidget {
             height: 56,
             child: ElevatedButton(
               style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(
+                  secondaryBlueShadeDark.withOpacity(.5),
+                ),
                 padding: MaterialStateProperty.all(
                   const EdgeInsets.symmetric(horizontal: 10),
                 ),
@@ -83,7 +86,11 @@ class CardMiddle extends StatelessWidget {
           children: [
             const Text(
               "Date",
-              style: TextStyle(color: extraYellow),
+              style: TextStyle(
+                fontSize: 16,
+                color: textWhiteShadeDark,
+                fontWeight: FontWeight.w800,
+              ),
             ),
             //replace with somthing more dynamic
             const SizedBox(height: 10),
@@ -106,14 +113,18 @@ class CardMiddle extends StatelessWidget {
           chipStrokeColor: textWhiteShadeLight,
           chipTimePeriod: "AM",
           chipTextColor: pureWhite,
-          chipTitleColor: extraYellow,
+          chipTitleColor: secondaryBlueShadeLight.withOpacity(.8),
         ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
               "Slots",
-              style: TextStyle(color: extraYellow),
+              style: TextStyle(
+                fontSize: 16,
+                color: textWhiteShadeDark,
+                fontWeight: FontWeight.w800,
+              ),
             ),
             const SizedBox(height: 10),
             Text(
@@ -132,69 +143,69 @@ class CardMiddle extends StatelessWidget {
   }
 }
 
-class CardBottom extends StatelessWidget {
-  const CardBottom({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const Divider(thickness: 2),
-        const SizedBox(height: 5),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: SizedBox(
-                height: 50,
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    padding: MaterialStateProperty.all(
-                      const EdgeInsets.symmetric(horizontal: 10),
-                    ),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                    ),
-                  ),
-                  onPressed: () {
-                    //reshedule
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Text("Cancel & Reshedule"),
-                      SizedBox(width: 10),
-                      Icon(Icons.event_repeat),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-}
-
-class CardBottome extends StatelessWidget {
-  const CardBottome({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [],
-        ),
-      ],
-    );
-  }
-}
+//class CardBottom extends StatelessWidget {
+//  const CardBottom({
+//    Key? key,
+//  }) : super(key: key);
+//
+//  @override
+//  Widget build(BuildContext context) {
+//    return Column(
+//      children: [
+//        const Divider(thickness: 2),
+//        const SizedBox(height: 5),
+//        Row(
+//          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//          children: [
+//            Expanded(
+//              child: SizedBox(
+//                height: 50,
+//                child: ElevatedButton(
+//                  style: ButtonStyle(
+//                    padding: MaterialStateProperty.all(
+//                      const EdgeInsets.symmetric(horizontal: 10),
+//                    ),
+//                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+//                      RoundedRectangleBorder(
+//                        borderRadius: BorderRadius.circular(5),
+//                      ),
+//                    ),
+//                  ),
+//                  onPressed: () {
+//                    //reshedule
+//                  },
+//                  child: Row(
+//                    mainAxisAlignment: MainAxisAlignment.center,
+//                    children: const [
+//                      Text("Cancel & Reshedule"),
+//                      SizedBox(width: 10),
+//                      Icon(Icons.event_repeat),
+//                    ],
+//                  ),
+//                ),
+//              ),
+//            ),
+//          ],
+//        ),
+//      ],
+//    );
+//  }
+//}
+//
+//class CardBottome extends StatelessWidget {
+//  const CardBottome({
+//    Key? key,
+//  }) : super(key: key);
+//
+//  @override
+//  Widget build(BuildContext context) {
+//    return Column(
+//      children: [
+//        Row(
+//          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//          children: [],
+//        ),
+//      ],
+//    );
+//  }
+//}

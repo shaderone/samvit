@@ -35,8 +35,22 @@ class ReservationChip extends StatelessWidget {
         isPaymentChip
             ? const SizedBox()
             : chipTitleColor != null
-                ? Text(chipTitle, style: TextStyle(color: chipTitleColor))
-                : Text(chipTitle),
+                ? Text(
+                    chipTitle,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: textWhiteShadeDark,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  )
+                : Text(
+                    chipTitle,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: textWhiteShadeDark,
+                    ),
+                  ),
         isPaymentChip
             ? const SizedBox(
                 height: 7,
