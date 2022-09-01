@@ -229,7 +229,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 var client = http.Client();
                                 var response = await client.post(
                                   Uri.parse(
-                                    "http://117.239.74.148/auth/token/login/",
+                                    "https://sbcollege.info/auth/token/login/",
                                   ),
                                   headers: {
                                     "Content-Type": "application/json",
@@ -245,6 +245,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 final data = jsonDecode(
                                   response.body.toString(),
                                 );
+                                print(isAbsorbing);
                                 if (response.statusCode == 200) {
                                   final SharedPreferences prefs =
                                       await SharedPreferences.getInstance();
