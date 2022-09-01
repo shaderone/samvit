@@ -29,7 +29,7 @@ class _BookingScreenState extends State<BookingScreen> {
       GlobalKey<TimeSlotListState>();
   initiateTimeSlotScroll() {
     if (_timeSlotListStateKey.currentState == null) {
-      print("object");
+      //print("object");
       return;
     } else {
       _timeSlotListStateKey.currentState!.scrollToTimeSlot();

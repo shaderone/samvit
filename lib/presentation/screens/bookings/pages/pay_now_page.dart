@@ -6,16 +6,9 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
-enum Pet { dog, cat }
-
-class PayNowPage extends StatefulWidget {
+class PayNowPage extends StatelessWidget {
+  static final _amountFormKey = GlobalKey<FormState>();
   const PayNowPage({Key? key}) : super(key: key);
-
-  @override
-  State<PayNowPage> createState() => _PayNowPageState();
-}
-
-class _PayNowPageState extends State<PayNowPage> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -33,20 +26,6 @@ class _PayNowPageState extends State<PayNowPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: const [
-                    //Radio<Pet>(
-                    //  fillColor: MaterialStateColor.resolveWith(
-                    //    (states) => secondaryBlueShadeLight,
-                    //  ),
-                    //  focusColor: MaterialStateColor.resolveWith(
-                    //      (states) => secondaryBlueShadeDark),
-                    //  value: Pet.dog,
-                    //  groupValue: _pet,
-                    //  onChanged: (Pet? value) {
-                    //    setState(() {
-                    //      _pet = value!;
-                    //    });
-                    //  },
-                    //),
                     Text(
                       "Online",
                       style: TextStyle(
@@ -60,20 +39,6 @@ class _PayNowPageState extends State<PayNowPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: const [
-                    //Radio<Pet>(
-                    //  fillColor: MaterialStateColor.resolveWith(
-                    //    (states) => secondaryBlueShadeLight,
-                    //  ),
-                    //  focusColor: MaterialStateColor.resolveWith(
-                    //      (states) => secondaryBlueShadeDark),
-                    //  value: Pet.cat,
-                    //  groupValue: _pet,
-                    //  onChanged: (Pet? value) {
-                    //    setState(() {
-                    //      _pet = value!;
-                    //    });
-                    //  },
-                    //),
                     Text(
                       "Ready Cash",
                       style: TextStyle(
@@ -150,53 +115,63 @@ class _PayNowPageState extends State<PayNowPage> {
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      CustomFormInput(
-                        labelText: "Amount",
-                        textInputType: TextInputType.number,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Amount is required";
-                          }
-                          return null;
-                        },
-                        textInputAction: TextInputAction.done,
-                        hintText: "Enter cash recived",
-                        suffixIcon: Icons.money,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
-                        ],
-                        maxInputLength: 5,
-                      )
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: const Size.fromHeight(50),
+            Form(
+              key: _amountFormKey,
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CustomFormInput(
+                          autoValidateMode: AutovalidateMode.onUserInteraction,
+                          labelText: "Amount",
+                          textInputType: TextInputType.number,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Amount is required";
+                            }
+                            return null;
+                          },
+                          textInputAction: TextInputAction.done,
+                          hintText: "Enter cash recived",
+                          suffixIcon: Icons.money,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
+                          ],
+                          maxInputLength: 5,
+                        )
+                      ],
                     ),
-                    onPressed: () {
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (context) => const BookingSuccessPage(
-                            animationWidget: "assets/lottie_files/confirm.json",
-                            statusText: "Booking Successful!",
-                          ),
-                        ),
-                      );
-                    },
-                    child: const Text("Send Confirmation Link"),
-                  ),
-                  const SizedBox(height: 20),
-                ],
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: const Size.fromHeight(50),
+                      ),
+                      onPressed: () {
+                        _amountFormKey.currentState!.validate();
+                        if (_amountFormKey.currentState!.validate()) {
+                          //print("success");
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => const BookingSuccessPage(
+                                animationWidget:
+                                    "assets/lottie_files/confirm.json",
+                                statusText: "Booking Successful!",
+                              ),
+                            ),
+                          );
+                        }
+                      },
+                      child: const Text("Send Confirmation Link"),
+                    ),
+                    const SizedBox(height: 20),
+                  ],
+                ),
               ),
             ),
           ],

@@ -320,7 +320,11 @@ Future<bool?> showCustomAlertDialog(
   return showDialog(
     context: context,
     builder: (context) => AlertDialog(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(8.0)),
+      ),
       backgroundColor: primaryDark,
+      insetPadding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
       title: Text(heading),
       titleTextStyle: const TextStyle(fontSize: 20),
       content: Text(subHeading),
@@ -345,8 +349,8 @@ Future<bool?> showCustomAlertDialog(
         ),
         OutlinedButton(
           onPressed: () {
-            print(
-                "${subHeading.split(" ")[2] + subHeading.split(" ")[3]} succeess");
+            //print(
+            //    "${subHeading.split(" ")[2] + subHeading.split(" ")[3]} succeess");
             Navigator.of(context).pop(true);
           },
           style: ButtonStyle(

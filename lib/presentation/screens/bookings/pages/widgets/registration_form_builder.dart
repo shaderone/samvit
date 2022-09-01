@@ -55,6 +55,9 @@ class _RegistrationFormHolderState extends State<RegistrationFormHolder> {
               if (value == null || value.isEmpty) {
                 return "Name is required";
               }
+              if (value.length >= 70) {
+                return "Name is too long";
+              }
               return null;
             },
           ),
@@ -82,6 +85,8 @@ class _RegistrationFormHolderState extends State<RegistrationFormHolder> {
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return "Phone is required";
+              } else if (value.length != 10) {
+                return "Enter a valid phone number";
               }
               return null;
             },
@@ -100,8 +105,10 @@ class _RegistrationFormHolderState extends State<RegistrationFormHolder> {
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return "${widget.isInstitution ? "Institution" : "Faculty"} Landline/phone is required";
-              } else if (value.length > 11) {
-                return "Enter a valid phone number";
+              } else if (value.length != 11 && !isTelephoneSwitched) {
+                return "Enter a valid telephone";
+              } else if (value.length != 10 && isTelephoneSwitched) {
+                return "Enter a valid phone";
               }
               return null;
             },
