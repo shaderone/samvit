@@ -233,15 +233,15 @@ class _LoginScreenState extends State<LoginScreen> {
                                 print("req started");
                                 var response = await client.post(
                                   Uri.parse(
-                                    "https://shielded-fjord-46900.herokuapp.com/data",
+                                    "http://117.239.74.148/auth/token/login/",
                                   ),
                                   headers: {
                                     "Content-Type": "application/json",
                                   },
                                   body: jsonEncode(
                                     {
-                                      'user_mobile': phone,
-                                      'user_password': password,
+                                      'phone': phone,
+                                      'password': password,
                                     },
                                   ),
                                 );
