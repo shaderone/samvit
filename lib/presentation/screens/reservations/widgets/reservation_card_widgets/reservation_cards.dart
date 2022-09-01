@@ -1,6 +1,7 @@
 import 'package:brechfete/core/constants.dart';
 import 'package:brechfete/presentation/screens/reservations/widgets/reservation_chip.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CardTop extends StatelessWidget {
   const CardTop({
@@ -10,22 +11,55 @@ class CardTop extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Row(
       children: [
-        Text(
-          "St.Joseph HSS",
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: pureWhite.withOpacity(.85),
+        Expanded(
+          flex: 5,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "St.Joseph HSS",
+                style: GoogleFonts.poppins(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: pureWhite.withOpacity(.85),
+                ),
+              ),
+              const SizedBox(height: 5),
+              Text(
+                "Near market roard, changanacherry",
+                style: GoogleFonts.montserrat(
+                  fontSize: screenWidth <= 320 ? 12 : 14,
+                ),
+              ),
+            ],
           ),
         ),
-        const SizedBox(height: 5),
-        Text(
-          "Near market roard, changanacherry",
-          style: TextStyle(
-            fontSize: screenWidth <= 320 ? 12 : 14,
+        Expanded(
+          child: SizedBox(
+            height: 56,
+            child: ElevatedButton(
+              style: ButtonStyle(
+                padding: MaterialStateProperty.all(
+                  const EdgeInsets.symmetric(horizontal: 10),
+                ),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                ),
+              ),
+              onPressed: () {
+                //reshedule
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Icon(Icons.event_repeat),
+                ],
+              ),
+            ),
           ),
         ),
       ],
@@ -47,7 +81,10 @@ class CardMiddle extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text("Date"),
+            const Text(
+              "Date",
+              style: TextStyle(color: extraYellow),
+            ),
             //replace with somthing more dynamic
             const SizedBox(height: 10),
             Text(
@@ -66,14 +103,18 @@ class CardMiddle extends StatelessWidget {
           chipText: "10:00",
           chipWidth: screenWidth < 320 ? 90 : 110,
           chipBgColor: primaryDarkShadeLight,
-          chipStrokeColor: strokeLight,
+          chipStrokeColor: textWhiteShadeLight,
           chipTimePeriod: "AM",
           chipTextColor: pureWhite,
+          chipTitleColor: extraYellow,
         ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text("Slots"),
+            const Text(
+              "Slots",
+              style: TextStyle(color: extraYellow),
+            ),
             const SizedBox(height: 10),
             Text(
               "300",
@@ -107,7 +148,7 @@ class CardBottom extends StatelessWidget {
           children: [
             Expanded(
               child: SizedBox(
-                height: 60,
+                height: 50,
                 child: ElevatedButton(
                   style: ButtonStyle(
                     padding: MaterialStateProperty.all(
@@ -134,6 +175,24 @@ class CardBottom extends StatelessWidget {
               ),
             ),
           ],
+        ),
+      ],
+    );
+  }
+}
+
+class CardBottome extends StatelessWidget {
+  const CardBottome({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [],
         ),
       ],
     );

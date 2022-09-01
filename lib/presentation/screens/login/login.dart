@@ -1,8 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
-import 'dart:io';
-
 import 'package:brechfete/core/constants.dart';
 import 'package:brechfete/presentation/root/app.dart';
 import 'package:brechfete/presentation/root/widgets/custom_form_input.dart';
@@ -230,7 +227,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                   status: 'Vefifying...',
                                 );
                                 var client = http.Client();
-                                print("req started");
                                 var response = await client.post(
                                   Uri.parse(
                                     "http://117.239.74.148/auth/token/login/",
@@ -246,9 +242,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                 );
                                 EasyLoading.dismiss();
-                                final data =
-                                    jsonDecode(response.body.toString());
-                                //print(data);
+                                final data = jsonDecode(
+                                  response.body.toString(),
+                                );
                                 if (response.statusCode == 200) {
                                   final SharedPreferences prefs =
                                       await SharedPreferences.getInstance();

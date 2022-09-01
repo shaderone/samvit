@@ -6,6 +6,7 @@ class ReservationChip extends StatelessWidget {
   final String chipTitle;
   final String chipText;
   final double chipWidth;
+  final Color? chipTitleColor;
   final Color chipTextColor;
   final Color chipBgColor;
   final Color chipStrokeColor;
@@ -23,6 +24,7 @@ class ReservationChip extends StatelessWidget {
     required this.chipStrokeColor,
     this.chipTextColor = textWhiteShadeLight,
     this.isPaymentChip = false,
+    this.chipTitleColor,
   }) : super(key: key);
 
   @override
@@ -30,7 +32,11 @@ class ReservationChip extends StatelessWidget {
     return Column(
       crossAxisAlignment: chipCrossAxisAlignment,
       children: [
-        isPaymentChip ? const SizedBox() : Text(chipTitle),
+        isPaymentChip
+            ? const SizedBox()
+            : chipTitleColor != null
+                ? Text(chipTitle, style: TextStyle(color: chipTitleColor))
+                : Text(chipTitle),
         isPaymentChip
             ? const SizedBox(
                 height: 7,

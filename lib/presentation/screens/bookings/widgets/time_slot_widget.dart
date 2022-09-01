@@ -64,6 +64,7 @@ class TimeSlotListState extends State<TimeSlotList> {
                           setState(() {
                             selectedIndex = index;
                           });
+                          //get time from api response and send request to get slot info
                         },
                         child: ReservationChip(
                           chipCrossAxisAlignment: CrossAxisAlignment.center,

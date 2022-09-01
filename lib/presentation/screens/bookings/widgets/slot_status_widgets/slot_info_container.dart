@@ -123,6 +123,9 @@ class SlotInputItem extends StatelessWidget {
         ),
         onTap: reOrderTimeSlotList,
         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+        onChanged: (slotCount) {
+          //see if slotCount is greater than remaining slot and validate accordingly
+        },
       ),
     );
   }

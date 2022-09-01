@@ -95,11 +95,13 @@ class ReservationCard extends StatelessWidget {
             screenWidth <= extraSmallScreenWidth
                 ? const SizedBox(height: 10)
                 : const SizedBox(height: 15),
+            const Divider(),
+            //const SizedBox(height: 5),
             const CardMiddle(),
-            screenWidth <= extraSmallScreenWidth
-                ? const SizedBox(height: 10)
-                : const SizedBox(height: 15),
-            const CardBottom(),
+            //screenWidth <= extraSmallScreenWidth
+            //    ? const SizedBox(height: 10)
+            //    : const SizedBox(height: 15),
+            //const CardBottom(),
           ],
         ),
       ),

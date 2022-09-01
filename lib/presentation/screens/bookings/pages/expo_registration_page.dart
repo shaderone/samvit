@@ -25,6 +25,7 @@ class _ExpoRegistrationState extends State<ExpoRegistration> {
 
   bool isSecondStepValidated = false;
 
+  // ignore: unused_field
   late BuildContext _registrationFormContext;
 
   void _manageRegistrationFormContext(BuildContext newValue) {
@@ -297,6 +298,7 @@ class _ExpoRegistrationState extends State<ExpoRegistration> {
       return;
     }
     if (shouldProceed ?? false) {
+      //send registration data to backend
       Navigator.of(context).push(
         CupertinoPageRoute(
           builder: (context) => const PayNowPage(),
