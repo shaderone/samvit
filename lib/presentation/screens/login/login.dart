@@ -86,12 +86,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     const Center(
                       child: Text(
-                        "Samvit",
+                        "Samvit 2.0",
                         style: TextStyle(fontSize: 26),
                       ),
                     ),
                     const SizedBox(height: 20),
-                    Image.asset("assets/images/logo.png"),
+                    Image.asset("assets/images/logo.jpg"),
                     const SizedBox(height: 50),
                     CustomFormInput(
                       labelText: "Phone",
@@ -228,16 +228,19 @@ class _LoginScreenState extends State<LoginScreen> {
                                 );
                                 var client = http.Client();
                                 var response = await client.post(
+                                  //for demo prupose
                                   Uri.parse(
-                                    "https://sbcollege.info/auth/token/login/",
+                                    "https://shielded-fjord-46900.herokuapp.com/data",
                                   ),
                                   headers: {
                                     "Content-Type": "application/json",
                                   },
                                   body: jsonEncode(
                                     {
-                                      'phone': phone,
-                                      'password': password,
+                                      //'phone': phone,
+                                      //'password': password,
+                                      'user_mobile': phone,
+                                      'user_password': password,
                                     },
                                   ),
                                 );
