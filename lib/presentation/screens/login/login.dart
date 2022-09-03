@@ -240,7 +240,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   //for demo prupose
                                   Uri.parse(
                                     //"https://shielded-fjord-46900.herokuapp.com/data",
-                                    "https://sbcollege.info/auth/token/login/",
+                                    "$baseURL/auth/token/login/",
                                   ),
                                   headers: {
                                     "Content-Type": "application/json",
