@@ -5,6 +5,7 @@ import 'package:brechfete/core/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SlotInfoContainer extends StatelessWidget {
   final SlotInfoState state;
@@ -69,6 +70,7 @@ class SlotInfoContainer extends StatelessWidget {
                           ),
                           SlotInputItem(
                             reOrderTimeSlotList: reOrderTimeSlotList,
+                            remainingSlots: state.slotInfo.remainingSlot,
                           ),
                         ],
                       ),
@@ -85,59 +87,88 @@ class SlotInfoContainer extends StatelessWidget {
 }
 
 class SlotInputItem extends StatelessWidget {
+  static ValueNotifier<bool> isSlotCountValidatedNotifier =
+      ValueNotifier(false);
+  final int remainingSlots;
+  final _slotInputKey = GlobalKey<FormState>();
   final Function()? reOrderTimeSlotList;
-  const SlotInputItem({
+  SlotInputItem({
     Key? key,
     this.reOrderTimeSlotList,
+    required this.remainingSlots,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    return SizedBox(
-      width: screenWidth <= 340 ? 90 : 110,
-      height: screenWidth <= 340 ? 60 : 70,
-      child: TextFormField(
-        textAlign: TextAlign.center,
-        style: const TextStyle(
-          fontSize: 24,
-          fontWeight: FontWeight.bold,
-        ),
-        keyboardType: TextInputType.number,
-        decoration: InputDecoration(
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(5),
-            borderSide: const BorderSide(
-              color: textWhiteShadeLight,
-              width: 3,
-            ),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(5),
-            borderSide: const BorderSide(
-              color: textWhiteShadeLight,
-              width: 3,
-            ),
-          ),
-          labelText: "slots",
-          labelStyle: const TextStyle(
-            fontSize: 20,
-          ),
-          floatingLabelBehavior: FloatingLabelBehavior.always,
-          floatingLabelAlignment: FloatingLabelAlignment.center,
-          floatingLabelStyle: const TextStyle(
-            color: pureWhite,
+    return Form(
+      key: _slotInputKey,
+      onChanged: () => _slotInputKey.currentState!.validate(),
+      child: SizedBox(
+        width: screenWidth <= 340 ? 90 : 110,
+        height: screenWidth <= 340 ? 60 : 75,
+        child: TextFormField(
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+            fontSize: 24,
             fontWeight: FontWeight.bold,
-            fontSize: 22,
           ),
-          filled: true,
-          fillColor: pureBlack,
+          keyboardType: TextInputType.number,
+          decoration: InputDecoration(
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(5),
+              borderSide: const BorderSide(
+                color: textWhiteShadeLight,
+                width: 3,
+              ),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(5),
+              borderSide: const BorderSide(
+                color: textWhiteShadeLight,
+                width: 3,
+              ),
+            ),
+            errorStyle: const TextStyle(height: 0),
+            labelText: "slots",
+            labelStyle: const TextStyle(
+              fontSize: 20,
+            ),
+            floatingLabelBehavior: FloatingLabelBehavior.always,
+            floatingLabelAlignment: FloatingLabelAlignment.center,
+            floatingLabelStyle: const TextStyle(
+              color: pureWhite,
+              fontWeight: FontWeight.bold,
+              fontSize: 22,
+            ),
+            filled: true,
+            fillColor: pureBlack,
+          ),
+          onTap: reOrderTimeSlotList,
+          inputFormatters: [
+            FilteringTextInputFormatter.allow(RegExp(r"[1-9][0-9]*")),
+            //FilteringTextInputFormatter.digitsOnly,
+          ],
+          onChanged: (slotCount) async {
+            if (_slotInputKey.currentState!.validate()) {
+              isSlotCountValidatedNotifier.value = true;
+              //save the form data here
+              final SharedPreferences prefs =
+                  await SharedPreferences.getInstance();
+              prefs.setString("slotCount", slotCount);
+            } else {
+              isSlotCountValidatedNotifier.value = false;
+            }
+          },
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return "";
+            } else if (int.parse(value) > remainingSlots) {
+              return "";
+            }
+            return null;
+          },
         ),
-        onTap: reOrderTimeSlotList,
-        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-        onChanged: (slotCount) {
-          //see if slotCount is greater than remaining slot and validate accordingly
-        },
       ),
     );
   }
