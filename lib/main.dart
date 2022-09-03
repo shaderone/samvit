@@ -1,4 +1,4 @@
-import 'package:brechfete/bloc/bloc/booking_bloc.dart';
+import 'package:brechfete/bloc/booking/booking_bloc.dart';
 import 'package:brechfete/domain/core/di/injectable.dart';
 import 'package:brechfete/presentation/root/splash_screen/splash_screen.dart';
 import 'package:brechfete/presentation/screens/bookings/booking_screen.dart';

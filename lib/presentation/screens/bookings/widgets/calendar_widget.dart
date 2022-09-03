@@ -1,4 +1,4 @@
-import 'package:brechfete/bloc/bloc/booking_bloc.dart';
+import 'package:brechfete/bloc/booking/booking_bloc.dart';
 import 'package:brechfete/presentation/screens/bookings/booking_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

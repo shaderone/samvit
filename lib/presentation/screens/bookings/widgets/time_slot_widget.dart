@@ -1,9 +1,8 @@
-import 'package:brechfete/bloc/bloc/booking_bloc.dart';
+import 'package:brechfete/bloc/booking/booking_bloc.dart';
 import 'package:brechfete/core/constants.dart';
 import 'package:brechfete/presentation/screens/bookings/booking_screen.dart';
 import 'package:brechfete/presentation/screens/reservations/widgets/reservation_chip.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';

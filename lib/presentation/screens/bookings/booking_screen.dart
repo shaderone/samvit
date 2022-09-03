@@ -1,4 +1,4 @@
-import 'package:brechfete/bloc/bloc/booking_bloc.dart';
+import 'package:brechfete/bloc/booking/booking_bloc.dart';
 import 'package:brechfete/presentation/root/app.dart';
 import 'package:brechfete/presentation/root/widgets/bottom_navbar.dart';
 import 'package:brechfete/presentation/screens/bookings/pages/expo_registration_page.dart';
