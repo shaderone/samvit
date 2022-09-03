@@ -1,3 +1,4 @@
+import 'package:brechfete/bloc/bloc/booking_bloc.dart';
 import 'package:brechfete/presentation/root/app.dart';
 import 'package:brechfete/presentation/root/widgets/bottom_navbar.dart';
 import 'package:brechfete/presentation/screens/bookings/pages/expo_registration_page.dart';
@@ -7,6 +8,7 @@ import 'package:brechfete/presentation/screens/bookings/widgets/slot_status_widg
 import 'package:brechfete/presentation/screens/bookings/widgets/time_slot_widget.dart';
 import 'package:brechfete/presentation/screens/bookings/widgets/calendar_widget.dart';
 import 'package:brechfete/presentation/screens/bookings/widgets/calendar_widgets/calendar_status_widget.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
@@ -87,21 +89,26 @@ class _BookingScreenState extends State<BookingScreen> {
               const CalendarStatus(),
               const SizedBox(height: 10),
               const SlotCalender(),
-              SizedBox(
-                height: 90,
-                child: ValueListenableBuilder(
-                  valueListenable: BookingScreen.isDateSelectedNotifier,
-                  builder:
-                      (BuildContext context, bool isDateSelected, Widget? _) {
-                    return Visibility(
-                      visible: isDateSelected,
-                      child: TimeSlotList(
-                        maxHeight: 90,
-                        key: _timeSlotListStateKey,
-                      ),
-                    );
-                  },
-                ),
+              BlocBuilder<BookingBloc, BookingState>(
+                builder: (context, state) {
+                  return SizedBox(
+                    height: 90,
+                    child: ValueListenableBuilder(
+                      valueListenable: BookingScreen.isDateSelectedNotifier,
+                      builder: (BuildContext context, bool isDateSelected,
+                          Widget? _) {
+                        return Visibility(
+                          visible: isDateSelected,
+                          child: TimeSlotList(
+                            maxHeight: 90,
+                            key: _timeSlotListStateKey,
+                            state: state,
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                },
               ),
               const SizedBox(height: 10),
               ValueListenableBuilder(

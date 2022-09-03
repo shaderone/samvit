@@ -19,7 +19,7 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
     on<_GetTime>((event, emit) async {
       emit(
         const BookingState(
-          isLoading: false,
+          isLoading: true,
           isError: false,
           timeSlotList: [],
         ),
