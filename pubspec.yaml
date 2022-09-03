@@ -10,15 +10,23 @@ environment:
 dependencies:
   animations: ^2.0.3
   cupertino_icons: ^1.0.2
+  dartz: ^0.10.1
   easy_splash_screen: ^1.0.4
   email_validator: ^2.1.17
   flutter:
     sdk: flutter
+  flutter_bloc: ^8.1.1
   flutter_easyloading: ^3.0.5
   flutter_staggered_animations: ^1.0.0
   fluttertoast: ^8.0.9
+  freezed_annotation: ^2.1.0
+  get_it: ^7.2.0
   google_fonts: ^3.0.1
   http: ^0.13.5
+  injectable: ^1.5.3
+  injectable_generator: ^1.5.4
+  json_annotation: ^4.6.0
+  json_serializable: ^6.3.1
   lottie: ^1.4.1
   material_design_icons_flutter: ^5.0.6996
   qr_flutter: ^4.0.0
@@ -34,6 +42,7 @@ dev_dependencies:
   flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter
+  freezed: ^2.1.0+1
 
 flutter:
   uses-material-design: true
