@@ -1,11 +1,14 @@
 import 'package:brechfete/bloc/booking/booking_bloc.dart';
+import 'package:brechfete/bloc/slot_info/slot_info_bloc.dart';
 import 'package:brechfete/core/constants.dart';
 import 'package:brechfete/presentation/screens/bookings/booking_screen.dart';
 import 'package:brechfete/presentation/screens/reservations/widgets/reservation_chip.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TimeSlotList extends StatefulWidget {
   final BookingState state;
@@ -21,12 +24,12 @@ class TimeSlotList extends StatefulWidget {
 }
 
 class TimeSlotListState extends State<TimeSlotList> {
-  int? selectedIndex;
+  int selectedIndex = -1;
   final timeSlotScrollController = ItemScrollController();
 
   Future scrollToTimeSlot() async {
     timeSlotScrollController.scrollTo(
-      index: selectedIndex!,
+      index: selectedIndex,
       curve: Curves.decelerate,
       duration: const Duration(milliseconds: 1000),
     );
@@ -72,7 +75,8 @@ class TimeSlotListState extends State<TimeSlotList> {
                     height: widget.maxHeight,
                     child: Stack(
                       children: [
-                        selectedIndex == index
+                        selectedIndex == index &&
+                                BookingScreen.isTimeSelectedNotifier.value
                             ? const Positioned(
                                 bottom: -20,
                                 left: 20,
@@ -84,25 +88,41 @@ class TimeSlotListState extends State<TimeSlotList> {
                               )
                             : const SizedBox(),
                         GestureDetector(
-                          onTap: () {
+                          onTap: () async {
                             BookingScreen.isTimeSelectedNotifier.value = true;
                             setState(() {
                               selectedIndex = index;
                             });
+                            final SharedPreferences prefs =
+                                await SharedPreferences.getInstance();
+                            final selectedDate =
+                                await prefs.getString("selectedDate");
                             //get time from api response and send request to get slot info
+                            if (!mounted) return;
+                            final selectedTimeText =
+                                widget.state.timeSlotList[selectedIndex].time;
+                            context.read<SlotInfoBloc>().add(
+                                  SlotInfoEvent.getSlotInfo(
+                                    date: selectedDate!,
+                                    time: selectedTimeText,
+                                  ),
+                                );
                           },
                           child: ReservationChip(
                             chipCrossAxisAlignment: CrossAxisAlignment.center,
                             chipTitle: "",
                             chipText: timeText.split(" ").first,
                             chipWidth: 120,
-                            chipBgColor: selectedIndex == index
+                            chipBgColor: selectedIndex == index &&
+                                    BookingScreen.isTimeSelectedNotifier.value
                                 ? primaryDarkShadeLight
                                 : bgDark,
-                            chipStrokeColor: selectedIndex == index
+                            chipStrokeColor: selectedIndex == index &&
+                                    BookingScreen.isTimeSelectedNotifier.value
                                 ? pureWhite
                                 : strokeLight,
-                            chipTextColor: selectedIndex == index
+                            chipTextColor: selectedIndex == index &&
+                                    BookingScreen.isTimeSelectedNotifier.value
                                 ? pureWhite
                                 : textWhiteShadeDark,
                             chipTimePeriod: timeText.split(" ").last,

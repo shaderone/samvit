@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:brechfete/bloc/booking/booking_bloc.dart';
+import 'package:brechfete/bloc/slot_info/slot_info_bloc.dart';
 import 'package:brechfete/presentation/root/app.dart';
 import 'package:brechfete/presentation/root/widgets/bottom_navbar.dart';
 import 'package:brechfete/presentation/screens/bookings/pages/expo_registration_page.dart';
@@ -111,18 +114,24 @@ class _BookingScreenState extends State<BookingScreen> {
                 },
               ),
               const SizedBox(height: 10),
-              ValueListenableBuilder(
-                valueListenable: BookingScreen.isTimeSelectedNotifier,
-                builder:
-                    (BuildContext context, bool isTimeSelected, Widget? _) {
-                  return Visibility(
-                    visible: isTimeSelected,
-                    child: SlotInfoContainer(
-                      reOrderTimeSlotList: () {
-                        //function to re-order time-slotlist
-                        initiateTimeSlotScroll();
-                      },
-                    ),
+              BlocBuilder<SlotInfoBloc, SlotInfoState>(
+                builder: (context, state) {
+                  log(state.toString());
+                  return ValueListenableBuilder(
+                    valueListenable: BookingScreen.isTimeSelectedNotifier,
+                    builder:
+                        (BuildContext context, bool isTimeSelected, Widget? _) {
+                      return Visibility(
+                        visible: isTimeSelected,
+                        child: SlotInfoContainer(
+                          state: state,
+                          reOrderTimeSlotList: () {
+                            //function to re-order time-slotlist
+                            initiateTimeSlotScroll();
+                          },
+                        ),
+                      );
+                    },
                   );
                 },
               ),

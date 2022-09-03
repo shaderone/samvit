@@ -1,4 +1,5 @@
 import 'package:brechfete/bloc/booking/booking_bloc.dart';
+import 'package:brechfete/bloc/slot_info/slot_info_bloc.dart';
 import 'package:brechfete/domain/core/di/injectable.dart';
 import 'package:brechfete/presentation/root/splash_screen/splash_screen.dart';
 import 'package:brechfete/presentation/screens/bookings/booking_screen.dart';
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => getIt<BookingBloc>()),
+        BlocProvider(create: (context) => getIt<SlotInfoBloc>()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

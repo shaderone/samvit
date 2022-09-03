@@ -1,74 +1,86 @@
+import 'dart:developer';
+
+import 'package:brechfete/bloc/slot_info/slot_info_bloc.dart';
 import 'package:brechfete/core/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 class SlotInfoContainer extends StatelessWidget {
+  final SlotInfoState state;
   final Function()? reOrderTimeSlotList;
-  const SlotInfoContainer({Key? key, this.reOrderTimeSlotList})
-      : super(key: key);
+  const SlotInfoContainer({
+    Key? key,
+    this.reOrderTimeSlotList,
+    required this.state,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    //log(state.slotInfo.toString());
     final screenWidth = MediaQuery.of(context).size.width;
-    return AnimationLimiter(
-      child: Column(
-        children: AnimationConfiguration.toStaggeredList(
-          childAnimationBuilder: (widget) {
-            return SlideAnimation(
-              verticalOffset: 50.0,
-              duration: const Duration(milliseconds: 500),
-              child: FadeInAnimation(child: widget),
-            );
-          },
-          children: [
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 15),
-              decoration: BoxDecoration(
-                color: primaryDark,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: screenWidth <= 320 ? 0 : 5),
-                child: AnimationLimiter(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    mainAxisSize: MainAxisSize.max,
-                    children: AnimationConfiguration.toStaggeredList(
-                      childAnimationBuilder: (widget) {
-                        return SlideAnimation(
-                          delay: const Duration(milliseconds: 100),
-                          duration: const Duration(milliseconds: 500),
-                          child: FadeInAnimation(
-                            child: widget,
+    if (state.isLoading) {
+      return const CircularProgressIndicator(strokeWidth: 2);
+    } else {
+      return AnimationLimiter(
+        child: Column(
+          children: AnimationConfiguration.toStaggeredList(
+            childAnimationBuilder: (widget) {
+              return SlideAnimation(
+                verticalOffset: 50.0,
+                duration: const Duration(milliseconds: 500),
+                child: FadeInAnimation(child: widget),
+              );
+            },
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 15),
+                decoration: BoxDecoration(
+                  color: primaryDark,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: screenWidth <= 320 ? 0 : 5),
+                  child: AnimationLimiter(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      mainAxisSize: MainAxisSize.max,
+                      children: AnimationConfiguration.toStaggeredList(
+                        childAnimationBuilder: (widget) {
+                          return SlideAnimation(
+                            delay: const Duration(milliseconds: 100),
+                            duration: const Duration(milliseconds: 500),
+                            child: FadeInAnimation(
+                              child: widget,
+                            ),
+                          );
+                        },
+                        children: [
+                          SlotStatusItem(
+                            slotStatus: 'Available',
+                            slotCount: state.slotInfo.remainingSlot.toString(),
+                            slotCountColor: secondaryBlueShadeLight,
                           ),
-                        );
-                      },
-                      children: [
-                        const SlotStatusItem(
-                          slotStatus: 'Available',
-                          slotCount: "120",
-                          slotCountColor: secondaryBlueShadeLight,
-                        ),
-                        const SlotStatusItem(
-                          slotStatus: "Booked",
-                          slotCount: "60",
-                          slotCountColor: extraRed,
-                        ),
-                        SlotInputItem(
-                          reOrderTimeSlotList: reOrderTimeSlotList,
-                        ),
-                      ],
+                          SlotStatusItem(
+                            slotStatus: "Booked",
+                            slotCount: state.slotInfo.bookedSlot.toString(),
+                            slotCountColor: extraRed,
+                          ),
+                          SlotInputItem(
+                            reOrderTimeSlotList: reOrderTimeSlotList,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
 }
 

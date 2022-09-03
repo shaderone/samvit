@@ -148,6 +148,7 @@ class _SlotCalenderState extends State<SlotCalender> {
                     .read<BookingBloc>()
                     .add(BookingEvent.getTime(date: date));
                 BookingScreen.isDateSelectedNotifier.value = true;
+                BookingScreen.isTimeSelectedNotifier.value = false;
                 setState(
                   () {
                     _calendarFormat = CalendarFormat.week;

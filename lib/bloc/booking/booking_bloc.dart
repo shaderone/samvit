@@ -1,8 +1,6 @@
-import 'dart:developer';
-
+import 'package:brechfete/domain/screens/booking/booking_service.dart';
+import 'package:brechfete/domain/screens/booking/modals/time_slot/time_slot.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:brechfete/domain/booking/booking_service.dart';
-import 'package:brechfete/domain/booking/modals/time_slot/time_slot.dart';
 import 'package:brechfete/domain/common_failures/common_failures.dart';
 import 'package:dartz/dartz.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -46,10 +44,6 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
           },
         ),
       );
-    });
-
-    on<_GetSlotInfo>((event, emit) {
-      // TODO: implement event handler
     });
   }
 }
