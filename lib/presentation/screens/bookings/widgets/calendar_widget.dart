@@ -10,7 +10,7 @@ class SlotCalender extends StatefulWidget {
 }
 
 class _SlotCalenderState extends State<SlotCalender> {
-  final CalendarFormat _calendarFormat = CalendarFormat.week;
+  CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.utc(2022, 9, 20);
   DateTime? _selectedDay;
   // to compare dates to decide whether to show time cards or not
@@ -151,20 +151,6 @@ class _SlotCalenderState extends State<SlotCalender> {
               onDaySelected: (selectedDay, focusedDay) {
                 //send request here
                 BookingScreen.isDateSelectedNotifier.value = true;
-                //if (_previousSelectedDay == null) {
-                //  print("fire");
-                //
-                //}
-                // else {
-                //  print(
-                //      "s - $selectedDay & f - $focusedDay & p - $_previousSelectedDay");
-                //  final res = isSameDay(selectedDay, _previousSelectedDay);
-                //  BookingScreen.isDateSelectedNotifier.value = !res;
-                //  setState(() {
-                //    _previousSelectedDay = null;
-                //    //also remove the active color and don't send the snackbar
-                //  });
-                //}
 
                 var snackBar = SnackBar(
                   content: Text(
@@ -175,6 +161,7 @@ class _SlotCalenderState extends State<SlotCalender> {
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 setState(
                   () {
+                    _calendarFormat = CalendarFormat.week;
                     _selectedDay = selectedDay;
                     _focusedDay = focusedDay;
                   },
