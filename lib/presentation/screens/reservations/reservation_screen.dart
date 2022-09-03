@@ -1,10 +1,9 @@
 import 'package:brechfete/presentation/screens/bookings/booking_screen.dart';
+import 'package:brechfete/presentation/screens/reservations/widgets/reservation_card_widgets/reservation_cards.dart';
 import 'package:flutter/material.dart';
 import 'package:brechfete/core/constants.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'widgets/reservation_card_widgets/card_bottom_widget.dart';
-import 'widgets/reservation_card_widgets/card_middle_widget.dart';
 
 const extraSmallScreenWidth = 320;
 
@@ -29,7 +28,10 @@ class _ReservationScreenState extends State<ReservationScreen> {
         //backgroundColor: Colors.transparent,
         title: Row(
           children: [
-            Image.asset("assets/images/logo.png", width: 30),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Image.asset("assets/images/logo.png", width: 30),
+            ),
             const SizedBox(width: 15),
             const Text(
               "Reservations",
@@ -80,7 +82,7 @@ class ReservationCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     return Card(
-      color: primaryDarkShadeLight.withOpacity(.35),
+      color: textWhiteShadeDark.withOpacity(.075),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
       ),
@@ -90,104 +92,19 @@ class ReservationCard extends StatelessWidget {
             ? const EdgeInsets.symmetric(vertical: 20, horizontal: 10)
             : const EdgeInsets.all(10),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Column(
-              children: [
-                const CardTop(),
-                screenWidth <= extraSmallScreenWidth
-                    ? const SizedBox(height: 10)
-                    : const SizedBox(height: 15),
-                const CardMiddle(),
-                screenWidth <= extraSmallScreenWidth
-                    ? const SizedBox(height: 10)
-                    : const SizedBox(height: 15),
-                const CardBottom(),
-              ],
-            )
+            const SizedBox(height: 5),
+            const CardTop(),
+            screenWidth <= extraSmallScreenWidth
+                ? const SizedBox(height: 10)
+                : const SizedBox(height: 5),
+            Divider(color: textWhiteShadeDark.withOpacity(.5)),
+            const SizedBox(height: 5),
+            const CardMiddle(),
           ],
         ),
       ),
     );
-  }
-}
-
-class CardTop extends StatelessWidget {
-  const CardTop({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    return Row(
-      children: [
-        Expanded(
-          flex: 7,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "St.Joseph HSS",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: pureWhite.withOpacity(.85),
-                ),
-              ),
-              const SizedBox(height: 5),
-              Text(
-                "Near market roard, changanacherry",
-                style: TextStyle(
-                  fontSize: screenWidth <= 320 ? 12 : 14,
-                ),
-              ),
-            ],
-          ),
-        ),
-        Flexible(
-          flex: 1,
-          child: CircleAvatar(
-            radius: 22,
-            backgroundColor: const Color(0xFFEC5146),
-            child: IconButton(
-              icon: Icon(
-                Icons.delete_forever,
-                size: screenWidth <= 320 ? 18 : 23,
-                color: pureWhite,
-              ),
-              onPressed: () {},
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class CardMiddle extends StatelessWidget {
-  const CardMiddle({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    return screenWidth <= extraSmallScreenWidth
-        ? const CardMiddleWrappedRow()
-        : const CardMiddleNormalRow();
-  }
-}
-
-class CardBottom extends StatelessWidget {
-  const CardBottom({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    return screenWidth <= extraSmallScreenWidth
-        ? const CardBottomWrappedRow()
-        : const CardBottomNormalRow();
   }
 }

@@ -1,126 +1,174 @@
+import 'dart:developer';
+
+import 'package:brechfete/bloc/slot_info/slot_info_bloc.dart';
 import 'package:brechfete/core/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SlotInfoContainer extends StatelessWidget {
+  final SlotInfoState state;
   final Function()? reOrderTimeSlotList;
-  const SlotInfoContainer({Key? key, this.reOrderTimeSlotList})
-      : super(key: key);
+  const SlotInfoContainer({
+    Key? key,
+    this.reOrderTimeSlotList,
+    required this.state,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    //log(state.slotInfo.toString());
     final screenWidth = MediaQuery.of(context).size.width;
-    return AnimationLimiter(
-      child: Column(
-        children: AnimationConfiguration.toStaggeredList(
-          childAnimationBuilder: (widget) {
-            return SlideAnimation(
-              verticalOffset: 50.0,
-              duration: const Duration(milliseconds: 500),
-              child: FadeInAnimation(child: widget),
-            );
-          },
-          children: [
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 15),
-              decoration: BoxDecoration(
-                color: primaryDark,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: screenWidth <= 320 ? 0 : 5),
-                child: AnimationLimiter(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    mainAxisSize: MainAxisSize.max,
-                    children: AnimationConfiguration.toStaggeredList(
-                      childAnimationBuilder: (widget) {
-                        return SlideAnimation(
-                          delay: const Duration(milliseconds: 100),
-                          duration: const Duration(milliseconds: 500),
-                          child: FadeInAnimation(
-                            child: widget,
+    if (state.isLoading) {
+      return const CircularProgressIndicator(strokeWidth: 2);
+    } else {
+      return AnimationLimiter(
+        child: Column(
+          children: AnimationConfiguration.toStaggeredList(
+            childAnimationBuilder: (widget) {
+              return SlideAnimation(
+                verticalOffset: 50.0,
+                duration: const Duration(milliseconds: 500),
+                child: FadeInAnimation(child: widget),
+              );
+            },
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 15),
+                decoration: BoxDecoration(
+                  color: primaryDark,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: screenWidth <= 320 ? 0 : 5),
+                  child: AnimationLimiter(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      mainAxisSize: MainAxisSize.max,
+                      children: AnimationConfiguration.toStaggeredList(
+                        childAnimationBuilder: (widget) {
+                          return SlideAnimation(
+                            delay: const Duration(milliseconds: 100),
+                            duration: const Duration(milliseconds: 500),
+                            child: FadeInAnimation(
+                              child: widget,
+                            ),
+                          );
+                        },
+                        children: [
+                          SlotStatusItem(
+                            slotStatus: 'Available',
+                            slotCount: state.slotInfo.remainingSlot.toString(),
+                            slotCountColor: secondaryBlueShadeLight,
                           ),
-                        );
-                      },
-                      children: [
-                        const SlotStatusItem(
-                          slotStatus: 'Available',
-                          slotCount: "120",
-                          slotCountColor: secondaryBlueShadeLight,
-                        ),
-                        const SlotStatusItem(
-                          slotStatus: "Booked",
-                          slotCount: "60",
-                          slotCountColor: extraRed,
-                        ),
-                        SlotInputItem(
-                          reOrderTimeSlotList: reOrderTimeSlotList,
-                        ),
-                      ],
+                          SlotStatusItem(
+                            slotStatus: "Booked",
+                            slotCount: state.slotInfo.bookedSlot.toString(),
+                            slotCountColor: extraRed,
+                          ),
+                          SlotInputItem(
+                            reOrderTimeSlotList: reOrderTimeSlotList,
+                            remainingSlots: state.slotInfo.remainingSlot,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
 }
 
 class SlotInputItem extends StatelessWidget {
+  static ValueNotifier<bool> isSlotCountValidatedNotifier =
+      ValueNotifier(false);
+  final int remainingSlots;
+  final _slotInputKey = GlobalKey<FormState>();
   final Function()? reOrderTimeSlotList;
-  const SlotInputItem({
+  SlotInputItem({
     Key? key,
     this.reOrderTimeSlotList,
+    required this.remainingSlots,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    return SizedBox(
-      width: screenWidth <= 340 ? 90 : 110,
-      height: screenWidth <= 340 ? 60 : 70,
-      child: TextFormField(
-        textAlign: TextAlign.center,
-        style: const TextStyle(
-          fontSize: 24,
-          fontWeight: FontWeight.bold,
-        ),
-        keyboardType: TextInputType.number,
-        decoration: InputDecoration(
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(5),
-            borderSide: const BorderSide(
-              color: textWhiteShadeLight,
-              width: 3,
-            ),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(5),
-            borderSide: const BorderSide(
-              color: textWhiteShadeLight,
-              width: 3,
-            ),
-          ),
-          labelText: "slots",
-          labelStyle: const TextStyle(
-            fontSize: 20,
-          ),
-          floatingLabelBehavior: FloatingLabelBehavior.always,
-          floatingLabelAlignment: FloatingLabelAlignment.center,
-          floatingLabelStyle: const TextStyle(
-            color: pureWhite,
+    return Form(
+      key: _slotInputKey,
+      onChanged: () => _slotInputKey.currentState!.validate(),
+      child: SizedBox(
+        width: screenWidth <= 340 ? 90 : 110,
+        height: screenWidth <= 340 ? 60 : 75,
+        child: TextFormField(
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+            fontSize: 24,
             fontWeight: FontWeight.bold,
-            fontSize: 22,
           ),
-          filled: true,
-          fillColor: pureBlack,
+          keyboardType: TextInputType.number,
+          decoration: InputDecoration(
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(5),
+              borderSide: const BorderSide(
+                color: textWhiteShadeLight,
+                width: 3,
+              ),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(5),
+              borderSide: const BorderSide(
+                color: textWhiteShadeLight,
+                width: 3,
+              ),
+            ),
+            errorStyle: const TextStyle(height: 0),
+            labelText: "slots",
+            labelStyle: const TextStyle(
+              fontSize: 20,
+            ),
+            floatingLabelBehavior: FloatingLabelBehavior.always,
+            floatingLabelAlignment: FloatingLabelAlignment.center,
+            floatingLabelStyle: const TextStyle(
+              color: pureWhite,
+              fontWeight: FontWeight.bold,
+              fontSize: 22,
+            ),
+            filled: true,
+            fillColor: pureBlack,
+          ),
+          onTap: reOrderTimeSlotList,
+          inputFormatters: [
+            FilteringTextInputFormatter.allow(RegExp(r"[1-9][0-9]*")),
+            //FilteringTextInputFormatter.digitsOnly,
+          ],
+          onChanged: (slotCount) async {
+            if (_slotInputKey.currentState!.validate()) {
+              isSlotCountValidatedNotifier.value = true;
+              //save the form data here
+              final SharedPreferences prefs =
+                  await SharedPreferences.getInstance();
+              prefs.setString("slotCount", slotCount);
+            } else {
+              isSlotCountValidatedNotifier.value = false;
+            }
+          },
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return "";
+            } else if (int.parse(value) > remainingSlots) {
+              return "";
+            }
+            return null;
+          },
         ),
-        onTap: reOrderTimeSlotList,
       ),
     );
   }

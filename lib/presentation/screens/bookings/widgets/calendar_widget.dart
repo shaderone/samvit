@@ -1,5 +1,7 @@
+import 'package:brechfete/bloc/booking/booking_bloc.dart';
 import 'package:brechfete/presentation/screens/bookings/booking_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class SlotCalender extends StatefulWidget {
@@ -10,13 +12,9 @@ class SlotCalender extends StatefulWidget {
 }
 
 class _SlotCalenderState extends State<SlotCalender> {
-  CalendarFormat _calendarFormat = CalendarFormat.week;
+  CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.utc(2022, 9, 20);
   DateTime? _selectedDay;
-  DateTime?
-      _previousSelectedDay; // to compare dates to decide whether to show time cards or not
-  //set holiday and booked days styles (unavailable days)
-  //set today style
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -142,51 +140,24 @@ class _SlotCalenderState extends State<SlotCalender> {
                 return true;
               },
               selectedDayPredicate: (day) {
-                //code to show time-card
-                //if ( == ) {
-                //  isDateSelectedNotifier.value = false;
-                //}
-
                 return isSameDay(_selectedDay, day);
               },
-              onDaySelected: (selectedDay, focusedDay) {
-                //send request here
+              onDaySelected: (selectedDay, focusedDay) async {
+                final date = selectedDay.toString().split(" ").first;
+                context
+                    .read<BookingBloc>()
+                    .add(BookingEvent.getTime(date: date));
                 BookingScreen.isDateSelectedNotifier.value = true;
-                //if (_previousSelectedDay == null) {
-                //  print("fire");
-                //
-                //}
-                // else {
-                //  print(
-                //      "s - $selectedDay & f - $focusedDay & p - $_previousSelectedDay");
-                //  final res = isSameDay(selectedDay, _previousSelectedDay);
-                //  BookingScreen.isDateSelectedNotifier.value = !res;
-                //  setState(() {
-                //    _previousSelectedDay = null;
-                //    //also remove the active color and don't send the snackbar
-                //  });
-                //}
-
-                var snackBar = SnackBar(
-                  content: Text(
-                    selectedDay.toString().split(" ").first,
-                  ),
-                  duration: const Duration(milliseconds: 500),
-                );
-                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                BookingScreen.isTimeSelectedNotifier.value = false;
                 setState(
                   () {
+                    _calendarFormat = CalendarFormat.week;
                     _selectedDay = selectedDay;
                     _focusedDay = focusedDay;
                   },
                 );
               },
               calendarFormat: _calendarFormat,
-              //onFormatChanged: (format) {
-              //  setState(() {
-              //    _calendarFormat = format;
-              //  });
-              //},
             ),
           ),
         ),

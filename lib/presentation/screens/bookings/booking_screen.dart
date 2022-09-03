@@ -1,15 +1,20 @@
+import 'dart:developer';
+
+import 'package:brechfete/bloc/booking/booking_bloc.dart';
+import 'package:brechfete/bloc/slot_info/slot_info_bloc.dart';
+import 'package:brechfete/core/constants.dart';
 import 'package:brechfete/presentation/root/app.dart';
 import 'package:brechfete/presentation/root/widgets/bottom_navbar.dart';
 import 'package:brechfete/presentation/screens/bookings/pages/expo_registration_page.dart';
-import 'package:brechfete/presentation/screens/login/login.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:brechfete/presentation/screens/bookings/widgets/slot_status_widgets/slot_info_container.dart';
 import 'package:brechfete/presentation/screens/bookings/widgets/time_slot_widget.dart';
 import 'package:brechfete/presentation/screens/bookings/widgets/calendar_widget.dart';
 import 'package:brechfete/presentation/screens/bookings/widgets/calendar_widgets/calendar_status_widget.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
@@ -31,7 +36,7 @@ class _BookingScreenState extends State<BookingScreen> {
       GlobalKey<TimeSlotListState>();
   initiateTimeSlotScroll() {
     if (_timeSlotListStateKey.currentState == null) {
-      print("object");
+      //print("object");
       return;
     } else {
       _timeSlotListStateKey.currentState!.scrollToTimeSlot();
@@ -81,6 +86,7 @@ class _BookingScreenState extends State<BookingScreen> {
           ],
         ),
         body: SingleChildScrollView(
+          reverse: true,
           padding: EdgeInsets.symmetric(
               vertical: 20, horizontal: screenWidth <= 340 ? 10 : 15),
           child: Column(
@@ -89,35 +95,46 @@ class _BookingScreenState extends State<BookingScreen> {
               const CalendarStatus(),
               const SizedBox(height: 10),
               const SlotCalender(),
-              SizedBox(
-                height: 90,
-                child: ValueListenableBuilder(
-                  valueListenable: BookingScreen.isDateSelectedNotifier,
-                  builder:
-                      (BuildContext context, bool isDateSelected, Widget? _) {
-                    return Visibility(
-                      visible: isDateSelected,
-                      child: TimeSlotList(
-                        maxHeight: 90,
-                        key: _timeSlotListStateKey,
-                      ),
-                    );
-                  },
-                ),
-              ),
-              const SizedBox(height: 10),
-              ValueListenableBuilder(
-                valueListenable: BookingScreen.isTimeSelectedNotifier,
-                builder:
-                    (BuildContext context, bool isTimeSelected, Widget? _) {
-                  return Visibility(
-                    visible: isTimeSelected,
-                    child: SlotInfoContainer(
-                      reOrderTimeSlotList: () {
-                        //function to re-order time-slotlist
-                        initiateTimeSlotScroll();
+              BlocBuilder<BookingBloc, BookingState>(
+                builder: (context, state) {
+                  return SizedBox(
+                    height: 90,
+                    child: ValueListenableBuilder(
+                      valueListenable: BookingScreen.isDateSelectedNotifier,
+                      builder: (BuildContext context, bool isDateSelected,
+                          Widget? _) {
+                        return Visibility(
+                          visible: isDateSelected,
+                          child: TimeSlotList(
+                            maxHeight: 90,
+                            key: _timeSlotListStateKey,
+                            state: state,
+                          ),
+                        );
                       },
                     ),
+                  );
+                },
+              ),
+              const SizedBox(height: 10),
+              BlocBuilder<SlotInfoBloc, SlotInfoState>(
+                builder: (context, state) {
+                  log(state.toString());
+                  return ValueListenableBuilder(
+                    valueListenable: BookingScreen.isTimeSelectedNotifier,
+                    builder:
+                        (BuildContext context, bool isTimeSelected, Widget? _) {
+                      return Visibility(
+                        visible: isTimeSelected,
+                        child: SlotInfoContainer(
+                          state: state,
+                          reOrderTimeSlotList: () {
+                            //function to re-order time-slotlist
+                            initiateTimeSlotScroll();
+                          },
+                        ),
+                      );
+                    },
                   );
                 },
               ),
@@ -148,14 +165,18 @@ class ConfirmButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-        //save the form data here
-
-        //After saving, go to next page
-        Navigator.of(context).push(
-          CupertinoPageRoute(
-            builder: (context) => const ExpoRegistration(),
-          ),
-        );
+        if (SlotInputItem.isSlotCountValidatedNotifier.value) {
+          Navigator.of(context).push(
+            CupertinoPageRoute(
+              builder: (context) => const ExpoRegistration(),
+            ),
+          );
+        } else {
+          Fluttertoast.showToast(
+            msg: "Enter a valid input",
+            textColor: extraRed,
+          );
+        }
       },
       style: ButtonStyle(
         minimumSize: MaterialStateProperty.all(

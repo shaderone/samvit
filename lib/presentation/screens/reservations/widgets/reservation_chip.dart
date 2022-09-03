@@ -6,10 +6,12 @@ class ReservationChip extends StatelessWidget {
   final String chipTitle;
   final String chipText;
   final double chipWidth;
+  final Color? chipTitleColor;
   final Color chipTextColor;
   final Color chipBgColor;
   final Color chipStrokeColor;
   final String chipTimePeriod;
+  final bool isPaymentChip;
 
   const ReservationChip({
     Key? key,
@@ -21,6 +23,8 @@ class ReservationChip extends StatelessWidget {
     this.chipTimePeriod = "",
     required this.chipStrokeColor,
     this.chipTextColor = textWhiteShadeLight,
+    this.isPaymentChip = false,
+    this.chipTitleColor,
   }) : super(key: key);
 
   @override
@@ -28,11 +32,33 @@ class ReservationChip extends StatelessWidget {
     return Column(
       crossAxisAlignment: chipCrossAxisAlignment,
       children: [
-        Text(chipTitle),
-        SizedBox(height: chipTitle == "" ? 0 : 3),
+        isPaymentChip
+            ? const SizedBox()
+            : chipTitleColor != null
+                ? Text(
+                    chipTitle,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: textWhiteShadeDark,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  )
+                : Text(
+                    chipTitle,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: textWhiteShadeDark,
+                    ),
+                  ),
+        isPaymentChip
+            ? const SizedBox(
+                height: 7,
+              )
+            : SizedBox(height: chipTitle == "" ? 0 : 3),
         SizedBox(
           width: chipWidth,
-          height: chipTitle == "" ? 50 : 40,
+          height: isPaymentChip ? 40 : 45,
           child: Card(
             color: chipBgColor,
             shape: RoundedRectangleBorder(
@@ -53,15 +79,15 @@ class ReservationChip extends StatelessWidget {
                       TextSpan(
                         text: chipText,
                         style: TextStyle(
-                          fontSize: chipTitle == "" ? 14 : 12,
+                          fontSize: 14,
                           fontWeight: FontWeight.bold,
                           color: chipTextColor,
                         ),
                       ),
                       TextSpan(
                         text: " $chipTimePeriod",
-                        style: TextStyle(
-                          fontSize: chipTitle == "" ? 14 : 12,
+                        style: const TextStyle(
+                          fontSize: 14,
                           fontWeight: FontWeight.bold,
                           color: secondaryBlueShadeLight,
                         ),

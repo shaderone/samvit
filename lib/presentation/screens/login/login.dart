@@ -1,16 +1,15 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
-import 'dart:io';
-
 import 'package:brechfete/core/constants.dart';
 import 'package:brechfete/presentation/root/app.dart';
 import 'package:brechfete/presentation/root/widgets/custom_form_input.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:simple_gradient_text/simple_gradient_text.dart';
 
 void configLoading() {
   EasyLoading.instance
@@ -87,15 +86,22 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    const Center(
-                      child: Text(
-                        "Samvit",
-                        style: TextStyle(fontSize: 26),
+                    GradientText(
+                      'Samvit 2.0',
+                      style: GoogleFonts.pacifico(
+                        fontSize: screenWidth <= 320 ? 20 : 40,
                       ),
+                      colors: const [
+                        Color(0xFF6E6F71),
+                        Color(0xFFECECEC),
+                      ],
                     ),
                     const SizedBox(height: 20),
-                    Image.asset("assets/images/logo.png"),
-                    const SizedBox(height: 50),
+                    //ClipRRect(
+                    //  borderRadius: BorderRadius.circular(8),
+                    //  child: Image.asset("assets/images/samvit.png"),
+                    //),
+                    //const SizedBox(height: 50),
                     CustomFormInput(
                       labelText: "Phone",
                       hintText: 'Enter your phone number',
@@ -230,25 +236,30 @@ class _LoginScreenState extends State<LoginScreen> {
                                   status: 'Vefifying...',
                                 );
                                 var client = http.Client();
-                                print("req started");
                                 var response = await client.post(
+                                  //for demo prupose
                                   Uri.parse(
-                                    "https://shielded-fjord-46900.herokuapp.com/data",
+                                    //"https://shielded-fjord-46900.herokuapp.com/data",
+                                    "$baseURL/auth/token/login/",
                                   ),
                                   headers: {
                                     "Content-Type": "application/json",
                                   },
                                   body: jsonEncode(
                                     {
-                                      'user_mobile': phone,
-                                      'user_password': password,
+                                      'phone': phone,
+                                      'password': password,
+                                      //'user_mobile': phone,
+                                      //'user_password': password,
                                     },
                                   ),
                                 );
                                 EasyLoading.dismiss();
-                                final data =
-                                    jsonDecode(response.body.toString());
+                                final data = jsonDecode(
+                                  response.body.toString(),
+                                );
                                 //print(data);
+                                //print(isAbsorbing);
                                 if (response.statusCode == 200) {
                                   final SharedPreferences prefs =
                                       await SharedPreferences.getInstance();

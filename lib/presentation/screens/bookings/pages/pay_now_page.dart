@@ -1,23 +1,14 @@
 import 'package:brechfete/core/constants.dart';
 import 'package:brechfete/presentation/root/widgets/custom_form_input.dart';
 import 'package:brechfete/presentation/screens/bookings/pages/booking_success_page.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
-enum Pet { dog, cat }
-
-class PayNowPage extends StatefulWidget {
+class PayNowPage extends StatelessWidget {
+  static final _amountFormKey = GlobalKey<FormState>();
   const PayNowPage({Key? key}) : super(key: key);
-
-  @override
-  State<PayNowPage> createState() => _PayNowPageState();
-}
-
-class _PayNowPageState extends State<PayNowPage> {
-  Pet _pet = Pet.dog;
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -35,20 +26,6 @@ class _PayNowPageState extends State<PayNowPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: const [
-                    //Radio<Pet>(
-                    //  fillColor: MaterialStateColor.resolveWith(
-                    //    (states) => secondaryBlueShadeLight,
-                    //  ),
-                    //  focusColor: MaterialStateColor.resolveWith(
-                    //      (states) => secondaryBlueShadeDark),
-                    //  value: Pet.dog,
-                    //  groupValue: _pet,
-                    //  onChanged: (Pet? value) {
-                    //    setState(() {
-                    //      _pet = value!;
-                    //    });
-                    //  },
-                    //),
                     Text(
                       "Online",
                       style: TextStyle(
@@ -62,20 +39,6 @@ class _PayNowPageState extends State<PayNowPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: const [
-                    //Radio<Pet>(
-                    //  fillColor: MaterialStateColor.resolveWith(
-                    //    (states) => secondaryBlueShadeLight,
-                    //  ),
-                    //  focusColor: MaterialStateColor.resolveWith(
-                    //      (states) => secondaryBlueShadeDark),
-                    //  value: Pet.cat,
-                    //  groupValue: _pet,
-                    //  onChanged: (Pet? value) {
-                    //    setState(() {
-                    //      _pet = value!;
-                    //    });
-                    //  },
-                    //),
                     Text(
                       "Ready Cash",
                       style: TextStyle(
@@ -152,52 +115,105 @@ class _PayNowPageState extends State<PayNowPage> {
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      CustomFormInput(
-                        labelText: "Amount",
-                        textInputType: TextInputType.number,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Amount is required";
-                          }
-                        },
-                        textInputAction: TextInputAction.done,
-                        hintText: "Enter cash recived",
-                        suffixIcon: Icons.money,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
-                        ],
-                        maxInputLength: 5,
-                      )
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: const Size.fromHeight(50),
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (context) => const BookingSuccessPage(
-                            animationWidget: "assets/lottie_files/confirm.json",
-                            statusText: "Booking Successful!",
+            Form(
+              key: _amountFormKey,
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: extraYellow.withOpacity(.05),
+                              borderRadius: BorderRadius.circular(5),
+                              border: Border.all(
+                                color: extraYellow.withOpacity(.5),
+                              ),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(15.0),
+                              child: RichText(
+                                textAlign: TextAlign.center,
+                                text: TextSpan(
+                                  style: DefaultTextStyle.of(context).style,
+                                  children: const [
+                                    TextSpan(
+                                      text:
+                                          "Amount to Pay : 20 x 40 (slots) = ",
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: textWhiteShadeLight,
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text: "800 ₹",
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
                           ),
                         ),
-                      );
-                    },
-                    child: const Text("Send Confirmation Link"),
-                  ),
-                  const SizedBox(height: 20),
-                ],
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CustomFormInput(
+                          autoValidateMode: AutovalidateMode.onUserInteraction,
+                          labelText: "Amount",
+                          textInputType: TextInputType.number,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Amount is required";
+                            }
+                            return null;
+                          },
+                          textInputAction: TextInputAction.done,
+                          hintText: "Enter cash recived",
+                          suffixIcon: Icons.money,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
+                          ],
+                          maxInputLength: 5,
+                        )
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: const Size.fromHeight(50),
+                      ),
+                      onPressed: () {
+                        _amountFormKey.currentState!.validate();
+                        if (_amountFormKey.currentState!.validate()) {
+                          //print("success");
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => const BookingSuccessPage(
+                                animationWidget:
+                                    "assets/lottie_files/confirm.json",
+                                statusText: "Booking Successful!",
+                              ),
+                            ),
+                          );
+                        }
+                      },
+                      child: const Text("Send Confirmation Link"),
+                    ),
+                    const SizedBox(height: 20),
+                  ],
+                ),
               ),
             ),
           ],

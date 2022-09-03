@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+const baseURL = "https://sbcollege.info";
+
 /* Common */
 const pureWhite = Color(0xFFFFFFFF);
 const pureBlack = Color(0xFF000000);
