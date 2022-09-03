@@ -28,7 +28,10 @@ class _ReservationScreenState extends State<ReservationScreen> {
         //backgroundColor: Colors.transparent,
         title: Row(
           children: [
-            Image.asset("assets/images/logo.png", width: 30),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Image.asset("assets/images/logo.png", width: 30),
+            ),
             const SizedBox(width: 15),
             const Text(
               "Reservations",
