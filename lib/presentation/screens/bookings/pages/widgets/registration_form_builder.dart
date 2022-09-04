@@ -86,6 +86,24 @@ class RegistrationFormHolderState extends State<RegistrationFormHolder> {
                   : facultyName = value!;
             },
           ),
+          Visibility(
+            visible: widget.isInstitution,
+            child: CustomFormInput(
+              labelText: "location",
+              textInputType: TextInputType.multiline,
+              textInputAction: TextInputAction.next,
+              hintText: "eg: city, district",
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return "Address is required";
+                }
+                return null;
+              },
+              onSaved: (String? value) {
+                institutionAddress = value!;
+              },
+            ),
+          ),
           CustomFormInput(
             labelText: "Email",
             textInputType: TextInputType.emailAddress,

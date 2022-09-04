@@ -52,6 +52,7 @@ class _ExpoRegistrationState extends State<ExpoRegistration> {
           primaryDark,
         );
         if (shouldPop != null && shouldPop) {
+          isRegistrationSuccessNotifier.value = false;
           currentStepNotifier.value = 0;
           isValidatedNotifier.value = false;
         }
