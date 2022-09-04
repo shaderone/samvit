@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:brechfete/core/constants.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:simple_gradient_text/simple_gradient_text.dart';
 
 const extraSmallScreenWidth = 320;
 
@@ -17,6 +19,7 @@ class ReservationScreen extends StatefulWidget {
 class _ReservationScreenState extends State<ReservationScreen> {
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -33,9 +36,15 @@ class _ReservationScreenState extends State<ReservationScreen> {
               child: Image.asset("assets/images/samvit_logo.png", width: 30),
             ),
             const SizedBox(width: 15),
-            const Text(
-              "Reservations",
-              style: TextStyle(fontSize: 24),
+            GradientText(
+              'Reservation list',
+              style: GoogleFonts.ubuntu(
+                fontSize: screenWidth <= 320 ? 20 : 24,
+              ),
+              colors: const [
+                Color(0xFF6E6F71),
+                Color(0xFFECECEC),
+              ],
             ),
           ],
         ),
