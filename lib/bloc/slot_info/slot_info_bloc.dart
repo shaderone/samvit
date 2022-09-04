@@ -35,8 +35,6 @@ class SlotInfoBloc extends Bloc<SlotInfoEvent, SlotInfoState> {
         time: event.time,
       );
 
-      log(slotInfoResponse.toString());
-
       final slotState = slotInfoResponse.fold((CommonFailures failures) {
         return const SlotInfoState(
           isError: true,

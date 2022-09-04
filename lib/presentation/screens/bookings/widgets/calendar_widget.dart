@@ -12,7 +12,7 @@ class SlotCalender extends StatefulWidget {
 }
 
 class _SlotCalenderState extends State<SlotCalender> {
-  CalendarFormat _calendarFormat = CalendarFormat.month;
+  CalendarFormat _calendarFormat = CalendarFormat.week;
   DateTime _focusedDay = DateTime.utc(2022, 9, 20);
   DateTime? _selectedDay;
   @override
