@@ -18,7 +18,6 @@ class SlotInfoContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //log(state.slotInfo.toString());
     final screenWidth = MediaQuery.of(context).size.width;
     if (state.isLoading) {
       return const CircularProgressIndicator(strokeWidth: 2);

@@ -110,7 +110,6 @@ class _BookingScreenState extends State<BookingScreen> {
             const SizedBox(height: 10),
             BlocBuilder<SlotInfoBloc, SlotInfoState>(
               builder: (context, state) {
-                log(state.toString());
                 return ValueListenableBuilder(
                   valueListenable: BookingScreen.isTimeSelectedNotifier,
                   builder:

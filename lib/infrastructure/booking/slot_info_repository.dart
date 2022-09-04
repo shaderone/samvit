@@ -35,7 +35,6 @@ class SlotInfoRepository implements SlotInfoService {
       if (res.statusCode == 200 || res.statusCode == 201) {
         final data = jsonDecode(res.body);
         final timeSlotList = SlotInfoModal.fromJson(data);
-        log(timeSlotList.toString());
         return Right(timeSlotList);
       } else {
         return const Left(CommonFailures.serverFailure());
