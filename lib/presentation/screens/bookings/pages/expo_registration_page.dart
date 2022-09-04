@@ -6,6 +6,7 @@ import 'package:brechfete/presentation/screens/bookings/pages/widgets/registrati
 import 'package:brechfete/presentation/screens/bookings/pages/widgets/registration_form_buttons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
@@ -116,52 +117,58 @@ class _ExpoRegistrationState extends State<ExpoRegistration> {
                       steps: buildSteps(
                           currentStep, firstStep, secondStep, thirdStep),
                     ),
-                    Visibility(
-                      visible: currentStep == thirdStep ? true : false,
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                child: ColoredBox(
-                                  color: primaryDark,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(15.0),
-                                    child: Text(
-                                      "Please select a payment option to continue",
-                                      textAlign: TextAlign.center,
-                                      style: GoogleFonts.ubuntu(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                        color: textWhiteShadeLight,
+                    ValueListenableBuilder(
+                        valueListenable: isRegistrationSuccessNotifier,
+                        builder: (BuildContext context, bool isRegistered,
+                            Widget? _) {
+                          return Visibility(
+                            //should only be visible if doRegister is successful
+                            visible: isRegistered ? true : false,
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: ColoredBox(
+                                        color: primaryDark,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(15.0),
+                                          child: Text(
+                                            "Please select a payment option to continue",
+                                            textAlign: TextAlign.center,
+                                            style: GoogleFonts.ubuntu(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                              color: textWhiteShadeLight,
+                                            ),
+                                          ),
+                                        ),
                                       ),
                                     ),
-                                  ),
+                                  ],
                                 ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 20),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              RegistrationButton(
-                                buttonText: "Pay Later",
-                                screenWidth: screenWidth,
-                                onPressed: onPayLaterPressed,
-                              ),
-                              const SizedBox(width: 10),
-                              RegistrationButton(
-                                buttonText: "Pay Now",
-                                screenWidth: screenWidth,
-                                bgColor: secondaryBlueShadeDark,
-                                onPressed: onPayNowPressed,
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
+                                const SizedBox(height: 20),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    RegistrationButton(
+                                      buttonText: "Pay Later",
+                                      screenWidth: screenWidth,
+                                      onPressed: onPayLaterPressed,
+                                    ),
+                                    const SizedBox(width: 10),
+                                    RegistrationButton(
+                                      buttonText: "Pay Now",
+                                      screenWidth: screenWidth,
+                                      bgColor: secondaryBlueShadeDark,
+                                      onPressed: onPayNowPressed,
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                          );
+                        }),
                   ],
                 ),
               );
@@ -275,6 +282,7 @@ class _ExpoRegistrationState extends State<ExpoRegistration> {
       return;
     }
     if (shouldProceed ?? false) {
+      //code to send request for pay later
       Navigator.of(context).pushNamedAndRemoveUntil(
         App.bookingSuccessRoute,
         (route) => false,
@@ -387,28 +395,59 @@ class StepperActions extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Visibility(
-          visible: isLastStep ? false : true,
-          child: Expanded(
-            child: ElevatedButton(
-              onPressed: buttonActions.onStepContinue,
-              child: const Text("Next"),
-            ),
-          ),
+        Expanded(
+          child: ValueListenableBuilder(
+              valueListenable: isRegistrationSuccessNotifier,
+              builder: (BuildContext context, bool isRegistered, Widget? _) {
+                return ElevatedButton(
+                  onPressed: currentStep == 2
+                      ? isRegistered
+                          ? null
+                          : () async {
+                              // call doRegister in registrationform
+                              final isRegistrationSuccess =
+                                  await RegistrationFormHolderState
+                                      .doRegistration();
+
+                              if (isRegistrationSuccess) {
+                                Fluttertoast.showToast(
+                                  msg: "Success, proceed with payment",
+                                  textColor: extraGreen,
+                                  toastLength: Toast.LENGTH_LONG,
+                                );
+                              } else {
+                                Fluttertoast.showToast(
+                                  msg: "Registration Failed!  please try again",
+                                  textColor: extraRed,
+                                  gravity: ToastGravity.CENTER,
+                                  toastLength: Toast.LENGTH_LONG,
+                                );
+                              }
+                            }
+                      : buttonActions.onStepContinue,
+                  child: Text(isLastStep ? "Register" : "Next"),
+                );
+              }),
         ),
         const SizedBox(width: 10),
         Expanded(
-          child: ElevatedButton(
-            style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(bgDark),
-                side: MaterialStateProperty.all(
-                  const BorderSide(
-                    color: textWhiteShadeDark,
-                  ),
-                )),
-            onPressed: currentStep == 0 ? null : buttonActions.onStepCancel,
-            child: Text(isLastStep ? "Edit again" : "Previous"),
-          ),
+          child: ValueListenableBuilder(
+              valueListenable: isRegistrationSuccessNotifier,
+              builder: (BuildContext context, bool isRegistered, Widget? _) {
+                return ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(bgDark),
+                      side: MaterialStateProperty.all(
+                        const BorderSide(
+                          color: textWhiteShadeDark,
+                        ),
+                      )),
+                  onPressed: currentStep == 0 || isRegistered
+                      ? null
+                      : buttonActions.onStepCancel,
+                  child: Text(isLastStep ? "Edit again" : "Previous"),
+                );
+              }),
         ),
       ],
     );
