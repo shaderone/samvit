@@ -19,7 +19,9 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return EasySplashScreen(
       logo: Image.asset(
-        'assets/images/logo.png',
+        'assets/images/samvit_logo.png',
+        width: 200,
+        height: 200,
       ),
       title: const Text(
         "Samwit 2.0",
@@ -32,7 +34,6 @@ class SplashScreen extends StatelessWidget {
       showLoader: true,
       loadingText: const Text("Loading..."),
       futureNavigator: getToken(),
-      durationInSeconds: 1,
       loaderColor: pureWhite,
     );
   }

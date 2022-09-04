@@ -23,7 +23,7 @@ class _PaymentHistoryScreenState extends State<PaymentHistoryScreen> {
         sliverTabBar: SliverTabBar(
           title: Row(
             children: [
-              Image.asset("assets/images/logo.png", width: 30),
+              Image.asset("assets/images/samvit_logo.png", width: 30),
               const SizedBox(width: 15),
               GradientText(
                 'Payment History',

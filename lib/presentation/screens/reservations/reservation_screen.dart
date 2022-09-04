@@ -30,7 +30,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
-              child: Image.asset("assets/images/logo.png", width: 30),
+              child: Image.asset("assets/images/samvit_logo.png", width: 30),
             ),
             const SizedBox(width: 15),
             const Text(

@@ -39,11 +39,32 @@ dependencies:
 
 dev_dependencies:
   build_runner: ^2.2.0
+  flutter_launcher_icons: ^0.10.0
   flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter
   freezed: ^2.1.0+1
 
+flutter_icons:
+  android: true
+  ios: true
+  image_path: assets/images/samvit_color_logo.png
+
+# flutter_native_splash-production.yaml
+#flutter_native_splash:
+#  color: "#ffffff"
+#  image: assets/images/samvit_logo.png
+#  color_dark: "#121212"
+#  image_dark: assets/images/samvit_logo.png
+#
+#  android_12:
+#    image: assets/images/samvit_logo.png
+#    icon_background_color: "#ffffff"
+#    image_dark: assets/images/samvit_logo.png
+#    icon_background_color_dark: "#121212"
+#
+#  web: false
+#  ios: true
 flutter:
   uses-material-design: true
 

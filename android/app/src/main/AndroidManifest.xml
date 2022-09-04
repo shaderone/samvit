@@ -2,7 +2,7 @@
     package="com.example.brechfete">
     <uses-permission android:name="android.permission.INTERNET"/>   
    <application
-        android:label="samvit"
+        android:label="Samvit"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
