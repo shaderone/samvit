@@ -47,111 +47,100 @@ class _BookingScreenState extends State<BookingScreen> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
 
-    return GestureDetector(
-      onTap: () {
-        final isKeyboardActive = MediaQuery.of(context).viewInsets.bottom != 0;
-        if (isKeyboardActive) {
-          return;
-        } else {
-          FocusScope.of(context).unfocus();
-        }
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          elevation: 5,
-          title: Row(
-            children: [
-              Image.asset("assets/images/samvit_logo.png", width: 30),
-              const SizedBox(width: 15),
-              GradientText(
-                'Slot Booking',
-                style: GoogleFonts.ubuntu(
-                  fontSize: screenWidth <= 320 ? 20 : 24,
-                ),
-                colors: const [
-                  Color(0xFF6E6F71),
-                  Color(0xFFECECEC),
-                ],
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        elevation: 5,
+        title: Row(
+          children: [
+            Image.asset("assets/images/samvit_logo.png", width: 30),
+            const SizedBox(width: 15),
+            GradientText(
+              'Slot Booking',
+              style: GoogleFonts.ubuntu(
+                fontSize: screenWidth <= 320 ? 20 : 24,
               ),
-            ],
-          ),
-          actions: [
-            IconButton(
-              onPressed: () => logout(mounted, context),
-              icon: const Icon(
-                Icons.logout_rounded,
-              ),
+              colors: const [
+                Color(0xFF6E6F71),
+                Color(0xFFECECEC),
+              ],
             ),
           ],
         ),
-        body: SingleChildScrollView(
-          reverse: true,
-          padding: EdgeInsets.symmetric(
-              vertical: 20, horizontal: screenWidth <= 340 ? 10 : 15),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              const CalendarStatus(),
-              const SizedBox(height: 10),
-              const SlotCalender(),
-              BlocBuilder<BookingBloc, BookingState>(
-                builder: (context, state) {
-                  return SizedBox(
-                    height: 90,
-                    child: ValueListenableBuilder(
-                      valueListenable: BookingScreen.isDateSelectedNotifier,
-                      builder: (BuildContext context, bool isDateSelected,
-                          Widget? _) {
-                        return Visibility(
-                          visible: isDateSelected,
-                          child: TimeSlotList(
-                            maxHeight: 90,
-                            key: _timeSlotListStateKey,
-                            state: state,
-                          ),
-                        );
-                      },
-                    ),
-                  );
-                },
-              ),
-              const SizedBox(height: 10),
-              BlocBuilder<SlotInfoBloc, SlotInfoState>(
-                builder: (context, state) {
-                  log(state.toString());
-                  return ValueListenableBuilder(
-                    valueListenable: BookingScreen.isTimeSelectedNotifier,
+        actions: [
+          IconButton(
+            onPressed: () => logout(mounted, context),
+            icon: const Icon(
+              Icons.logout_rounded,
+            ),
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        reverse: true,
+        padding: EdgeInsets.symmetric(
+            vertical: 20, horizontal: screenWidth <= 340 ? 10 : 15),
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            const CalendarStatus(),
+            const SizedBox(height: 10),
+            const SlotCalender(),
+            BlocBuilder<BookingBloc, BookingState>(
+              builder: (context, state) {
+                return SizedBox(
+                  height: 90,
+                  child: ValueListenableBuilder(
+                    valueListenable: BookingScreen.isDateSelectedNotifier,
                     builder:
-                        (BuildContext context, bool isTimeSelected, Widget? _) {
+                        (BuildContext context, bool isDateSelected, Widget? _) {
                       return Visibility(
-                        visible: isTimeSelected,
-                        child: SlotInfoContainer(
+                        visible: isDateSelected,
+                        child: TimeSlotList(
+                          maxHeight: 90,
+                          key: _timeSlotListStateKey,
                           state: state,
-                          reOrderTimeSlotList: () {
-                            //function to re-order time-slotlist
-                            initiateTimeSlotScroll();
-                          },
                         ),
                       );
                     },
-                  );
-                },
-              ),
-              const SizedBox(height: 30),
-              ValueListenableBuilder(
-                valueListenable: BookingScreen.isTimeSelectedNotifier,
-                builder:
-                    (BuildContext context, bool isTimeSelected, Widget? _) {
-                  return Visibility(
-                    visible: isTimeSelected,
-                    child: const ConfirmButton(),
-                  );
-                },
-              ),
-              const SizedBox(height: 30),
-            ],
-          ),
+                  ),
+                );
+              },
+            ),
+            const SizedBox(height: 10),
+            BlocBuilder<SlotInfoBloc, SlotInfoState>(
+              builder: (context, state) {
+                log(state.toString());
+                return ValueListenableBuilder(
+                  valueListenable: BookingScreen.isTimeSelectedNotifier,
+                  builder:
+                      (BuildContext context, bool isTimeSelected, Widget? _) {
+                    return Visibility(
+                      visible: isTimeSelected,
+                      child: SlotInfoContainer(
+                        state: state,
+                        reOrderTimeSlotList: () {
+                          //function to re-order time-slotlist
+                          initiateTimeSlotScroll();
+                        },
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+            const SizedBox(height: 30),
+            ValueListenableBuilder(
+              valueListenable: BookingScreen.isTimeSelectedNotifier,
+              builder: (BuildContext context, bool isTimeSelected, Widget? _) {
+                return Visibility(
+                  visible: isTimeSelected,
+                  child: const ConfirmButton(),
+                );
+              },
+            ),
+            const SizedBox(height: 30),
+          ],
         ),
       ),
     );
