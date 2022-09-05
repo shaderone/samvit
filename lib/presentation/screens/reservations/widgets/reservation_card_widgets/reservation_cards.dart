@@ -1,11 +1,16 @@
+import 'package:brechfete/bloc/reservation/reservation_bloc.dart';
 import 'package:brechfete/core/constants.dart';
+import 'package:brechfete/domain/screens/reservation/reservation/reservation.dart';
 import 'package:brechfete/presentation/screens/reservations/widgets/reservation_chip.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CardTop extends StatelessWidget {
+  final ReservationModal state;
+
   const CardTop({
     Key? key,
+    required this.state,
   }) : super(key: key);
 
   @override
@@ -19,7 +24,7 @@ class CardTop extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "St.Joseph HSS",
+                state.name,
                 style: GoogleFonts.montserrat(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -27,7 +32,7 @@ class CardTop extends StatelessWidget {
               ),
               const SizedBox(height: 5),
               Text(
-                "Near market roard, changanacherry",
+                state.address,
                 style: GoogleFonts.poppins(
                   fontSize: screenWidth <= 320 ? 12 : 14,
                 ),
@@ -70,8 +75,10 @@ class CardTop extends StatelessWidget {
 }
 
 class CardMiddle extends StatelessWidget {
+  final ReservationModal state;
   const CardMiddle({
     Key? key,
+    required this.state,
   }) : super(key: key);
 
   @override
@@ -83,7 +90,7 @@ class CardMiddle extends StatelessWidget {
         ReservationChip(
           chipCrossAxisAlignment: CrossAxisAlignment.start,
           chipTitle: "Date",
-          chipText: "Tue, 22 September",
+          chipText: state.date,
           chipWidth: screenWidth < 320 ? 90 : 160,
           chipBgColor: primaryDarkShadeLight,
           chipStrokeColor: textWhiteShadeDark,
@@ -94,18 +101,18 @@ class CardMiddle extends StatelessWidget {
         ReservationChip(
           chipCrossAxisAlignment: CrossAxisAlignment.start,
           chipTitle: "Time",
-          chipText: "10:00",
+          chipText: state.time.split(" ").first,
           chipWidth: screenWidth < 320 ? 90 : 100,
           chipBgColor: primaryDarkShadeLight,
           chipStrokeColor: textWhiteShadeDark,
-          chipTimePeriod: "AM",
+          chipTimePeriod: state.time.split(" ").last,
           chipTextColor: pureWhite,
           chipTitleColor: secondaryBlueShadeLight.withOpacity(.8),
         ),
         ReservationChip(
           chipCrossAxisAlignment: CrossAxisAlignment.start,
           chipTitle: "Slots",
-          chipText: "300",
+          chipText: state.slotCount.toString(),
           chipWidth: screenWidth < 320 ? 90 : 70,
           chipBgColor: primaryDarkShadeLight,
           chipStrokeColor: textWhiteShadeDark,
