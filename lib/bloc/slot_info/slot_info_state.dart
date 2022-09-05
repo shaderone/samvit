@@ -11,6 +11,6 @@ class SlotInfoState with _$SlotInfoState {
   factory SlotInfoState.initial() => const SlotInfoState(
         isError: false,
         isLoading: false,
-        slotInfo: SlotInfoModal(remainingSlot: 0, bookedSlot: 0),
+        slotInfo: SlotInfoModal(remainingSlot: -1, bookedSlot: -1),
       );
 }

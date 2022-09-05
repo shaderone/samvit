@@ -22,8 +22,8 @@ class SlotInfoBloc extends Bloc<SlotInfoEvent, SlotInfoState> {
           isError: false,
           isLoading: true,
           slotInfo: SlotInfoModal(
-            remainingSlot: 0,
-            bookedSlot: 0,
+            remainingSlot: -1,
+            bookedSlot: -1,
           ),
         ),
       );
@@ -39,7 +39,7 @@ class SlotInfoBloc extends Bloc<SlotInfoEvent, SlotInfoState> {
         return const SlotInfoState(
           isError: true,
           isLoading: false,
-          slotInfo: SlotInfoModal(remainingSlot: 0, bookedSlot: 0),
+          slotInfo: SlotInfoModal(remainingSlot: -1, bookedSlot: -1),
         );
       }, (SlotInfoModal data) {
         return SlotInfoState(
