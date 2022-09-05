@@ -155,28 +155,32 @@ class ConfirmButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () {
-        if (SlotInputItem.isSlotCountValidatedNotifier.value) {
-          Navigator.of(context).push(
-            CupertinoPageRoute(
-              builder: (context) => const ExpoRegistration(),
+    return ValueListenableBuilder(
+        valueListenable: SlotInputItem.isSlotCountValidatedNotifier,
+        builder: (BuildContext context, bool isSlotValid, Widget? _) {
+          return ElevatedButton(
+            onPressed: () {
+              if (isSlotValid) {
+                Navigator.of(context).push(
+                  CupertinoPageRoute(
+                    builder: (context) => const ExpoRegistration(),
+                  ),
+                );
+              } else {
+                Fluttertoast.showToast(
+                  msg: "Enter a valid input",
+                  textColor: extraRed,
+                );
+              }
+            },
+            style: ButtonStyle(
+              minimumSize: MaterialStateProperty.all(
+                const Size.fromHeight(50),
+              ),
             ),
+            child: const Text("Confirm Slots"),
           );
-        } else {
-          Fluttertoast.showToast(
-            msg: "Enter a valid input",
-            textColor: extraRed,
-          );
-        }
-      },
-      style: ButtonStyle(
-        minimumSize: MaterialStateProperty.all(
-          const Size.fromHeight(50),
-        ),
-      ),
-      child: const Text("Confirm Slots"),
-    );
+        });
   }
 }
 

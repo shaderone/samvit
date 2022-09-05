@@ -4,6 +4,7 @@ import 'package:brechfete/presentation/screens/bookings/booking_screen.dart';
 import 'package:brechfete/presentation/screens/bookings/pages/pay_now_page.dart';
 import 'package:brechfete/presentation/screens/bookings/pages/widgets/registration_form_builder.dart';
 import 'package:brechfete/presentation/screens/bookings/pages/widgets/registration_form_buttons.dart';
+import 'package:brechfete/presentation/screens/bookings/widgets/slot_status_widgets/slot_info_container.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -57,6 +58,7 @@ class _ExpoRegistrationState extends State<ExpoRegistration> {
               if (shouldPop != null && shouldPop) {
                 BookingScreen.isDateSelectedNotifier.value = false;
                 BookingScreen.isTimeSelectedNotifier.value = false;
+                SlotInputItem.isSlotCountValidatedNotifier.value = false;
                 isRegistrationSuccessNotifier.value = false;
                 currentStepNotifier.value = 0;
                 isValidatedNotifier.value = false;
