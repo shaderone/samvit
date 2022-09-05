@@ -39,145 +39,154 @@ class _ExpoRegistrationState extends State<ExpoRegistration> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
 
-    return WillPopScope(
-      //if onWillPop is true, the route gets popped
-      onWillPop: () async {
-        final shouldPop = await showCustomAlertDialog(
-          context,
-          "Discard Changes?",
-          "Any Changes Made will be lost",
-          "No",
-          "Discard",
-          extraRed,
-          primaryDark,
-        );
-        if (shouldPop != null && shouldPop) {
-          isRegistrationSuccessNotifier.value = false;
-          currentStepNotifier.value = 0;
-          isValidatedNotifier.value = false;
-        }
-        return shouldPop ?? false;
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          title: GradientText(
-            'Registration',
-            style: GoogleFonts.ubuntu(
-              fontSize: screenWidth <= 320 ? 20 : 24,
-            ),
-            colors: const [
-              Color(0xFF6E6F71),
-              Color(0xFFECECEC),
-            ],
-          ),
-        ),
-        body: SingleChildScrollView(
-          child: ValueListenableBuilder(
-            valueListenable: currentStepNotifier,
-            builder: (BuildContext context, int currentStep, Widget? _) {
-              const firstStep = 0, secondStep = 1, thirdStep = 2;
-              return Theme(
-                data: ThemeData.dark(),
-                child: Column(
-                  children: [
-                    Stepper(
-                      currentStep: currentStep,
-                      onStepContinue: !isValidatedNotifier.value
-                          ? () {
-                              final showWarning = SnackBar(
-                                backgroundColor: primaryDark,
-                                content: Text(
-                                  'Please fill all the fields!',
-                                  style: GoogleFonts.poppins(
-                                    color: extraRed,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                action: SnackBarAction(
-                                  label: 'OK',
-                                  onPressed: () {}, //close
-                                  textColor: secondaryBlueShadeLight,
-                                ),
-                              );
-
-                              // Find the ScaffoldMessenger in the widget tree
-                              // and use it to show a SnackBar.
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(showWarning);
-                            }
-                          : () => onStepContinue(currentStep),
-                      onStepCancel: () => onStepCancel(currentStep),
-                      controlsBuilder: (context, buttonActions) {
-                        return StepperActions(
-                          buttonActions: buttonActions,
-                          currentStep: currentStep,
-                          isLastStep: currentStep == thirdStep ? true : false,
-                        );
-                      },
-                      physics: const ClampingScrollPhysics(),
-                      steps: buildSteps(
-                          currentStep, firstStep, secondStep, thirdStep),
-                    ),
-                    ValueListenableBuilder(
-                        valueListenable: isRegistrationSuccessNotifier,
-                        builder: (BuildContext context, bool isRegistered,
-                            Widget? _) {
-                          return Visibility(
-                            //should only be visible if doRegister is successful
-                            visible: isRegistered ? true : false,
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: ColoredBox(
-                                        color: primaryDark,
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(15.0),
-                                          child: Text(
-                                            "Please select a payment option to continue",
-                                            textAlign: TextAlign.center,
-                                            style: GoogleFonts.ubuntu(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold,
-                                              color: textWhiteShadeLight,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 20),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    RegistrationButton(
-                                      buttonText: "Pay Later",
-                                      screenWidth: screenWidth,
-                                      onPressed: onPayLaterPressed,
-                                    ),
-                                    const SizedBox(width: 10),
-                                    RegistrationButton(
-                                      buttonText: "Pay Now",
-                                      screenWidth: screenWidth,
-                                      bgColor: secondaryBlueShadeDark,
-                                      onPressed: onPayNowPressed,
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                          );
-                        }),
+    return ValueListenableBuilder(
+        valueListenable: isRegistrationSuccessNotifier,
+        builder: (BuildContext context, bool isRegistered, Widget? _) {
+          return WillPopScope(
+            //if onWillPop is true, the route gets popped
+            onWillPop: isRegistered
+                ? null
+                : () async {
+                    final shouldPop = await showCustomAlertDialog(
+                      context,
+                      "Discard Changes?",
+                      "Any Changes Made will be lost",
+                      "No",
+                      "Discard",
+                      extraRed,
+                      primaryDark,
+                    );
+                    if (shouldPop != null && shouldPop) {
+                      isRegistrationSuccessNotifier.value = false;
+                      currentStepNotifier.value = 0;
+                      isValidatedNotifier.value = false;
+                    }
+                    return shouldPop ?? false;
+                  },
+            child: Scaffold(
+              appBar: AppBar(
+                title: GradientText(
+                  'Registration',
+                  style: GoogleFonts.ubuntu(
+                    fontSize: screenWidth <= 320 ? 20 : 24,
+                  ),
+                  colors: const [
+                    Color(0xFF6E6F71),
+                    Color(0xFFECECEC),
                   ],
                 ),
-              );
-            },
-          ),
-        ),
-      ),
-    );
+              ),
+              body: SingleChildScrollView(
+                child: ValueListenableBuilder(
+                  valueListenable: currentStepNotifier,
+                  builder: (BuildContext context, int currentStep, Widget? _) {
+                    const firstStep = 0, secondStep = 1, thirdStep = 2;
+                    return Theme(
+                      data: ThemeData.dark(),
+                      child: Column(
+                        children: [
+                          Stepper(
+                            currentStep: currentStep,
+                            onStepContinue: !isValidatedNotifier.value
+                                ? () {
+                                    final showWarning = SnackBar(
+                                      backgroundColor: primaryDark,
+                                      content: Text(
+                                        'Please fill all the fields!',
+                                        style: GoogleFonts.poppins(
+                                          color: extraRed,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      action: SnackBarAction(
+                                        label: 'OK',
+                                        onPressed: () {}, //close
+                                        textColor: secondaryBlueShadeLight,
+                                      ),
+                                    );
+
+                                    // Find the ScaffoldMessenger in the widget tree
+                                    // and use it to show a SnackBar.
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(showWarning);
+                                  }
+                                : () => onStepContinue(currentStep),
+                            onStepCancel: () => onStepCancel(currentStep),
+                            controlsBuilder: (context, buttonActions) {
+                              return StepperActions(
+                                buttonActions: buttonActions,
+                                currentStep: currentStep,
+                                isLastStep:
+                                    currentStep == thirdStep ? true : false,
+                              );
+                            },
+                            physics: const ClampingScrollPhysics(),
+                            steps: buildSteps(
+                                currentStep, firstStep, secondStep, thirdStep),
+                          ),
+                          ValueListenableBuilder(
+                              valueListenable: isRegistrationSuccessNotifier,
+                              builder: (BuildContext context, bool isRegistered,
+                                  Widget? _) {
+                                return Visibility(
+                                  //should only be visible if doRegister is successful
+                                  visible: isRegistered ? true : false,
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: ColoredBox(
+                                              color: primaryDark,
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(15.0),
+                                                child: Text(
+                                                  "Please select a payment option to continue",
+                                                  textAlign: TextAlign.center,
+                                                  style: GoogleFonts.ubuntu(
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: textWhiteShadeLight,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 20),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          RegistrationButton(
+                                            buttonText: "Pay Later",
+                                            screenWidth: screenWidth,
+                                            onPressed: onPayLaterPressed,
+                                          ),
+                                          const SizedBox(width: 10),
+                                          RegistrationButton(
+                                            buttonText: "Pay Now",
+                                            screenWidth: screenWidth,
+                                            bgColor: secondaryBlueShadeDark,
+                                            onPressed: onPayNowPressed,
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                );
+                              }),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+          );
+        });
   }
 
   List<Step> buildSteps(
@@ -283,6 +292,7 @@ class _ExpoRegistrationState extends State<ExpoRegistration> {
       return;
     }
     if (shouldProceed ?? false) {
+      isRegistrationSuccessNotifier.value = false;
       //code to send request for pay later
       Navigator.of(context).pushNamedAndRemoveUntil(
         App.bookingSuccessRoute,

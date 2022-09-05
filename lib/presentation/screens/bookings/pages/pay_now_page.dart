@@ -1,6 +1,7 @@
 import 'package:brechfete/core/constants.dart';
 import 'package:brechfete/presentation/root/widgets/custom_form_input.dart';
 import 'package:brechfete/presentation/screens/bookings/pages/booking_success_page.dart';
+import 'package:brechfete/presentation/screens/bookings/pages/widgets/registration_form_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -65,6 +66,8 @@ class PayNowPage extends StatelessWidget {
                       ), // fromHeight use double.infinity as width and 40 is the height
                     ),
                     onPressed: () {
+                      //reseting
+                      isRegistrationSuccessNotifier.value = false;
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
                           builder: (context) => const BookingSuccessPage(
@@ -198,6 +201,8 @@ class PayNowPage extends StatelessWidget {
                         _amountFormKey.currentState!.validate();
                         if (_amountFormKey.currentState!.validate()) {
                           //print("success");
+                          //reseting
+                          isRegistrationSuccessNotifier.value = false;
                           Navigator.of(context).pushReplacement(
                             MaterialPageRoute(
                               builder: (context) => const BookingSuccessPage(

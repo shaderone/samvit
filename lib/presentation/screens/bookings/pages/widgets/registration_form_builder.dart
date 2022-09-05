@@ -30,17 +30,17 @@ class RegistrationFormHolderState extends State<RegistrationFormHolder> {
   bool isTelephoneSwitched = false;
 
   //form data
-  String institutionName = "";
-  String institutionAddress = "";
-  String institutionEmail = "";
-  String institutionPhone = "";
-  String institutionTelOrPhone = "";
+  static String institutionName = "";
+  static String institutionAddress = "";
+  static String institutionEmail = "";
+  static String institutionPhone = "";
+  static String institutionTelOrPhone = "";
 
-  String facultyName = "";
-  String facultyAddress = "";
-  String facultyEmail = "";
-  String facultyPhone = "";
-  String facultyTelOrPhone = "";
+  static String facultyName = "";
+  static String facultyAddress = "";
+  static String facultyEmail = "";
+  static String facultyPhone = "";
+  static String facultyTelOrPhone = "";
 
   void manageContext() {
     widget.sendContext(context);
@@ -51,7 +51,7 @@ class RegistrationFormHolderState extends State<RegistrationFormHolder> {
     return Form(
       key: _formKey,
       autovalidateMode: AutovalidateMode.onUserInteraction,
-      onChanged: () async {
+      onChanged: () {
         if (_formKey.currentState!.validate()) {
           _formKey.currentState!.save();
           //return true to validate insittution
@@ -192,26 +192,30 @@ class RegistrationFormHolderState extends State<RegistrationFormHolder> {
   //call this on register button
   static Future<bool> doRegistration() async {
     print("object");
-//    final SharedPreferences prefs = await SharedPreferences.getInstance();
-//    final token = prefs.getString("token");
-//    final selectedDate = prefs.getString("selectedTime");
-//    final selectedTime = prefs.getString("selectedTime");
-//    final slotCount = prefs.getString("slotCount");
-//
-//    Map<String, dynamic> formData = {
-//      "date": selectedDate,
-//      "time": selectedTime,
-//      "slotcount": slotCount,
-//      "cname": institutionName,
-//      "cnmail": institutionEmail,
-//      "cphone": institutionPhone,
-//      "ctelorphone": institutionTelOrPhone,
-//      "fname": institutionName,
-//      "femail": institutionEmail,
-//      "fphone": institutionPhone,
-//      "ftelorphone": institutionTelOrPhone,
-//    };
-//
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString("token");
+    final selectedDate = prefs.getString("selectedTime");
+    final selectedTime = prefs.getString("selectedTime");
+    final slotCount = prefs.getString("slotCount");
+
+    Map<String, dynamic> formData = {
+      "token": token,
+      "date": selectedDate,
+      "time": selectedTime,
+      "slotcount": slotCount,
+      "cname": institutionName,
+      "caddress": institutionAddress,
+      "cnmail": institutionEmail,
+      "cphone": institutionPhone,
+      "ctelorphone": institutionTelOrPhone,
+      "fname": facultyName,
+      "femail": facultyEmail,
+      "fphone": facultyPhone,
+      "ftelorphone": facultyTelOrPhone,
+    };
+
+    print(formData);
+
 //    var client = http.Client();
 //    var response = await client.post(
 //      Uri.parse(
@@ -223,8 +227,10 @@ class RegistrationFormHolderState extends State<RegistrationFormHolder> {
 //      },
 //      body: jsonEncode(formData),
 //    );
+//
+//    final data = jsonDecode(response.body);
+//    print(data);
 
-    //final data = jsonDecode(response.body);
     isRegistrationSuccessNotifier.value = true;
     return true;
     //show toast or other stuff
