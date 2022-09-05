@@ -55,6 +55,8 @@ class _ExpoRegistrationState extends State<ExpoRegistration> {
                 primaryDark,
               );
               if (shouldPop != null && shouldPop) {
+                BookingScreen.isDateSelectedNotifier.value = false;
+                BookingScreen.isTimeSelectedNotifier.value = false;
                 isRegistrationSuccessNotifier.value = false;
                 currentStepNotifier.value = 0;
                 isValidatedNotifier.value = false;

@@ -116,29 +116,33 @@ class _BookingScreenState extends State<BookingScreen> {
                       (BuildContext context, bool isTimeSelected, Widget? _) {
                     return Visibility(
                       visible: isTimeSelected,
-                      child: SlotInfoContainer(
-                        state: state,
-                        reOrderTimeSlotList: () {
-                          //function to re-order time-slotlist
-                          initiateTimeSlotScroll();
-                        },
-                      ),
+                      child: state.slotInfo.remainingSlot == 0
+                          ? StatusWidget(
+                              statusBgColor: extraRed.withOpacity(.05),
+                              statusColor: extraRed,
+                              statusText: "Slots Filled!",
+                            )
+                          : Column(
+                              children: [
+                                SlotInfoContainer(
+                                  state: state,
+                                  reOrderTimeSlotList: () {
+                                    //function to re-order time-slotlist
+                                    initiateTimeSlotScroll();
+                                  },
+                                ),
+                                const SizedBox(height: 30),
+                                state.slotInfo.remainingSlot == 0
+                                    ? const SizedBox()
+                                    : const ConfirmButton(),
+                                const SizedBox(height: 30),
+                              ],
+                            ),
                     );
                   },
                 );
               },
             ),
-            const SizedBox(height: 30),
-            ValueListenableBuilder(
-              valueListenable: BookingScreen.isTimeSelectedNotifier,
-              builder: (BuildContext context, bool isTimeSelected, Widget? _) {
-                return Visibility(
-                  visible: isTimeSelected,
-                  child: const ConfirmButton(),
-                );
-              },
-            ),
-            const SizedBox(height: 30),
           ],
         ),
       ),

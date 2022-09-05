@@ -1,8 +1,11 @@
+import 'package:brechfete/bloc/reservation/reservation_bloc.dart';
+import 'package:brechfete/domain/screens/reservation/reservation/reservation.dart';
 import 'package:brechfete/presentation/screens/bookings/booking_screen.dart';
 import 'package:brechfete/presentation/screens/reservations/widgets/reservation_card_widgets/reservation_cards.dart';
 import 'package:flutter/material.dart';
 import 'package:brechfete/core/constants.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
@@ -19,6 +22,12 @@ class ReservationScreen extends StatefulWidget {
 class _ReservationScreenState extends State<ReservationScreen> {
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      return context
+          .read<ReservationBloc>()
+          .add(const ReservationEvent.getReservationList());
+    });
+
     final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
@@ -57,34 +66,54 @@ class _ReservationScreenState extends State<ReservationScreen> {
           ),
         ],
       ),
-      body: AnimationLimiter(
-        child: ListView.separated(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 15),
-          physics: const BouncingScrollPhysics(),
-          itemBuilder: (BuildContext context, int index) {
-            return AnimationConfiguration.staggeredList(
-              position: index,
-              duration: const Duration(milliseconds: 500),
-              child: const SlideAnimation(
-                child: FadeInAnimation(
-                  child: ReservationCard(),
-                ),
+      body: BlocBuilder<ReservationBloc, ReservationState>(
+        builder: (context, state) {
+          if (state.isLoading) {
+            return const Center(
+              child: CircularProgressIndicator(strokeWidth: 2),
+            );
+          } else if (state.reservationList.isEmpty) {
+            return const Center(
+              child: Text("List is empty!"),
+            );
+          } else {
+            return AnimationLimiter(
+              child: ListView.separated(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8, vertical: 15),
+                physics: const BouncingScrollPhysics(),
+                itemBuilder: (BuildContext context, int index) {
+                  final singleReservationListItem =
+                      state.reservationList[index];
+                  return AnimationConfiguration.staggeredList(
+                    position: index,
+                    duration: const Duration(milliseconds: 500),
+                    child: SlideAnimation(
+                      child: FadeInAnimation(
+                        child:
+                            ReservationCard(state: singleReservationListItem),
+                      ),
+                    ),
+                  );
+                },
+                separatorBuilder: (BuildContext context, int index) {
+                  return const SizedBox(height: 10);
+                },
+                itemCount: state.reservationList.length,
               ),
             );
-          },
-          separatorBuilder: (BuildContext context, int index) {
-            return const SizedBox(height: 10);
-          },
-          itemCount: 8,
-        ),
+          }
+        },
       ),
     );
   }
 }
 
 class ReservationCard extends StatelessWidget {
+  final ReservationModal state;
   const ReservationCard({
     Key? key,
+    required this.state,
   }) : super(key: key);
 
   @override
@@ -104,13 +133,13 @@ class ReservationCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 5),
-            const CardTop(),
+            CardTop(state: state),
             screenWidth <= extraSmallScreenWidth
                 ? const SizedBox(height: 10)
                 : const SizedBox(height: 5),
             Divider(color: textWhiteShadeDark.withOpacity(.5)),
             const SizedBox(height: 5),
-            const CardMiddle(),
+            CardMiddle(state: state),
           ],
         ),
       ),
