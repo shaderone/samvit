@@ -7,18 +7,19 @@ class CalendarStatus extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: const [
         CalendarStatusItem(
           title: "Available",
           bgColor: primaryDarkShadeLight,
           borderColor: textWhiteShadeLight,
         ),
-        CalendarStatusItem(
-          title: "Booked",
-          bgColor: extraRed,
-          borderColor: pureWhite,
-        ),
+        //CalendarStatusItem(
+        //  title: "Booked",
+        //  bgColor: extraRed,
+        //  borderColor: pureWhite,
+        //),
+        SizedBox(width: 20),
         CalendarStatusItem(
           title: "Selected",
           bgColor: secondaryBlueShadeLight,
