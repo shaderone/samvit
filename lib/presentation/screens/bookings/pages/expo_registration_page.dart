@@ -44,25 +44,23 @@ class _ExpoRegistrationState extends State<ExpoRegistration> {
         builder: (BuildContext context, bool isRegistered, Widget? _) {
           return WillPopScope(
             //if onWillPop is true, the route gets popped
-            onWillPop: isRegistered
-                ? null
-                : () async {
-                    final shouldPop = await showCustomAlertDialog(
-                      context,
-                      "Discard Changes?",
-                      "Any Changes Made will be lost",
-                      "No",
-                      "Discard",
-                      extraRed,
-                      primaryDark,
-                    );
-                    if (shouldPop != null && shouldPop) {
-                      isRegistrationSuccessNotifier.value = false;
-                      currentStepNotifier.value = 0;
-                      isValidatedNotifier.value = false;
-                    }
-                    return shouldPop ?? false;
-                  },
+            onWillPop: () async {
+              final shouldPop = await showCustomAlertDialog(
+                context,
+                "Discard Changes?",
+                "Any Changes Made will be lost",
+                "No",
+                "Discard",
+                extraRed,
+                primaryDark,
+              );
+              if (shouldPop != null && shouldPop) {
+                isRegistrationSuccessNotifier.value = false;
+                currentStepNotifier.value = 0;
+                isValidatedNotifier.value = false;
+              }
+              return shouldPop ?? false;
+            },
             child: Scaffold(
               appBar: AppBar(
                 title: GradientText(
@@ -424,13 +422,6 @@ class StepperActions extends StatelessWidget {
                                 Fluttertoast.showToast(
                                   msg: "Success, proceed with payment",
                                   textColor: extraGreen,
-                                  toastLength: Toast.LENGTH_LONG,
-                                );
-                              } else {
-                                Fluttertoast.showToast(
-                                  msg: "Registration Failed!  please try again",
-                                  textColor: extraRed,
-                                  gravity: ToastGravity.CENTER,
                                   toastLength: Toast.LENGTH_LONG,
                                 );
                               }

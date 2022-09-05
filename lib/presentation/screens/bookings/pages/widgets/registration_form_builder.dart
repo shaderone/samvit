@@ -1,11 +1,14 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:brechfete/core/constants.dart';
+import 'package:brechfete/domain/screens/booking/modals/register/slot_register.dart';
 import 'package:brechfete/presentation/root/widgets/custom_form_input.dart';
 import 'package:brechfete/presentation/screens/bookings/pages/expo_registration_page.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -194,18 +197,17 @@ class RegistrationFormHolderState extends State<RegistrationFormHolder> {
     print("object");
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final token = prefs.getString("token");
-    final selectedDate = prefs.getString("selectedTime");
+    final selectedDate = prefs.getString("selectedDate");
     final selectedTime = prefs.getString("selectedTime");
     final slotCount = prefs.getString("slotCount");
 
     Map<String, dynamic> formData = {
-      "token": token,
       "date": selectedDate,
       "time": selectedTime,
       "slotcount": slotCount,
       "cname": institutionName,
       "caddress": institutionAddress,
-      "cnmail": institutionEmail,
+      "cemail": institutionEmail,
       "cphone": institutionPhone,
       "ctelorphone": institutionTelOrPhone,
       "fname": facultyName,
@@ -216,26 +218,31 @@ class RegistrationFormHolderState extends State<RegistrationFormHolder> {
 
     print(formData);
 
-//    var client = http.Client();
-//    var response = await client.post(
-//      Uri.parse(
-//        "$baseURL/book-slot",
-//      ),
-//      headers: {
-//        "Content-Type": "application/json",
-//        "Authorization": "Token $token"
-//      },
-//      body: jsonEncode(formData),
-//    );
-//
-//    final data = jsonDecode(response.body);
-//    print(data);
+    var client = http.Client();
+    var response = await client.post(
+      Uri.parse(
+        "$baseURL/book-slot/",
+      ),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Token $token"
+      },
+      body: jsonEncode(formData),
+    );
 
-    isRegistrationSuccessNotifier.value = true;
-    return true;
-    //show toast or other stuff
-    //expected success or failure; if success show continue with payments
-    //save this data into a valueNotifier
-    //print(data);
+    final data = jsonDecode(response.body);
+    final parsedData = SlotRegisterModal.fromJson(data);
+    if (response.statusCode == 201) {
+      prefs.setString("regToken", parsedData.registrationToken);
+    } else {
+      Fluttertoast.showToast(
+        msg: parsedData.registrationError,
+        textColor: extraRed,
+        toastLength: Toast.LENGTH_SHORT,
+      );
+    }
+
+    isRegistrationSuccessNotifier.value = parsedData.isRegistered;
+    return parsedData.isRegistered;
   }
 }
