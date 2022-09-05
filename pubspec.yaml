@@ -25,6 +25,7 @@ dependencies:
   http: ^0.13.5
   injectable: ^1.5.3
   injectable_generator: ^1.5.4
+  intl: ^0.17.0
   json_annotation: ^4.6.0
   json_serializable: ^6.3.1
   lottie: ^1.4.1
@@ -48,7 +49,6 @@ dev_dependencies:
 #  android: true
 #  ios: true
 #  image_path: assets/images/samvit_color_logo.png
-
 # flutter_native_splash-production.yaml
 #flutter_native_splash:
 #  color: "#ffffff"

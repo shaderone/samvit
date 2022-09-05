@@ -28,8 +28,6 @@ class ReservationBloc extends Bloc<ReservationEvent, ReservationState> {
       Either<CommonFailures, List<ReservationModal>> getReservationResponse =
           await reservationService.getReservationList();
 
-      log(getReservationResponse.toString());
-
       final reservationState =
           getReservationResponse.fold((CommonFailures failure) {
         return const ReservationState(

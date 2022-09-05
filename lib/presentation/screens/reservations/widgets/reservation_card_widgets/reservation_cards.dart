@@ -4,6 +4,7 @@ import 'package:brechfete/domain/screens/reservation/reservation/reservation.dar
 import 'package:brechfete/presentation/screens/reservations/widgets/reservation_chip.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
 class CardTop extends StatelessWidget {
   final ReservationModal state;
@@ -84,13 +85,17 @@ class CardMiddle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final date = DateTime.parse(state.date);
+    final DateFormat formatter = DateFormat('E, MMMM d'); //MMMEd
+    final String formattedDate = formatter.format(date);
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         ReservationChip(
           chipCrossAxisAlignment: CrossAxisAlignment.start,
           chipTitle: "Date",
-          chipText: state.date,
+          chipText: formattedDate,
           chipWidth: screenWidth < 320 ? 90 : 160,
           chipBgColor: primaryDarkShadeLight,
           chipStrokeColor: textWhiteShadeDark,
