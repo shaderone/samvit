@@ -171,8 +171,8 @@ class _PayNowPageState extends State<PayNowPage> {
                             //print("success");
                             //reseting
                             isRegistrationSuccessNotifier.value = false;
-                            //new reset
-                            isValidatedNotifier.value = false;
+                            ////new reset
+                            //isValidatedNotifier.value = false;
                             SlotInputItem.isSlotCountValidatedNotifier.value =
                                 false;
 
@@ -251,7 +251,7 @@ class _PayNowPageState extends State<PayNowPage> {
                           //reseting
                           isRegistrationSuccessNotifier.value = false;
                           //new reset
-                          isValidatedNotifier.value = false;
+                          //isValidatedNotifier.value = false;
                           SlotInputItem.isSlotCountValidatedNotifier.value =
                               false;
 

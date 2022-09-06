@@ -303,7 +303,7 @@ class _ExpoRegistrationState extends State<ExpoRegistration> {
     if (shouldProceed ?? false) {
       isRegistrationSuccessNotifier.value = false;
       //new reset
-      isValidatedNotifier.value = false;
+      //isValidatedNotifier.value = false;
       SlotInputItem.isSlotCountValidatedNotifier.value = false;
 
       //send request
