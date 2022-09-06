@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:brechfete/domain/screens/booking/booking_service.dart';
 import 'package:brechfete/domain/screens/booking/modals/time_slot/time_slot.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,7 +27,7 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
 
       final Either<CommonFailures, List<TimeSlotModal>> timeSlotList =
           await bookingService.getTime(date: event.date);
-
+      log(timeSlotList.toString());
       emit(
         timeSlotList.fold(
           (CommonFailures failures) {

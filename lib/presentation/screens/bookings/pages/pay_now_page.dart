@@ -1,10 +1,14 @@
 import 'dart:convert';
+import 'dart:developer';
+
+import 'package:brechfete/bloc/paynow/paynow_bloc.dart';
 import 'package:brechfete/core/constants.dart';
 import 'package:brechfete/presentation/root/widgets/custom_form_input.dart';
 import 'package:brechfete/presentation/screens/bookings/pages/booking_success_page.dart';
 import 'package:brechfete/presentation/screens/bookings/pages/widgets/registration_form_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -66,107 +70,110 @@ class _PayNowPageState extends State<PayNowPage> {
         ),
         body: TabBarView(
           children: [
-            Form(
-              key: PayNowPage._amountFormKey,
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: extraYellow.withOpacity(.05),
-                              borderRadius: BorderRadius.circular(5),
-                              border: Border.all(
-                                color: extraYellow.withOpacity(.5),
+            SingleChildScrollView(
+              child: Form(
+                key: PayNowPage._amountFormKey,
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: extraYellow.withOpacity(.05),
+                                borderRadius: BorderRadius.circular(5),
+                                border: Border.all(
+                                  color: extraYellow.withOpacity(.5),
+                                ),
                               ),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(15.0),
-                              child: RichText(
-                                textAlign: TextAlign.center,
-                                text: TextSpan(
-                                  style: DefaultTextStyle.of(context).style,
-                                  children: const [
-                                    TextSpan(
-                                      text:
-                                          "Amount to Pay : 20 x 40 (slots) = ",
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: textWhiteShadeLight,
+                              child: Padding(
+                                padding: const EdgeInsets.all(15.0),
+                                child: RichText(
+                                  textAlign: TextAlign.center,
+                                  text: TextSpan(
+                                    style: DefaultTextStyle.of(context).style,
+                                    children: const [
+                                      TextSpan(
+                                        text:
+                                            "Amount to Pay : 20 x 40 (slots) = ",
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: textWhiteShadeLight,
+                                        ),
                                       ),
-                                    ),
-                                    TextSpan(
-                                      text: "800 ₹",
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
+                                      TextSpan(
+                                        text: "800 ₹",
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    Column(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        CustomFormInput(
-                          autoValidateMode: AutovalidateMode.onUserInteraction,
-                          labelText: "Amount",
-                          textInputType: TextInputType.number,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return "Amount is required";
-                            }
-                            return null;
-                          },
-                          textInputAction: TextInputAction.done,
-                          hintText: "Enter cash recived",
-                          suffixIcon: Icons.money,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly,
-                          ],
-                          maxInputLength: 5,
-                        )
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: const Size.fromHeight(50),
+                        ],
                       ),
-                      onPressed: () {
-                        PayNowPage._amountFormKey.currentState!.validate();
-                        if (PayNowPage._amountFormKey.currentState!
-                            .validate()) {
-                          //print("success");
-                          //reseting
-                          isRegistrationSuccessNotifier.value = false;
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                              builder: (context) => const BookingSuccessPage(
-                                animationWidget:
-                                    "assets/lottie_files/confirm.json",
-                                statusText: "Booking Successful!",
+                      const SizedBox(height: 20),
+                      Column(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CustomFormInput(
+                            autoValidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            labelText: "Amount",
+                            textInputType: TextInputType.number,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Amount is required";
+                              }
+                              return null;
+                            },
+                            textInputAction: TextInputAction.done,
+                            hintText: "Enter cash recived",
+                            suffixIcon: Icons.money,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly,
+                            ],
+                            maxInputLength: 5,
+                          )
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: const Size.fromHeight(50),
+                        ),
+                        onPressed: () {
+                          PayNowPage._amountFormKey.currentState!.validate();
+                          if (PayNowPage._amountFormKey.currentState!
+                              .validate()) {
+                            //print("success");
+                            //reseting
+                            isRegistrationSuccessNotifier.value = false;
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                builder: (context) => const BookingSuccessPage(
+                                  animationWidget:
+                                      "assets/lottie_files/confirm.json",
+                                  statusText: "Booking Successful!",
+                                ),
                               ),
-                            ),
-                          );
-                        }
-                      },
-                      child: const Text("Send Confirmation Link"),
-                    ),
-                    const SizedBox(height: 20),
-                  ],
+                            );
+                          }
+                        },
+                        child: const Text("Send Confirmation Link"),
+                      ),
+                      const SizedBox(height: 20),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -231,74 +238,86 @@ class _PayNowPageState extends State<PayNowPage> {
                     children: [
                       TextButton(
                         onPressed: () async {
-                          final SharedPreferences prefs =
-                              await SharedPreferences.getInstance();
-                          final token = prefs.getString("token");
-                          final regId = prefs.getString("regToken");
-
-                          //send request to get payment link
-                          var client = http.Client();
-                          var response = await client.post(
-                            Uri.parse("$baseURL/payment/"),
-                            headers: {
-                              "Content-Type": "application/json",
-                              "Authorization": "Token $token",
-                            },
-                            body: jsonEncode({
-                              "collegeid": regId,
-                              "type": "onlineqr", //for qrcode
-                            }),
-                          );
-                          //print(regId);
-                          //log(response.body.toString());
-                          final data = jsonDecode(response.body);
-                          //print(data['url']);
-                          setState(() {
-                            isQrCodeGenerated = true;
-                            qrData = data['url'];
-                          });
+                          context.read<PaynowBloc>().add(
+                                const PaynowEvent.generateQrCode(),
+                              );
                         },
                         child: const Text("Generate QR code"),
                       ),
-                      Visibility(
-                        visible: isQrCodeGenerated ? true : false,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
-                          child: QrImage(
-                            data: qrData,
-                            version: QrVersions.auto,
-                            size: screenWidth <= 320 ? 150 : 250,
-                            gapless: false,
-                            embeddedImage: const AssetImage(
-                              'assets/images/samvit_logo.png',
-                            ),
-                            embeddedImageStyle: QrEmbeddedImageStyle(
-                              size: const Size(50, 50),
-                            ),
-                            backgroundColor: pureWhite,
-                            padding: const EdgeInsets.all(15),
-                            //foregroundColor: extraGreen,
-                            //dataModuleStyle: const QrDataModuleStyle(
-                            //  color: extraRed,
-                            //  dataModuleShape: QrDataModuleShape.square,
-                            //),
-                            constrainErrorBounds: false,
-                            embeddedImageEmitsError: true,
-                            //errorCorrectionLevel: 1,
-                            //eyeStyle: const QrEyeStyle(
-                            //  color: extraYellow,
-                            //  eyeShape: QrEyeShape.circle,
-                            //),
-                            errorStateBuilder: (cxt, err) {
-                              return const Center(
-                                child: Text(
-                                  "Uh oh! Something went wrong...",
-                                  textAlign: TextAlign.center,
+                      BlocBuilder<PaynowBloc, PaynowState>(
+                        builder: (context, state) {
+                          if (state.isLoading) {
+                            return const Center(
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            );
+                          } else {
+                            return Column(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: QrImage(
+                                    data: state.paymentUrl.url,
+                                    version: QrVersions.auto,
+                                    size: screenWidth <= 320 ? 150 : 250,
+                                    gapless: false,
+                                    embeddedImage: const AssetImage(
+                                      'assets/images/samvit_logo.png',
+                                    ),
+                                    embeddedImageStyle: QrEmbeddedImageStyle(
+                                      size: const Size(50, 50),
+                                    ),
+                                    backgroundColor: pureWhite,
+                                    padding: const EdgeInsets.all(15),
+                                    //foregroundColor: extraGreen,
+                                    //dataModuleStyle: const QrDataModuleStyle(
+                                    //  color: extraRed,
+                                    //  dataModuleShape: QrDataModuleShape.square,
+                                    //),
+                                    constrainErrorBounds: false,
+                                    embeddedImageEmitsError: true,
+                                    //errorCorrectionLevel: 1,
+                                    //eyeStyle: const QrEyeStyle(
+                                    //  color: extraYellow,
+                                    //  eyeShape: QrEyeShape.circle,
+                                    //),
+                                    errorStateBuilder: (cxt, err) {
+                                      return const Center(
+                                        child: Text(
+                                          "Uh oh! Something went wrong...",
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      );
+                                    },
+                                  ),
                                 ),
-                              );
-                            },
-                          ),
-                        ),
+                                const SizedBox(height: 30),
+                                SizedBox(
+                                  width: 250,
+                                  child: ElevatedButton(
+                                    style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                        secondaryBlueShadeLight.withOpacity(.1),
+                                      ),
+                                      side: MaterialStateProperty.all(
+                                        const BorderSide(
+                                            color: secondaryBlueShadeDark),
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      print("check payment progress");
+                                    },
+                                    child: const Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 15),
+                                      child: Text("Check progress"),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          }
+                        },
                       ),
                     ],
                   )
