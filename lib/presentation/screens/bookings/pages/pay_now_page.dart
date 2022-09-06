@@ -5,14 +5,16 @@ import 'package:brechfete/bloc/paynow/paynow_bloc.dart';
 import 'package:brechfete/core/constants.dart';
 import 'package:brechfete/presentation/root/widgets/custom_form_input.dart';
 import 'package:brechfete/presentation/screens/bookings/pages/booking_success_page.dart';
+import 'package:brechfete/presentation/screens/bookings/pages/expo_registration_page.dart';
 import 'package:brechfete/presentation/screens/bookings/pages/widgets/registration_form_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PayNowPage extends StatefulWidget {
   static final _amountFormKey = GlobalKey<FormState>();
@@ -25,6 +27,7 @@ class PayNowPage extends StatefulWidget {
 class _PayNowPageState extends State<PayNowPage> {
   bool isQrCodeGenerated = false;
   String qrData = "";
+  int? amount;
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -143,6 +146,14 @@ class _PayNowPageState extends State<PayNowPage> {
                               FilteringTextInputFormatter.digitsOnly,
                             ],
                             maxInputLength: 5,
+                            onChanged: (val) {
+                              if (PayNowPage._amountFormKey.currentState!
+                                  .validate()) {
+                                setState(() {
+                                  amount = int.parse(val);
+                                });
+                              }
+                            },
                           )
                         ],
                       ),
@@ -151,22 +162,61 @@ class _PayNowPageState extends State<PayNowPage> {
                         style: ElevatedButton.styleFrom(
                           minimumSize: const Size.fromHeight(50),
                         ),
-                        onPressed: () {
+                        onPressed: () async {
                           PayNowPage._amountFormKey.currentState!.validate();
                           if (PayNowPage._amountFormKey.currentState!
                               .validate()) {
                             //print("success");
                             //reseting
                             isRegistrationSuccessNotifier.value = false;
-                            Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                builder: (context) => const BookingSuccessPage(
-                                  animationWidget:
-                                      "assets/lottie_files/confirm.json",
-                                  statusText: "Booking Successful!",
-                                ),
+                            //new reset
+                            isValidatedNotifier.value = false;
+
+                            //send request
+                            final SharedPreferences prefs =
+                                await SharedPreferences.getInstance();
+                            final token = prefs.getString("token");
+                            final regId = prefs.getString("regToken");
+
+                            print(amount);
+                            var client = http.Client();
+                            var response = await client.post(
+                              Uri.parse(
+                                "$baseURL/payment/",
+                              ),
+                              headers: {
+                                "Content-Type": "application/json",
+                                "Authorization": "Token $token"
+                              },
+                              body: jsonEncode(
+                                {
+                                  "collegeid": regId,
+                                  "type": "cod",
+                                  "amount": amount,
+                                },
                               ),
                             );
+                            log(response.body.toString());
+                            final data = jsonDecode(response.body);
+
+                            if (data['is_booked']) {
+                              if (!mounted) return;
+                              Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const BookingSuccessPage(
+                                    animationWidget:
+                                        "assets/lottie_files/confirm.json",
+                                    statusText: "Booking Successful!",
+                                  ),
+                                ),
+                              );
+                            } else {
+                              Fluttertoast.showToast(
+                                msg: "Unable to confirm booking!",
+                                textColor: extraRed,
+                              );
+                            }
                           }
                         },
                         child: const Text("Send Confirmation Link"),
@@ -181,49 +231,63 @@ class _PayNowPageState extends State<PayNowPage> {
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 30),
               child: Column(
                 children: [
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: const Size.fromHeight(
-                        50,
-                      ), // fromHeight use double.infinity as width and 40 is the height
-                    ),
-                    onPressed: () async {
-                      //reseting
-                      isRegistrationSuccessNotifier.value = false;
-                      final SharedPreferences prefs =
-                          await SharedPreferences.getInstance();
-
-                      final reg_id = await prefs.getString("regToken");
-
-                      var client = http.Client();
-                      var response = await client.post(
-                        Uri.parse(
-                          "$baseURL/payment/",
+                  BlocBuilder<PaynowBloc, PaynowState>(
+                    builder: (context, state) {
+                      return ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: const Size.fromHeight(
+                            50,
+                          ), // fromHeight use double.infinity as width and 40 is the height
                         ),
-                        headers: {
-                          "Content-Type": "application/json",
+                        onPressed: () async {
+                          //reseting
+                          isRegistrationSuccessNotifier.value = false;
+                          //new reset
+                          isValidatedNotifier.value = false;
+
+                          final SharedPreferences prefs =
+                              await SharedPreferences.getInstance();
+                          final token = prefs.getString("token");
+                          final regId = prefs.getString("regToken");
+
+                          var client = http.Client();
+                          var response = await client.post(
+                            Uri.parse(
+                              "$baseURL/payment/",
+                            ),
+                            headers: {
+                              "Content-Type": "application/json",
+                              "Authorization": "Token $token"
+                            },
+                            body: jsonEncode(
+                              {"collegeid": regId, "type": "online"},
+                            ),
+                          );
+                          log(response.body.toString());
+                          final data = jsonDecode(response.body);
+
+                          log(data.toString());
+                          if (data['is_mail_sent']) {
+                            if (!mounted) return;
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                builder: (context) => const BookingSuccessPage(
+                                  animationWidget:
+                                      "assets/lottie_files/confirm.json",
+                                  statusText: "Booking Successful!",
+                                ),
+                              ),
+                            );
+                          } else {
+                            Fluttertoast.showToast(
+                              msg: "Unable to send mail!",
+                              textColor: extraRed,
+                            );
+                          }
                         },
-                        body: jsonEncode(
-                          {
-                            'collegeid': reg_id,
-                            'type': "online",
-                          },
-                        ),
+                        child: const Text("Send Payment Link"),
                       );
-                      final data = jsonDecode(
-                        response.body.toString(),
-                      );
-
-                      //Navigator.of(context).pushReplacement(
-                      //  MaterialPageRoute(
-                      //    builder: (context) => const BookingSuccessPage(
-                      //      animationWidget: "assets/lottie_files/confirm.json",
-                      //      statusText: "Booking Successful!",
-                      //    ),
-                      //  ),
-                      //);
                     },
-                    child: const Text("Send Payment Link"),
                   ),
                   const SizedBox(height: 20),
                   Text(
