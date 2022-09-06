@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
-
 import 'package:brechfete/core/constants.dart';
 import 'package:brechfete/domain/screens/booking/modals/register/slot_register.dart';
 import 'package:brechfete/presentation/root/widgets/custom_form_input.dart';
@@ -194,7 +192,7 @@ class RegistrationFormHolderState extends State<RegistrationFormHolder> {
 
   //call this on register button
   static Future<bool> doRegistration() async {
-    print("object");
+    //print("object");
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final token = prefs.getString("token");
     final selectedDate = prefs.getString("selectedDate");
@@ -216,7 +214,7 @@ class RegistrationFormHolderState extends State<RegistrationFormHolder> {
       "ftelorphone": facultyTelOrPhone,
     };
 
-    print(formData);
+    //print(formData);
 
     var client = http.Client();
     var response = await client.post(

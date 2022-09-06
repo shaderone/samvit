@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:brechfete/core/constants.dart';
 import 'package:brechfete/presentation/root/widgets/custom_form_input.dart';
 import 'package:brechfete/presentation/screens/bookings/pages/booking_success_page.dart';
@@ -6,10 +7,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
-class PayNowPage extends StatelessWidget {
+class PayNowPage extends StatefulWidget {
   static final _amountFormKey = GlobalKey<FormState>();
   const PayNowPage({Key? key}) : super(key: key);
+
+  @override
+  State<PayNowPage> createState() => _PayNowPageState();
+}
+
+class _PayNowPageState extends State<PayNowPage> {
+  bool isQrCodeGenerated = false;
+  String qrData = "";
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -28,7 +39,7 @@ class PayNowPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: const [
                     Text(
-                      "Online",
+                      "Ready Cash",
                       style: TextStyle(
                         fontSize: 18,
                       ),
@@ -41,7 +52,7 @@ class PayNowPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: const [
                     Text(
-                      "Ready Cash",
+                      "Online",
                       style: TextStyle(
                         fontSize: 18,
                       ),
@@ -55,71 +66,8 @@ class PayNowPage extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 30),
-              child: Column(
-                children: [
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: const Size.fromHeight(
-                        50,
-                      ), // fromHeight use double.infinity as width and 40 is the height
-                    ),
-                    onPressed: () {
-                      //reseting
-                      isRegistrationSuccessNotifier.value = false;
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (context) => const BookingSuccessPage(
-                            animationWidget: "assets/lottie_files/confirm.json",
-                            statusText: "Booking Successful!",
-                          ),
-                        ),
-                      );
-                    },
-                    child: const Text("Send Payment Link"),
-                  ),
-                  const SizedBox(height: 20),
-                  Text(
-                    "OR",
-                    style: GoogleFonts.montserrat(
-                      fontSize: 30,
-                      color: textWhiteShadeDark,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: QrImage(
-                      data: 'This QR code has an embedded image as well',
-                      version: QrVersions.auto,
-                      size: screenWidth <= 320 ? 150 : 250,
-                      gapless: false,
-                      embeddedImage:
-                          const AssetImage('assets/images/sb100.png'),
-                      embeddedImageStyle: QrEmbeddedImageStyle(
-                        size: const Size(50, 50),
-                      ),
-                      backgroundColor: pureWhite,
-                      padding: const EdgeInsets.all(15),
-                      errorStateBuilder: (cxt, err) {
-                        return const Center(
-                          child: Text(
-                            "Uh oh! Something went wrong...",
-                            style: TextStyle(
-                              color: Colors.red,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        );
-                      },
-                    ),
-                  )
-                ],
-              ),
-            ),
             Form(
-              key: _amountFormKey,
+              key: PayNowPage._amountFormKey,
               child: Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
@@ -198,8 +146,9 @@ class PayNowPage extends StatelessWidget {
                         minimumSize: const Size.fromHeight(50),
                       ),
                       onPressed: () {
-                        _amountFormKey.currentState!.validate();
-                        if (_amountFormKey.currentState!.validate()) {
+                        PayNowPage._amountFormKey.currentState!.validate();
+                        if (PayNowPage._amountFormKey.currentState!
+                            .validate()) {
                           //print("success");
                           //reseting
                           isRegistrationSuccessNotifier.value = false;
@@ -219,6 +168,141 @@ class PayNowPage extends StatelessWidget {
                     const SizedBox(height: 20),
                   ],
                 ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 30),
+              child: Column(
+                children: [
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size.fromHeight(
+                        50,
+                      ), // fromHeight use double.infinity as width and 40 is the height
+                    ),
+                    onPressed: () async {
+                      //reseting
+                      isRegistrationSuccessNotifier.value = false;
+                      final SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+
+                      final reg_id = await prefs.getString("regToken");
+
+                      var client = http.Client();
+                      var response = await client.post(
+                        Uri.parse(
+                          "$baseURL/payment/",
+                        ),
+                        headers: {
+                          "Content-Type": "application/json",
+                        },
+                        body: jsonEncode(
+                          {
+                            'collegeid': reg_id,
+                            'type': "online",
+                          },
+                        ),
+                      );
+                      final data = jsonDecode(
+                        response.body.toString(),
+                      );
+
+                      //Navigator.of(context).pushReplacement(
+                      //  MaterialPageRoute(
+                      //    builder: (context) => const BookingSuccessPage(
+                      //      animationWidget: "assets/lottie_files/confirm.json",
+                      //      statusText: "Booking Successful!",
+                      //    ),
+                      //  ),
+                      //);
+                    },
+                    child: const Text("Send Payment Link"),
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    "OR",
+                    style: GoogleFonts.montserrat(
+                      fontSize: 30,
+                      color: textWhiteShadeDark,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Column(
+                    children: [
+                      TextButton(
+                        onPressed: () async {
+                          final SharedPreferences prefs =
+                              await SharedPreferences.getInstance();
+                          final token = prefs.getString("token");
+                          final regId = prefs.getString("regToken");
+
+                          //send request to get payment link
+                          var client = http.Client();
+                          var response = await client.post(
+                            Uri.parse("$baseURL/payment/"),
+                            headers: {
+                              "Content-Type": "application/json",
+                              "Authorization": "Token $token",
+                            },
+                            body: jsonEncode({
+                              "collegeid": regId,
+                              "type": "onlineqr", //for qrcode
+                            }),
+                          );
+                          //print(regId);
+                          //log(response.body.toString());
+                          final data = jsonDecode(response.body);
+                          //print(data['url']);
+                          setState(() {
+                            isQrCodeGenerated = true;
+                            qrData = data['url'];
+                          });
+                        },
+                        child: const Text("Generate QR code"),
+                      ),
+                      Visibility(
+                        visible: isQrCodeGenerated ? true : false,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: QrImage(
+                            data: qrData,
+                            version: QrVersions.auto,
+                            size: screenWidth <= 320 ? 150 : 250,
+                            gapless: false,
+                            embeddedImage: const AssetImage(
+                              'assets/images/samvit_logo.png',
+                            ),
+                            embeddedImageStyle: QrEmbeddedImageStyle(
+                              size: const Size(50, 50),
+                            ),
+                            backgroundColor: pureWhite,
+                            padding: const EdgeInsets.all(15),
+                            //foregroundColor: extraGreen,
+                            //dataModuleStyle: const QrDataModuleStyle(
+                            //  color: extraRed,
+                            //  dataModuleShape: QrDataModuleShape.square,
+                            //),
+                            constrainErrorBounds: false,
+                            embeddedImageEmitsError: true,
+                            //errorCorrectionLevel: 1,
+                            //eyeStyle: const QrEyeStyle(
+                            //  color: extraYellow,
+                            //  eyeShape: QrEyeShape.circle,
+                            //),
+                            errorStateBuilder: (cxt, err) {
+                              return const Center(
+                                child: Text(
+                                  "Uh oh! Something went wrong...",
+                                  textAlign: TextAlign.center,
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
               ),
             ),
           ],

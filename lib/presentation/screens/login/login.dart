@@ -258,7 +258,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                 final data = jsonDecode(
                                   response.body.toString(),
                                 );
-                                //print(data);
                                 //print(isAbsorbing);
                                 if (response.statusCode == 200) {
                                   final SharedPreferences prefs =

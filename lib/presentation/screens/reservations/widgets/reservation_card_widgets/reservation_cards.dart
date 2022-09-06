@@ -1,10 +1,15 @@
-import 'package:brechfete/bloc/reservation/reservation_bloc.dart';
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:brechfete/core/constants.dart';
 import 'package:brechfete/domain/screens/reservation/reservation/reservation.dart';
+import 'package:brechfete/presentation/screens/bookings/pages/expo_registration_page.dart';
 import 'package:brechfete/presentation/screens/reservations/widgets/reservation_chip.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CardTop extends StatelessWidget {
   final ReservationModal state;
@@ -47,7 +52,8 @@ class CardTop extends StatelessWidget {
             child: ElevatedButton(
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(
-                  secondaryBlueShadeDark,
+                  extraRed,
+                  //secondaryBlueShadeDark,
                 ),
                 padding: MaterialStateProperty.all(
                   const EdgeInsets.symmetric(horizontal: 10),
@@ -58,13 +64,43 @@ class CardTop extends StatelessWidget {
                   ),
                 ),
               ),
-              onPressed: () {
-                //reshedule
+              onPressed: () async {
+                final shouldPop = await showCustomAlertDialog(
+                    context,
+                    "Are you sure?",
+                    "Delete reservation for '${state.name}'",
+                    "No",
+                    "Yes",
+                    extraRed,
+                    primaryDark);
+
+                if (shouldPop ?? false) {
+                  final SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  final token = prefs.getString("token");
+                  var client = http.Client();
+                  var response = await client.delete(
+                    Uri.parse(
+                      "$baseURL/reservation-delete/${state.id}",
+                    ),
+                    headers: {
+                      "Content-Type": "application/json",
+                      "Authorization": "Token $token"
+                    },
+                  );
+                  //reshedule
+                  //log(response.body.toString());
+                  if (jsonDecode(response.body)['is_deleted']) {
+                    print("deleted successfully");
+                  } else {
+                    print("deletion falied!");
+                  }
+                }
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: const [
-                  Icon(Icons.event_repeat),
+                  Icon(Icons.delete_forever),
                 ],
               ),
             ),
