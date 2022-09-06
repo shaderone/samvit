@@ -207,7 +207,7 @@ class _PayNowPageState extends State<PayNowPage> {
                                       const BookingSuccessPage(
                                     animationWidget:
                                         "assets/lottie_files/confirm.json",
-                                    statusText: "Booking Successful!",
+                                    statusText: "Payment link sent!",
                                   ),
                                 ),
                               );

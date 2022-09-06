@@ -1,6 +1,10 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:brechfete/core/constants.dart';
 import 'package:brechfete/presentation/root/app.dart';
 import 'package:brechfete/presentation/screens/bookings/booking_screen.dart';
+import 'package:brechfete/presentation/screens/bookings/pages/booking_success_page.dart';
 import 'package:brechfete/presentation/screens/bookings/pages/pay_now_page.dart';
 import 'package:brechfete/presentation/screens/bookings/pages/widgets/registration_form_builder.dart';
 import 'package:brechfete/presentation/screens/bookings/pages/widgets/registration_form_buttons.dart';
@@ -9,7 +13,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
+import 'package:http/http.dart' as http;
 
 class ExpoRegistration extends StatefulWidget {
   const ExpoRegistration({
@@ -295,11 +301,45 @@ class _ExpoRegistrationState extends State<ExpoRegistration> {
     }
     if (shouldProceed ?? false) {
       isRegistrationSuccessNotifier.value = false;
-      //code to send request for pay later
-      Navigator.of(context).pushNamedAndRemoveUntil(
-        App.bookingSuccessRoute,
-        (route) => false,
+      //new reset
+      isValidatedNotifier.value = false;
+
+      //send request
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString("token");
+      final regId = prefs.getString("regToken");
+
+      var client = http.Client();
+      var response = await client.post(
+        Uri.parse(
+          "$baseURL/payment/",
+        ),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Token $token"
+        },
+        body: jsonEncode(
+          {
+            "collegeid": regId,
+            "type": "pl",
+          },
+        ),
       );
+      //log(response.body.toString());
+      final data = jsonDecode(response.body);
+
+      if (data['is_booked']) {
+        if (!mounted) return;
+        Navigator.of(context).pushNamedAndRemoveUntil(
+          App.bookingSuccessRoute,
+          (route) => false,
+        );
+      } else {
+        Fluttertoast.showToast(
+          msg: "Unable to confirm booking!",
+          textColor: extraRed,
+        );
+      }
     }
   }
 
