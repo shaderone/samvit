@@ -11,6 +11,7 @@ import 'package:brechfete/presentation/screens/bookings/pages/widgets/registrati
 import 'package:brechfete/presentation/screens/bookings/widgets/slot_status_widgets/slot_info_container.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -303,12 +304,16 @@ class _ExpoRegistrationState extends State<ExpoRegistration> {
       isRegistrationSuccessNotifier.value = false;
       //new reset
       isValidatedNotifier.value = false;
+      SlotInputItem.isSlotCountValidatedNotifier.value = false;
 
       //send request
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       final token = prefs.getString("token");
       final regId = prefs.getString("regToken");
-
+      EasyLoading.instance.textColor = secondaryBlueShadeLight;
+      EasyLoading.show(
+        status: 'processing...',
+      );
       var client = http.Client();
       var response = await client.post(
         Uri.parse(
@@ -325,6 +330,7 @@ class _ExpoRegistrationState extends State<ExpoRegistration> {
           },
         ),
       );
+      EasyLoading.dismiss();
       //log(response.body.toString());
       final data = jsonDecode(response.body);
 

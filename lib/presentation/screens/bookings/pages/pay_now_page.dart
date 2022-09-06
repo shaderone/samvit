@@ -7,9 +7,11 @@ import 'package:brechfete/presentation/root/widgets/custom_form_input.dart';
 import 'package:brechfete/presentation/screens/bookings/pages/booking_success_page.dart';
 import 'package:brechfete/presentation/screens/bookings/pages/expo_registration_page.dart';
 import 'package:brechfete/presentation/screens/bookings/pages/widgets/registration_form_builder.dart';
+import 'package:brechfete/presentation/screens/bookings/widgets/slot_status_widgets/slot_info_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -171,14 +173,19 @@ class _PayNowPageState extends State<PayNowPage> {
                             isRegistrationSuccessNotifier.value = false;
                             //new reset
                             isValidatedNotifier.value = false;
+                            SlotInputItem.isSlotCountValidatedNotifier.value =
+                                false;
 
                             //send request
                             final SharedPreferences prefs =
                                 await SharedPreferences.getInstance();
                             final token = prefs.getString("token");
                             final regId = prefs.getString("regToken");
-
-                            print(amount);
+                            EasyLoading.instance.textColor =
+                                secondaryBlueShadeLight;
+                            EasyLoading.show(
+                              status: 'processing...',
+                            );
                             var client = http.Client();
                             var response = await client.post(
                               Uri.parse(
@@ -196,6 +203,7 @@ class _PayNowPageState extends State<PayNowPage> {
                                 },
                               ),
                             );
+                            EasyLoading.dismiss();
                             log(response.body.toString());
                             final data = jsonDecode(response.body);
 
@@ -244,12 +252,18 @@ class _PayNowPageState extends State<PayNowPage> {
                           isRegistrationSuccessNotifier.value = false;
                           //new reset
                           isValidatedNotifier.value = false;
+                          SlotInputItem.isSlotCountValidatedNotifier.value =
+                              false;
 
                           final SharedPreferences prefs =
                               await SharedPreferences.getInstance();
                           final token = prefs.getString("token");
                           final regId = prefs.getString("regToken");
-
+                          EasyLoading.instance.textColor =
+                              secondaryBlueShadeLight;
+                          EasyLoading.show(
+                            status: 'processing...',
+                          );
                           var client = http.Client();
                           var response = await client.post(
                             Uri.parse(
@@ -263,7 +277,8 @@ class _PayNowPageState extends State<PayNowPage> {
                               {"collegeid": regId, "type": "online"},
                             ),
                           );
-                          log(response.body.toString());
+                          EasyLoading.dismiss();
+                          //log(response.body.toString());
                           final data = jsonDecode(response.body);
 
                           log(data.toString());
