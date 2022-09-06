@@ -1,17 +1,20 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:brechfete/bloc/reservation/reservation_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:brechfete/core/constants.dart';
 import 'package:brechfete/domain/screens/reservation/reservation/reservation.dart';
 import 'package:brechfete/presentation/screens/bookings/pages/expo_registration_page.dart';
 import 'package:brechfete/presentation/screens/reservations/widgets/reservation_chip.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-class CardTop extends StatelessWidget {
+class CardTop extends StatefulWidget {
   final ReservationModal state;
 
   const CardTop({
@@ -19,6 +22,11 @@ class CardTop extends StatelessWidget {
     required this.state,
   }) : super(key: key);
 
+  @override
+  State<CardTop> createState() => _CardTopState();
+}
+
+class _CardTopState extends State<CardTop> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -30,7 +38,7 @@ class CardTop extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                state.name,
+                widget.state.name,
                 style: GoogleFonts.montserrat(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -38,7 +46,7 @@ class CardTop extends StatelessWidget {
               ),
               const SizedBox(height: 5),
               Text(
-                state.address,
+                widget.state.address,
                 style: GoogleFonts.poppins(
                   fontSize: screenWidth <= 320 ? 12 : 14,
                 ),
@@ -68,20 +76,20 @@ class CardTop extends StatelessWidget {
                 final shouldPop = await showCustomAlertDialog(
                     context,
                     "Are you sure?",
-                    "Delete reservation for '${state.name}'",
+                    "Delete reservation for '${widget.state.name}'",
                     "No",
                     "Yes",
                     extraRed,
                     primaryDark);
 
-                if (shouldPop ?? false) {
+                if (shouldPop != null && shouldPop) {
                   final SharedPreferences prefs =
                       await SharedPreferences.getInstance();
                   final token = prefs.getString("token");
                   var client = http.Client();
                   var response = await client.delete(
                     Uri.parse(
-                      "$baseURL/reservation-delete/${state.id}",
+                      "$baseURL/reservation-delete/${widget.state.id}",
                     ),
                     headers: {
                       "Content-Type": "application/json",
@@ -89,11 +97,21 @@ class CardTop extends StatelessWidget {
                     },
                   );
                   //reshedule
-                  //log(response.body.toString());
+                  print(widget.state.id);
                   if (jsonDecode(response.body)['is_deleted']) {
-                    print("deleted successfully");
+                    if (!mounted) return;
+                    context
+                        .read<ReservationBloc>()
+                        .add(const ReservationEvent.getReservationList());
+                    Fluttertoast.showToast(
+                      msg: "Deleted Successfully!",
+                      textColor: extraRed,
+                    );
                   } else {
-                    print("deletion falied!");
+                    Fluttertoast.showToast(
+                      msg: "Deletion failed!",
+                      textColor: extraRed,
+                    );
                   }
                 }
               },
