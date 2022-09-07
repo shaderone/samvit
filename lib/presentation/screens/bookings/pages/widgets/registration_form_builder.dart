@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:brechfete/core/constants.dart';
-import 'package:brechfete/domain/screens/booking/modals/register/slot_register.dart';
 import 'package:brechfete/presentation/root/widgets/custom_form_input.dart';
 import 'package:brechfete/presentation/screens/bookings/pages/expo_registration_page.dart';
 import 'package:email_validator/email_validator.dart';
