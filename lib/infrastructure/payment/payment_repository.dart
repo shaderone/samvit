@@ -6,8 +6,10 @@ import 'package:brechfete/domain/common_failures/common_failures.dart';
 import 'package:brechfete/domain/screens/payment/payment_service.dart';
 import 'package:dartz/dartz.dart';
 import 'package:http/http.dart' as http;
+import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+@LazySingleton(as: PaymentService)
 class PaymentRepository implements PaymentService {
   @override
   Future<Either<CommonFailures, List<PaymentHistoryModal>>>

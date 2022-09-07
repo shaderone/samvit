@@ -1,3 +1,4 @@
+import 'package:brechfete/bloc/bloc/payment_bloc.dart';
 import 'package:brechfete/bloc/booking/booking_bloc.dart';
 import 'package:brechfete/bloc/paynow/paynow_bloc.dart';
 import 'package:brechfete/bloc/reservation/reservation_bloc.dart';
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => getIt<SlotInfoBloc>()),
         BlocProvider(create: (context) => getIt<ReservationBloc>()),
         BlocProvider(create: (context) => getIt<PaynowBloc>()),
+        BlocProvider(create: (context) => getIt<PaymentBloc>()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
