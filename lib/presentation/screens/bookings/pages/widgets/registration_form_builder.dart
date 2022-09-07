@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:brechfete/core/constants.dart';
 import 'package:brechfete/domain/screens/booking/modals/register/slot_register.dart';
 import 'package:brechfete/presentation/root/widgets/custom_form_input.dart';
@@ -229,18 +230,25 @@ class RegistrationFormHolderState extends State<RegistrationFormHolder> {
     );
 
     final data = jsonDecode(response.body);
-    final parsedData = SlotRegisterModal.fromJson(data);
+    log(data.toString());
+    // log("Parsed data " + parsedData.toString());
+    // final parsedData = SlotRegisterModal.fromJson(data);
+    // final parsedData = data['id'];
+    final id = data['id'];
+    final isRegistered = data['is_registered'];
+    final registrationError = data['error'];
     if (response.statusCode == 201) {
-      prefs.setString("regToken", parsedData.registrationToken);
+      print("success");
+      isRegistrationSuccessNotifier.value = isRegistered;
+      prefs.setString("regToken", id);
     } else {
+      print("err");
       Fluttertoast.showToast(
-        msg: parsedData.registrationError,
+        msg: registrationError,
         textColor: extraRed,
         toastLength: Toast.LENGTH_SHORT,
       );
     }
-
-    isRegistrationSuccessNotifier.value = parsedData.isRegistered;
-    return parsedData.isRegistered;
+    return isRegistered;
   }
 }
