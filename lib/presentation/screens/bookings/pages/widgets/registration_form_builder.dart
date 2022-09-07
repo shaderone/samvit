@@ -153,15 +153,20 @@ class RegistrationFormHolderState extends State<RegistrationFormHolder> {
           ),
           const SizedBox(height: 10),
           CustomFormInput(
-            labelText: "Landline / other",
+            labelText:
+                widget.isInstitution ? "Landline / other" : "optional phone",
             textInputType: TextInputType.number,
             textInputAction: TextInputAction.done,
-            hintText: "Enter ${isTelephoneSwitched ? "Phone" : "Landline"}",
+            hintText: widget.isInstitution
+                ? "Enter ${isTelephoneSwitched ? "Phone" : "Landline"}"
+                : "Enter optional phone",
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return "${widget.isInstitution ? "Institution" : "Faculty"} Landline/phone is required";
+                final String insValidationMsg =
+                    "${widget.isInstitution ? "Institution" : "Faculty"} Landline/phone is required";
+                return widget.isInstitution ? insValidationMsg : null;
               } else if (value.length != 11 && !isTelephoneSwitched) {
-                return "Enter a valid telephone";
+                return widget.isInstitution ? "Enter a valid telephone" : null;
               } else if (value.length != 10 && isTelephoneSwitched) {
                 return "Enter a valid phone";
               }
@@ -171,9 +176,11 @@ class RegistrationFormHolderState extends State<RegistrationFormHolder> {
               FilteringTextInputFormatter.digitsOnly,
             ],
             maxInputLength: isTelephoneSwitched ? 10 : 11,
-            suffixIcon: isTelephoneSwitched
-                ? Icons.phone_android_rounded
-                : MdiIcons.phoneClassic,
+            suffixIcon: !widget.isInstitution
+                ? null
+                : isTelephoneSwitched
+                    ? Icons.phone_android_rounded
+                    : MdiIcons.phoneClassic,
             suffixIconAction: () {
               setState(() {
                 isTelephoneSwitched = !isTelephoneSwitched;
