@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:brechfete/core/constants.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
@@ -69,14 +70,16 @@ class _ReservationScreenState extends State<ReservationScreen> {
       body: BlocBuilder<ReservationBloc, ReservationState>(
         builder: (context, state) {
           if (state.isLoading) {
-            return const Center(
-              child: CircularProgressIndicator(strokeWidth: 2),
+            EasyLoading.show(
+              status: 'Getting Data...',
             );
+            return const SizedBox();
           } else if (state.reservationList.isEmpty) {
             return const Center(
               child: Text("List is empty!"),
             );
           } else {
+            EasyLoading.dismiss();
             return AnimationLimiter(
               child: ListView.separated(
                 padding:

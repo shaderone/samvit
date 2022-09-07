@@ -7,6 +7,7 @@ import 'package:brechfete/presentation/screens/bookings/pages/expo_registration_
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -216,7 +217,9 @@ class RegistrationFormHolderState extends State<RegistrationFormHolder> {
     };
 
     //print(formData);
-
+    EasyLoading.show(
+      status: 'processing...',
+    );
     var client = http.Client();
     var response = await client.post(
       Uri.parse(
@@ -228,7 +231,7 @@ class RegistrationFormHolderState extends State<RegistrationFormHolder> {
       },
       body: jsonEncode(formData),
     );
-
+    EasyLoading.dismiss();
     final data = jsonDecode(response.body);
     log(data.toString());
     // log("Parsed data " + parsedData.toString());
@@ -238,11 +241,9 @@ class RegistrationFormHolderState extends State<RegistrationFormHolder> {
     final isRegistered = data['is_registered'];
     final registrationError = data['error'];
     if (response.statusCode == 201) {
-      print("success");
       isRegistrationSuccessNotifier.value = isRegistered;
       prefs.setString("regToken", id);
     } else {
-      print("err");
       Fluttertoast.showToast(
         msg: registrationError,
         textColor: extraRed,
