@@ -1,3 +1,3 @@
 # Samvit 2.0
 
-App to book slots for college exhibition
+Appointment Scheduling app for college exhibition
