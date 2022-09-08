@@ -175,7 +175,11 @@ class RegistrationFormHolderState extends State<RegistrationFormHolder> {
             inputFormatters: [
               FilteringTextInputFormatter.digitsOnly,
             ],
-            maxInputLength: isTelephoneSwitched ? 10 : 11,
+            maxInputLength: !widget.isInstitution
+                ? 10
+                : isTelephoneSwitched
+                    ? 10
+                    : 11,
             suffixIcon: !widget.isInstitution
                 ? null
                 : isTelephoneSwitched

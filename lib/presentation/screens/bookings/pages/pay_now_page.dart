@@ -208,6 +208,10 @@ class _PayNowPageState extends State<PayNowPage> {
                             final data = jsonDecode(response.body);
 
                             if (data['is_booked']) {
+                              setState(() {
+                                //reseting qr code
+                                isQrCodeGenerated = false;
+                              });
                               if (!mounted) return;
                               Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
@@ -283,6 +287,9 @@ class _PayNowPageState extends State<PayNowPage> {
 
                           log(data.toString());
                           if (data['is_mail_sent']) {
+                            setState(() {
+                              isQrCodeGenerated = false;
+                            });
                             if (!mounted) return;
                             Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
@@ -432,7 +439,7 @@ class _PayNowPageState extends State<PayNowPage> {
                                                 animationWidget:
                                                     "assets/lottie_files/confirm.json",
                                                 statusText:
-                                                    "Payment link sent!",
+                                                    "Booking Successful!",
                                               ),
                                             ),
                                           );
