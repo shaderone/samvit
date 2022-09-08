@@ -317,6 +317,9 @@ class _PayNowPageState extends State<PayNowPage> {
                     children: [
                       TextButton(
                         onPressed: () async {
+                          setState(() {
+                            isQrCodeGenerated = true;
+                          });
                           context.read<PaynowBloc>().add(
                                 const PaynowEvent.generateQrCode(),
                               );
@@ -330,70 +333,129 @@ class _PayNowPageState extends State<PayNowPage> {
                               child: CircularProgressIndicator(strokeWidth: 2),
                             );
                           } else {
-                            return Column(
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(8),
-                                  child: QrImage(
-                                    data: state.paymentUrl.url,
-                                    version: QrVersions.auto,
-                                    size: screenWidth <= 320 ? 150 : 250,
-                                    gapless: false,
-                                    embeddedImage: const AssetImage(
-                                      'assets/images/samvit_logo.png',
+                            return Visibility(
+                              visible: isQrCodeGenerated ? true : false,
+                              child: Column(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(8),
+                                    child: QrImage(
+                                      data: state.paymentUrl.url,
+                                      version: QrVersions.auto,
+                                      size: screenWidth <= 320 ? 150 : 250,
+                                      gapless: false,
+                                      embeddedImage: const AssetImage(
+                                        'assets/images/samvit_logo.png',
+                                      ),
+                                      embeddedImageStyle: QrEmbeddedImageStyle(
+                                        size: const Size(50, 50),
+                                      ),
+                                      backgroundColor: pureWhite,
+                                      padding: const EdgeInsets.all(15),
+                                      //foregroundColor: extraGreen,
+                                      //dataModuleStyle: const QrDataModuleStyle(
+                                      //  color: extraRed,
+                                      //  dataModuleShape: QrDataModuleShape.square,
+                                      //),
+                                      constrainErrorBounds: false,
+                                      embeddedImageEmitsError: true,
+                                      //errorCorrectionLevel: 1,
+                                      //eyeStyle: const QrEyeStyle(
+                                      //  color: extraYellow,
+                                      //  eyeShape: QrEyeShape.circle,
+                                      //),
+                                      errorStateBuilder: (cxt, err) {
+                                        return const Center(
+                                          child: Text(
+                                            "Uh oh! Something went wrong...",
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        );
+                                      },
                                     ),
-                                    embeddedImageStyle: QrEmbeddedImageStyle(
-                                      size: const Size(50, 50),
-                                    ),
-                                    backgroundColor: pureWhite,
-                                    padding: const EdgeInsets.all(15),
-                                    //foregroundColor: extraGreen,
-                                    //dataModuleStyle: const QrDataModuleStyle(
-                                    //  color: extraRed,
-                                    //  dataModuleShape: QrDataModuleShape.square,
-                                    //),
-                                    constrainErrorBounds: false,
-                                    embeddedImageEmitsError: true,
-                                    //errorCorrectionLevel: 1,
-                                    //eyeStyle: const QrEyeStyle(
-                                    //  color: extraYellow,
-                                    //  eyeShape: QrEyeShape.circle,
-                                    //),
-                                    errorStateBuilder: (cxt, err) {
-                                      return const Center(
-                                        child: Text(
-                                          "Uh oh! Something went wrong...",
-                                          textAlign: TextAlign.center,
+                                  ),
+                                  const SizedBox(height: 30),
+                                  SizedBox(
+                                    width: 250,
+                                    child: ElevatedButton(
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all(
+                                          secondaryBlueShadeLight
+                                              .withOpacity(.1),
                                         ),
-                                      );
-                                    },
-                                  ),
-                                ),
-                                const SizedBox(height: 30),
-                                SizedBox(
-                                  width: 250,
-                                  child: ElevatedButton(
-                                    style: ButtonStyle(
-                                      backgroundColor:
-                                          MaterialStateProperty.all(
-                                        secondaryBlueShadeLight.withOpacity(.1),
+                                        side: MaterialStateProperty.all(
+                                          const BorderSide(
+                                              color: secondaryBlueShadeDark),
+                                        ),
                                       ),
-                                      side: MaterialStateProperty.all(
-                                        const BorderSide(
-                                            color: secondaryBlueShadeDark),
+                                      onPressed: () async {
+                                        isRegistrationSuccessNotifier.value =
+                                            false;
+
+                                        SlotInputItem
+                                            .isSlotCountValidatedNotifier
+                                            .value = false;
+
+                                        //send request
+                                        final SharedPreferences prefs =
+                                            await SharedPreferences
+                                                .getInstance();
+                                        final token = prefs.getString("token");
+                                        final regId =
+                                            prefs.getString("regToken");
+                                        EasyLoading.instance.textColor =
+                                            secondaryBlueShadeLight;
+                                        EasyLoading.show(
+                                          status: 'checking...',
+                                        );
+                                        var client = http.Client();
+                                        var response = await client.get(
+                                          Uri.parse(
+                                            "$baseURL/payment-check/$regId",
+                                          ),
+                                          headers: {
+                                            "Content-Type": "application/json",
+                                            "Authorization": "Token $token"
+                                          },
+                                        );
+                                        EasyLoading.dismiss();
+                                        log(response.body.toString());
+                                        final data = jsonDecode(response.body);
+
+                                        if (data['is_paid']) {
+                                          if (!mounted) return;
+                                          Navigator.of(context).pushReplacement(
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const BookingSuccessPage(
+                                                animationWidget:
+                                                    "assets/lottie_files/confirm.json",
+                                                statusText:
+                                                    "Payment link sent!",
+                                              ),
+                                            ),
+                                          );
+                                          Fluttertoast.showToast(
+                                            msg: "Payment Success",
+                                            textColor: extraGreen,
+                                          );
+                                        } else {
+                                          Fluttertoast.showToast(
+                                            msg: "Payment is being processed",
+                                            textColor: secondaryBlueShadeLight,
+                                          );
+                                        }
+                                      },
+                                      child: const Padding(
+                                        padding:
+                                            EdgeInsets.symmetric(vertical: 15),
+                                        child: Text("Check progress"),
                                       ),
                                     ),
-                                    onPressed: () {
-                                      print("check payment progress");
-                                    },
-                                    child: const Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(vertical: 15),
-                                      child: Text("Check progress"),
-                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             );
                           }
                         },

@@ -94,13 +94,13 @@ class BookingSuccessPage extends StatelessWidget {
                     ), // fromHeight use double.infinity as width and 40 is the height
                   ),
                   onPressed: () {
-                    MaterialBottomNav.currentSelectedIndexNotifier.value = 1;
+                    MaterialBottomNav.currentSelectedIndexNotifier.value = 2;
                     Navigator.of(context).pushNamedAndRemoveUntil(
                       App.home,
                       (route) => false,
                     );
                   },
-                  child: const Text("Go to reservations"),
+                  child: const Text("Go to Payment history"),
                 ),
               )
             ],
