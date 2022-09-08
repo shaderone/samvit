@@ -20,8 +20,11 @@ PaymentHistoryModal _$PaymentHistoryModalFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$PaymentHistoryModal {
-  int get id =>
-      throw _privateConstructorUsedError; //@JsonKey(name: "college") required String collegeName,
+  int get id => throw _privateConstructorUsedError;
+  @JsonKey(name: "amount")
+  int get amount => throw _privateConstructorUsedError;
+  @JsonKey(name: "college_name")
+  String get collegeName => throw _privateConstructorUsedError;
   @JsonKey(name: "payment_type")
   String get paymentType => throw _privateConstructorUsedError;
   @JsonKey(name: "payment_status")
@@ -40,6 +43,8 @@ abstract class $PaymentHistoryModalCopyWith<$Res> {
       _$PaymentHistoryModalCopyWithImpl<$Res>;
   $Res call(
       {int id,
+      @JsonKey(name: "amount") int amount,
+      @JsonKey(name: "college_name") String collegeName,
       @JsonKey(name: "payment_type") String paymentType,
       @JsonKey(name: "payment_status") String paymentStatus});
 }
@@ -56,6 +61,8 @@ class _$PaymentHistoryModalCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
+    Object? amount = freezed,
+    Object? collegeName = freezed,
     Object? paymentType = freezed,
     Object? paymentStatus = freezed,
   }) {
@@ -64,6 +71,14 @@ class _$PaymentHistoryModalCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
+      amount: amount == freezed
+          ? _value.amount
+          : amount // ignore: cast_nullable_to_non_nullable
+              as int,
+      collegeName: collegeName == freezed
+          ? _value.collegeName
+          : collegeName // ignore: cast_nullable_to_non_nullable
+              as String,
       paymentType: paymentType == freezed
           ? _value.paymentType
           : paymentType // ignore: cast_nullable_to_non_nullable
@@ -85,6 +100,8 @@ abstract class _$$_PaymentHistoryModalCopyWith<$Res>
   @override
   $Res call(
       {int id,
+      @JsonKey(name: "amount") int amount,
+      @JsonKey(name: "college_name") String collegeName,
       @JsonKey(name: "payment_type") String paymentType,
       @JsonKey(name: "payment_status") String paymentStatus});
 }
@@ -103,6 +120,8 @@ class __$$_PaymentHistoryModalCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
+    Object? amount = freezed,
+    Object? collegeName = freezed,
     Object? paymentType = freezed,
     Object? paymentStatus = freezed,
   }) {
@@ -111,6 +130,14 @@ class __$$_PaymentHistoryModalCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
+      amount: amount == freezed
+          ? _value.amount
+          : amount // ignore: cast_nullable_to_non_nullable
+              as int,
+      collegeName: collegeName == freezed
+          ? _value.collegeName
+          : collegeName // ignore: cast_nullable_to_non_nullable
+              as String,
       paymentType: paymentType == freezed
           ? _value.paymentType
           : paymentType // ignore: cast_nullable_to_non_nullable
@@ -128,6 +155,8 @@ class __$$_PaymentHistoryModalCopyWithImpl<$Res>
 class _$_PaymentHistoryModal implements _PaymentHistoryModal {
   const _$_PaymentHistoryModal(
       {required this.id,
+      @JsonKey(name: "amount") required this.amount,
+      @JsonKey(name: "college_name") required this.collegeName,
       @JsonKey(name: "payment_type") required this.paymentType,
       @JsonKey(name: "payment_status") required this.paymentStatus});
 
@@ -136,7 +165,12 @@ class _$_PaymentHistoryModal implements _PaymentHistoryModal {
 
   @override
   final int id;
-//@JsonKey(name: "college") required String collegeName,
+  @override
+  @JsonKey(name: "amount")
+  final int amount;
+  @override
+  @JsonKey(name: "college_name")
+  final String collegeName;
   @override
   @JsonKey(name: "payment_type")
   final String paymentType;
@@ -146,7 +180,7 @@ class _$_PaymentHistoryModal implements _PaymentHistoryModal {
 
   @override
   String toString() {
-    return 'PaymentHistoryModal(id: $id, paymentType: $paymentType, paymentStatus: $paymentStatus)';
+    return 'PaymentHistoryModal(id: $id, amount: $amount, collegeName: $collegeName, paymentType: $paymentType, paymentStatus: $paymentStatus)';
   }
 
   @override
@@ -155,6 +189,9 @@ class _$_PaymentHistoryModal implements _PaymentHistoryModal {
         (other.runtimeType == runtimeType &&
             other is _$_PaymentHistoryModal &&
             const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.amount, amount) &&
+            const DeepCollectionEquality()
+                .equals(other.collegeName, collegeName) &&
             const DeepCollectionEquality()
                 .equals(other.paymentType, paymentType) &&
             const DeepCollectionEquality()
@@ -166,6 +203,8 @@ class _$_PaymentHistoryModal implements _PaymentHistoryModal {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(amount),
+      const DeepCollectionEquality().hash(collegeName),
       const DeepCollectionEquality().hash(paymentType),
       const DeepCollectionEquality().hash(paymentStatus));
 
@@ -186,6 +225,10 @@ class _$_PaymentHistoryModal implements _PaymentHistoryModal {
 abstract class _PaymentHistoryModal implements PaymentHistoryModal {
   const factory _PaymentHistoryModal(
       {required final int id,
+      @JsonKey(name: "amount")
+          required final int amount,
+      @JsonKey(name: "college_name")
+          required final String collegeName,
       @JsonKey(name: "payment_type")
           required final String paymentType,
       @JsonKey(name: "payment_status")
@@ -196,7 +239,13 @@ abstract class _PaymentHistoryModal implements PaymentHistoryModal {
 
   @override
   int get id;
-  @override //@JsonKey(name: "college") required String collegeName,
+  @override
+  @JsonKey(name: "amount")
+  int get amount;
+  @override
+  @JsonKey(name: "college_name")
+  String get collegeName;
+  @override
   @JsonKey(name: "payment_type")
   String get paymentType;
   @override

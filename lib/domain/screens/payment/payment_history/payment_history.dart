@@ -6,7 +6,8 @@ part 'payment_history.g.dart';
 class PaymentHistoryModal with _$PaymentHistoryModal {
   const factory PaymentHistoryModal({
     required int id,
-    //@JsonKey(name: "college") required String collegeName,
+    @JsonKey(name: "amount") required int amount,
+    @JsonKey(name: "college_name") required String collegeName,
     @JsonKey(name: "payment_type") required String paymentType,
     @JsonKey(name: "payment_status") required String paymentStatus,
   }) = _PaymentHistoryModal;

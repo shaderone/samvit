@@ -1,5 +1,5 @@
-import 'package:brechfete/bloc/bloc/payment_bloc.dart';
 import 'package:brechfete/bloc/booking/booking_bloc.dart';
+import 'package:brechfete/bloc/payment/payment_bloc.dart';
 import 'package:brechfete/bloc/paynow/paynow_bloc.dart';
 import 'package:brechfete/bloc/reservation/reservation_bloc.dart';
 import 'package:brechfete/bloc/slot_info/slot_info_bloc.dart';

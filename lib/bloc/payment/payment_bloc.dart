@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:brechfete/domain/common_failures/common_failures.dart';
 import 'package:brechfete/domain/screens/payment/payment_history/payment_history.dart';
@@ -15,7 +17,13 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
   final PaymentService _paymentService;
   PaymentBloc(this._paymentService) : super(PaymentState.initialState()) {
     on<_GetPaymentList>((event, emit) async {
-      emit(state.copyWith(isLoading: true));
+      emit(
+        const PaymentState(
+          isError: false,
+          isLoading: true,
+          paymentList: [],
+        ),
+      );
 
       Either<CommonFailures, List<PaymentHistoryModal>> paymentApiResponse =
           await _paymentService.getPaymentHistoryList();

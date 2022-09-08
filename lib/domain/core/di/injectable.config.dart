@@ -8,8 +8,8 @@
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
 
-import '../../../bloc/bloc/payment_bloc.dart' as _i15;
 import '../../../bloc/booking/booking_bloc.dart' as _i14;
+import '../../../bloc/payment/payment_bloc.dart' as _i15;
 import '../../../bloc/paynow/paynow_bloc.dart' as _i9;
 import '../../../bloc/reservation/reservation_bloc.dart' as _i16;
 import '../../../bloc/slot_info/slot_info_bloc.dart' as _i17;
