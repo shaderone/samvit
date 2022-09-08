@@ -98,9 +98,9 @@ class _PaymentHistoryScreenState extends State<PaymentHistoryScreen> {
               } else if (state.paymentList.isEmpty) {
                 EasyLoading.dismiss();
                 return const TabBarView(children: [
-                  Center(child: Text("No Payments to show!")),
-                  Center(child: Text("No Payments to show!")),
-                  Center(child: Text("No Payments to show!")),
+                  Center(child: Text("History is Empty!")),
+                  Center(child: Text("History is Empty!")),
+                  Center(child: Text("History is Empty!")),
                 ]);
               } else {
                 EasyLoading.dismiss();
@@ -158,7 +158,7 @@ class _PaymentHistoryScreenState extends State<PaymentHistoryScreen> {
                             if (respectiveList.isEmpty)
                               const Expanded(
                                 child: Center(
-                                  child: Text("History is empty"),
+                                  child: Text("No Payments to show!"),
                                 ),
                               )
                             else
