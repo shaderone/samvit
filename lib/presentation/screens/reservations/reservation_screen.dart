@@ -75,6 +75,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
             );
             return const SizedBox();
           } else if (state.reservationList.isEmpty) {
+            EasyLoading.dismiss();
             return const Center(
               child: Text("List is empty!"),
             );
