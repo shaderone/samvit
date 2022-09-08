@@ -1,8 +1,14 @@
+import 'dart:developer';
+
+import 'package:brechfete/bloc/payment/payment_bloc.dart';
 import 'package:brechfete/core/constants.dart';
+import 'package:brechfete/domain/screens/payment/payment_history/payment_history.dart';
 import 'package:brechfete/presentation/screens/bookings/booking_screen.dart';
 import 'package:brechfete/presentation/screens/reservations/widgets/reservation_chip.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
@@ -16,6 +22,8 @@ class PaymentHistoryScreen extends StatefulWidget {
 class _PaymentHistoryScreenState extends State<PaymentHistoryScreen> {
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) =>
+        context.read<PaymentBloc>().add(const PaymentEvent.getPaymentList()));
     final screenWidth = MediaQuery.of(context).size.width;
     return DefaultTabController(
       length: 3,
@@ -67,87 +75,173 @@ class _PaymentHistoryScreenState extends State<PaymentHistoryScreen> {
               ),
             ];
           },
-          body: TabBarView(
-            dragStartBehavior: DragStartBehavior.down,
-            physics: const NeverScrollableScrollPhysics(),
-            children: List.generate(
-              3,
-              (index) {
-                return Padding(
-                  padding: const EdgeInsets.only(top: 3),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Column(
-                        children: [
-                          ColoredBox(
-                            color: primaryDark,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 15),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "Name",
-                                    style: GoogleFonts.ubuntu(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 17,
+          body: BlocBuilder<PaymentBloc, PaymentState>(
+            builder: (context, state) {
+              List<PaymentHistoryModal> onlineList = state.paymentList
+                  .where((item) => item.paymentType == "Online")
+                  .toList();
+              List<PaymentHistoryModal> payLaterList = state.paymentList
+                  .where((item) => item.paymentType == "Pay Later")
+                  .toList();
+              List<PaymentHistoryModal> readyCashList = state.paymentList
+                  .where((item) => item.paymentType == "Ready Cash")
+                  .toList();
+
+              if (state.isLoading) {
+                EasyLoading.instance.indicatorType =
+                    EasyLoadingIndicatorType.wave;
+                EasyLoading.show(status: 'Loading...');
+                return const SizedBox();
+              } else if (state.isError) {
+                EasyLoading.dismiss();
+                return const Text("Unable to fetch data, please try again!");
+              } else if (state.paymentList.isEmpty) {
+                EasyLoading.dismiss();
+                return const Text("No Payments to show!");
+              } else {
+                EasyLoading.dismiss();
+                return TabBarView(
+                  dragStartBehavior: DragStartBehavior.down,
+                  children: List.generate(
+                    3,
+                    (index) {
+                      List<PaymentHistoryModal> respectiveList;
+                      if (index == 0) {
+                        respectiveList = readyCashList;
+                      } else if (index == 1) {
+                        respectiveList = onlineList;
+                      } else if (index == 2) {
+                        respectiveList = payLaterList;
+                      } else {
+                        respectiveList = [];
+                      }
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 3),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Column(
+                              children: [
+                                ColoredBox(
+                                  color: primaryDark,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 15),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          "Name",
+                                          style: GoogleFonts.ubuntu(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 17,
+                                          ),
+                                        ),
+                                        Text(
+                                          index == 0 ? "Amount Paid" : "Status",
+                                          style: GoogleFonts.ubuntu(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 17,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                  Text(
-                                    "Status",
-                                    style: GoogleFonts.ubuntu(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 17,
+                                ),
+                              ],
+                            ),
+                            Expanded(
+                              child: ListView.separated(
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(respectiveList[index].collegeName),
+                                        respectiveList[index].paymentStatus ==
+                                                "Paid"
+                                            ? respectiveList[index]
+                                                        .paymentType ==
+                                                    "Ready Cash"
+                                                ? Padding(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                      vertical: 10,
+                                                    ),
+                                                    child: Text(
+                                                      respectiveList[index]
+                                                          .amount
+                                                          .toString(),
+                                                      style: const TextStyle(
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  )
+                                                : const PaymentChip(
+                                                    paymentStatus: "Paid",
+                                                    color: extraGreen,
+                                                  )
+                                            : respectiveList[index]
+                                                        .paymentStatus ==
+                                                    "Pending"
+                                                ? const PaymentChip(
+                                                    paymentStatus: "Pending",
+                                                    color: extraYellow)
+                                                : const PaymentChip(
+                                                    paymentStatus: "Processing",
+                                                    color:
+                                                        secondaryBlueShadeDark,
+                                                  )
+                                      ],
                                     ),
-                                  ),
-                                ],
+                                  );
+                                },
+                                separatorBuilder:
+                                    (BuildContext context, int index) =>
+                                        const Divider(),
+                                itemCount: respectiveList.length,
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: ListView.separated(
-                            itemBuilder: (BuildContext context, int index) {
-                              return Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text("St. Peters"),
-                                  ReservationChip(
-                                    chipCrossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    chipTitle: "",
-                                    chipText: "Processing",
-                                    chipWidth: 120,
-                                    chipBgColor:
-                                        secondaryBlueShadeDark.withOpacity(.1),
-                                    chipStrokeColor: secondaryBlueShadeDark,
-                                    isPaymentChip: true,
-                                  ),
-                                ],
-                              );
-                            },
-                            separatorBuilder:
-                                (BuildContext context, int index) =>
-                                    const Divider(),
-                            itemCount: 20,
-                          ),
+                          ],
                         ),
-                      ),
-                    ],
+                      );
+                    },
                   ),
                 );
-              },
-            ),
+              }
+            },
           ),
         ),
       ),
+    );
+  }
+}
+
+class PaymentChip extends StatelessWidget {
+  final String paymentStatus;
+  final Color color;
+  const PaymentChip({
+    Key? key,
+    required this.paymentStatus,
+    required this.color,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ReservationChip(
+      chipCrossAxisAlignment: CrossAxisAlignment.center,
+      chipTitle: "",
+      chipText: paymentStatus,
+      chipWidth: 120,
+      chipBgColor: color.withOpacity(.1),
+      chipStrokeColor: color,
+      isPaymentChip: true,
     );
   }
 }
