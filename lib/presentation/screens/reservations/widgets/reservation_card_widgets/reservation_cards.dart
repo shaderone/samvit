@@ -172,7 +172,7 @@ class CardMiddle extends StatelessWidget {
           chipCrossAxisAlignment: CrossAxisAlignment.start,
           chipTitle: "Slots",
           chipText: state.slotCount.toString(),
-          chipWidth: screenWidth < 320 ? 90 : 70,
+          chipWidth: screenWidth < 320 ? 90 : 65,
           chipBgColor: primaryDarkShadeLight,
           chipStrokeColor: textWhiteShadeDark,
           chipTimePeriod: "",
