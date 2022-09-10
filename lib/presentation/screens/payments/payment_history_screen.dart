@@ -163,63 +163,77 @@ class _PaymentHistoryScreenState extends State<PaymentHistoryScreen> {
                               )
                             else
                               Expanded(
-                                child: ListView.separated(
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 20),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(respectiveList[index]
-                                              .collegeName),
-                                          respectiveList[index].paymentStatus ==
-                                                  "Paid"
-                                              ? respectiveList[index]
-                                                          .paymentType ==
-                                                      "Ready Cash"
-                                                  ? Padding(
-                                                      padding: const EdgeInsets
-                                                          .symmetric(
-                                                        vertical: 10,
-                                                      ),
-                                                      child: Text(
-                                                        respectiveList[index]
-                                                            .amount
-                                                            .toString(),
-                                                        style: const TextStyle(
-                                                          fontSize: 16,
-                                                          fontWeight:
-                                                              FontWeight.bold,
+                                child: RefreshIndicator(
+                                  displacement: 0,
+                                  color: secondaryBlueShadeLight,
+                                  strokeWidth: 2,
+                                  triggerMode:
+                                      RefreshIndicatorTriggerMode.onEdge,
+                                  onRefresh: () async => context
+                                      .read<PaymentBloc>()
+                                      .add(const PaymentEvent.getPaymentList()),
+                                  child: ListView.separated(
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 20),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(respectiveList[index]
+                                                .collegeName),
+                                            respectiveList[index]
+                                                        .paymentStatus ==
+                                                    "Paid"
+                                                ? respectiveList[index]
+                                                            .paymentType ==
+                                                        "Ready Cash"
+                                                    ? Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .symmetric(
+                                                          vertical: 10,
                                                         ),
-                                                      ),
-                                                    )
-                                                  : const PaymentChip(
-                                                      paymentStatus: "Paid",
-                                                      color: extraGreen,
-                                                    )
-                                              : respectiveList[index]
-                                                          .paymentStatus ==
-                                                      "Pending"
-                                                  ? const PaymentChip(
-                                                      paymentStatus: "Pending",
-                                                      color: extraYellow)
-                                                  : const PaymentChip(
-                                                      paymentStatus:
-                                                          "Processing",
-                                                      color:
-                                                          secondaryBlueShadeDark,
-                                                    )
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                  separatorBuilder:
-                                      (BuildContext context, int index) =>
-                                          const Divider(),
-                                  itemCount: respectiveList.length,
+                                                        child: Text(
+                                                          respectiveList[index]
+                                                              .amount
+                                                              .toString(),
+                                                          style:
+                                                              const TextStyle(
+                                                            fontSize: 16,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                      )
+                                                    : const PaymentChip(
+                                                        paymentStatus: "Paid",
+                                                        color: extraGreen,
+                                                      )
+                                                : respectiveList[index]
+                                                            .paymentStatus ==
+                                                        "Pending"
+                                                    ? const PaymentChip(
+                                                        paymentStatus:
+                                                            "Pending",
+                                                        color: extraYellow)
+                                                    : const PaymentChip(
+                                                        paymentStatus:
+                                                            "Processing",
+                                                        color:
+                                                            secondaryBlueShadeDark,
+                                                      )
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                    separatorBuilder:
+                                        (BuildContext context, int index) =>
+                                            const Divider(),
+                                    itemCount: respectiveList.length,
+                                  ),
                                 ),
                               ),
                           ],

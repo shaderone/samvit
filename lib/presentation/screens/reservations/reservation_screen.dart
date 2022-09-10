@@ -30,84 +30,92 @@ class _ReservationScreenState extends State<ReservationScreen> {
     });
 
     final screenWidth = MediaQuery.of(context).size.width;
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        systemOverlayStyle: const SystemUiOverlayStyle(
-          statusBarColor: primaryDarkShadeLight,
-          statusBarBrightness: Brightness.dark,
-        ),
-        elevation: 5,
-        //backgroundColor: Colors.transparent,
-        title: Row(
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: Image.asset("assets/images/samvit_logo.png", width: 30),
-            ),
-            const SizedBox(width: 15),
-            GradientText(
-              'Reservation list',
-              style: GoogleFonts.ubuntu(
-                fontSize: screenWidth <= 320 ? 20 : 24,
+    return RefreshIndicator(
+      color: secondaryBlueShadeLight,
+      strokeWidth: 2,
+      triggerMode: RefreshIndicatorTriggerMode.onEdge,
+      onRefresh: () async => context
+          .read<ReservationBloc>()
+          .add(const ReservationEvent.getReservationList()),
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          systemOverlayStyle: const SystemUiOverlayStyle(
+            statusBarColor: primaryDarkShadeLight,
+            statusBarBrightness: Brightness.dark,
+          ),
+          elevation: 5,
+          //backgroundColor: Colors.transparent,
+          title: Row(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.asset("assets/images/samvit_logo.png", width: 30),
               ),
-              colors: const [
-                Color(0xFF6E6F71),
-                Color(0xFFECECEC),
-              ],
+              const SizedBox(width: 15),
+              GradientText(
+                'Reservation list',
+                style: GoogleFonts.ubuntu(
+                  fontSize: screenWidth <= 320 ? 20 : 24,
+                ),
+                colors: const [
+                  Color(0xFF6E6F71),
+                  Color(0xFFECECEC),
+                ],
+              ),
+            ],
+          ),
+          actions: [
+            IconButton(
+              onPressed: () => logout(mounted, context),
+              icon: const Icon(
+                Icons.logout_rounded,
+              ),
             ),
           ],
         ),
-        actions: [
-          IconButton(
-            onPressed: () => logout(mounted, context),
-            icon: const Icon(
-              Icons.logout_rounded,
-            ),
-          ),
-        ],
-      ),
-      body: BlocBuilder<ReservationBloc, ReservationState>(
-        builder: (context, state) {
-          if (state.isLoading) {
-            EasyLoading.show(
-              status: 'Getting Data...',
-            );
-            return const SizedBox();
-          } else if (state.reservationList.isEmpty) {
-            EasyLoading.dismiss();
-            return const Center(
-              child: Text("List is empty!"),
-            );
-          } else {
-            EasyLoading.dismiss();
-            return AnimationLimiter(
-              child: ListView.separated(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 8, vertical: 15),
-                physics: const BouncingScrollPhysics(),
-                itemBuilder: (BuildContext context, int index) {
-                  final singleReservationListItem =
-                      state.reservationList[index];
-                  return AnimationConfiguration.staggeredList(
-                    position: index,
-                    duration: const Duration(milliseconds: 500),
-                    child: SlideAnimation(
-                      child: FadeInAnimation(
-                        child:
-                            ReservationCard(state: singleReservationListItem),
+        body: BlocBuilder<ReservationBloc, ReservationState>(
+          builder: (context, state) {
+            if (state.isLoading) {
+              EasyLoading.instance.indicatorType =
+                  EasyLoadingIndicatorType.wave;
+              EasyLoading.show(status: 'Getting Data...');
+              return const SizedBox();
+            } else if (state.reservationList.isEmpty) {
+              EasyLoading.dismiss();
+              return const Center(
+                child: Text("List is empty!"),
+              );
+            } else {
+              EasyLoading.dismiss();
+              return AnimationLimiter(
+                child: ListView.separated(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 15),
+                  physics: const BouncingScrollPhysics(),
+                  itemBuilder: (BuildContext context, int index) {
+                    final singleReservationListItem =
+                        state.reservationList[index];
+                    return AnimationConfiguration.staggeredList(
+                      position: index,
+                      duration: const Duration(milliseconds: 500),
+                      child: SlideAnimation(
+                        child: FadeInAnimation(
+                          child:
+                              ReservationCard(state: singleReservationListItem),
+                        ),
                       ),
-                    ),
-                  );
-                },
-                separatorBuilder: (BuildContext context, int index) {
-                  return const SizedBox(height: 10);
-                },
-                itemCount: state.reservationList.length,
-              ),
-            );
-          }
-        },
+                    );
+                  },
+                  separatorBuilder: (BuildContext context, int index) {
+                    return const SizedBox(height: 10);
+                  },
+                  itemCount: state.reservationList.length,
+                ),
+              );
+            }
+          },
+        ),
       ),
     );
   }

@@ -232,14 +232,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                   fontSize: screenWidth <= 320 ? 16 : 18,
                                   color: pureWhite,
                                 );
-                                EasyLoading.show(
-                                  status: 'Vefifying...',
-                                );
+                                EasyLoading.show(status: 'Verifying...');
                                 var client = http.Client();
                                 var response = await client.post(
-                                  //for demo prupose
                                   Uri.parse(
-                                    //"https://shielded-fjord-46900.herokuapp.com/data",
                                     "$baseURL/auth/token/login/",
                                   ),
                                   headers: {
@@ -249,8 +245,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                     {
                                       'phone': phone,
                                       'password': password,
-                                      //'user_mobile': phone,
-                                      //'user_password': password,
                                     },
                                   ),
                                 );
