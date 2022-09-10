@@ -51,6 +51,7 @@ class _PayNowPageState extends State<PayNowPage> {
         },
       );
       final data = jsonDecode(response.body);
+      if (!mounted) return;
       setState(() {
         amountToPay = data['amount'];
         slotCount = selectedSlot;
@@ -192,14 +193,6 @@ class _PayNowPageState extends State<PayNowPage> {
                           PayNowPage._amountFormKey.currentState!.validate();
                           if (PayNowPage._amountFormKey.currentState!
                               .validate()) {
-                            //print("success");
-                            //reseting
-                            isRegistrationSuccessNotifier.value = false;
-                            ////new reset
-                            //isValidatedNotifier.value = false;
-                            SlotInputItem.isSlotCountValidatedNotifier.value =
-                                false;
-
                             //send request
                             final SharedPreferences prefs =
                                 await SharedPreferences.getInstance();
@@ -232,6 +225,10 @@ class _PayNowPageState extends State<PayNowPage> {
                             final data = jsonDecode(response.body);
 
                             if (data['is_booked']) {
+                              //reseting
+                              isRegistrationSuccessNotifier.value = false;
+                              SlotInputItem.isSlotCountValidatedNotifier.value =
+                                  false;
                               setState(() {
                                 //reseting qr code
                                 isQrCodeGenerated = false;
@@ -243,7 +240,7 @@ class _PayNowPageState extends State<PayNowPage> {
                                       const BookingSuccessPage(
                                     animationWidget:
                                         "assets/lottie_files/confirm.json",
-                                    statusText: "Payment link sent!",
+                                    statusText: "Booking Successful",
                                   ),
                                 ),
                               );
@@ -255,7 +252,7 @@ class _PayNowPageState extends State<PayNowPage> {
                             }
                           }
                         },
-                        child: const Text("Send Confirmation Link"),
+                        child: const Text("Send Confirmation Mail"),
                       ),
                       const SizedBox(height: 20),
                     ],
@@ -276,13 +273,6 @@ class _PayNowPageState extends State<PayNowPage> {
                           ), // fromHeight use double.infinity as width and 40 is the height
                         ),
                         onPressed: () async {
-                          //reseting
-                          isRegistrationSuccessNotifier.value = false;
-                          //new reset
-                          //isValidatedNotifier.value = false;
-                          SlotInputItem.isSlotCountValidatedNotifier.value =
-                              false;
-
                           final SharedPreferences prefs =
                               await SharedPreferences.getInstance();
                           final token = prefs.getString("token");
@@ -311,6 +301,9 @@ class _PayNowPageState extends State<PayNowPage> {
 
                           log(data.toString());
                           if (data['is_mail_sent']) {
+                            isRegistrationSuccessNotifier.value = false;
+                            SlotInputItem.isSlotCountValidatedNotifier.value =
+                                false;
                             setState(() {
                               isQrCodeGenerated = false;
                             });
@@ -320,7 +313,8 @@ class _PayNowPageState extends State<PayNowPage> {
                                 builder: (context) => const BookingSuccessPage(
                                   animationWidget:
                                       "assets/lottie_files/confirm.json",
-                                  statusText: "Booking Successful!",
+                                  statusText: "Payment Link Sent",
+                                  statusSubText: "Payment Link",
                                 ),
                               ),
                             );
@@ -421,13 +415,6 @@ class _PayNowPageState extends State<PayNowPage> {
                                         ),
                                       ),
                                       onPressed: () async {
-                                        isRegistrationSuccessNotifier.value =
-                                            false;
-
-                                        SlotInputItem
-                                            .isSlotCountValidatedNotifier
-                                            .value = false;
-
                                         //send request
                                         final SharedPreferences prefs =
                                             await SharedPreferences
@@ -455,6 +442,12 @@ class _PayNowPageState extends State<PayNowPage> {
                                         final data = jsonDecode(response.body);
 
                                         if (data['is_paid']) {
+                                          isRegistrationSuccessNotifier.value =
+                                              false;
+
+                                          SlotInputItem
+                                              .isSlotCountValidatedNotifier
+                                              .value = false;
                                           if (!mounted) return;
                                           Navigator.of(context).pushReplacement(
                                             MaterialPageRoute(

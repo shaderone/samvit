@@ -301,11 +301,6 @@ class _ExpoRegistrationState extends State<ExpoRegistration> {
       return;
     }
     if (shouldProceed ?? false) {
-      isRegistrationSuccessNotifier.value = false;
-      //new reset
-      //isValidatedNotifier.value = false;
-      SlotInputItem.isSlotCountValidatedNotifier.value = false;
-
       //send request
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       final token = prefs.getString("token");
@@ -335,6 +330,8 @@ class _ExpoRegistrationState extends State<ExpoRegistration> {
       final data = jsonDecode(response.body);
 
       if (data['is_booked']) {
+        isRegistrationSuccessNotifier.value = false;
+        SlotInputItem.isSlotCountValidatedNotifier.value = false;
         if (!mounted) return;
         Navigator.of(context).pushNamedAndRemoveUntil(
           App.bookingSuccessRoute,

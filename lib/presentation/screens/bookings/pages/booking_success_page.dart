@@ -8,7 +8,9 @@ import 'package:lottie/lottie.dart';
 class BookingSuccessPage extends StatelessWidget {
   final String? animationWidget;
   final String? statusText;
-  const BookingSuccessPage({Key? key, this.animationWidget, this.statusText})
+  final String? statusSubText;
+  const BookingSuccessPage(
+      {Key? key, this.animationWidget, this.statusText, this.statusSubText})
       : super(key: key);
 
   @override
@@ -43,16 +45,17 @@ class BookingSuccessPage extends StatelessWidget {
                   textAlign: TextAlign.center,
                   text: TextSpan(
                     style: DefaultTextStyle.of(context).style,
-                    children: const [
+                    children: [
                       TextSpan(
-                        text: "A confirmation message will soon be sent to",
-                        style: TextStyle(
+                        text:
+                            "A ${statusSubText ?? "confirmation message"} will soon be sent to",
+                        style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
                           color: textWhiteShadeLight,
                         ),
                       ),
-                      TextSpan(
+                      const TextSpan(
                         text: " FACULTY MAIL",
                         style: TextStyle(
                           fontSize: 16,
