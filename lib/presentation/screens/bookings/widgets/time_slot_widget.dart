@@ -1,3 +1,4 @@
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:samvit/bloc/booking/booking_bloc.dart';
 import 'package:samvit/bloc/slot_info/slot_info_bloc.dart';
 import 'package:samvit/core/constants.dart';
@@ -45,6 +46,10 @@ class TimeSlotListState extends State<TimeSlotList> {
         ),
       );
     } else if (widget.state.isError) {
+      Fluttertoast.showToast(
+        msg: "Please check your internet connection",
+        textColor: extraRed,
+      );
       return StatusWidget(
         statusBgColor: extraRed.withOpacity(.05),
         statusColor: extraRed,

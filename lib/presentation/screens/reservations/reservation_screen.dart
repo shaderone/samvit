@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:samvit/bloc/reservation/reservation_bloc.dart';
 import 'package:samvit/domain/screens/reservation/reservation/reservation.dart';
 import 'package:samvit/presentation/screens/bookings/booking_screen.dart';
@@ -81,6 +84,16 @@ class _ReservationScreenState extends State<ReservationScreen> {
                   EasyLoadingIndicatorType.wave;
               EasyLoading.show(status: 'Getting Data...');
               return const SizedBox();
+            } else if (state.isError) {
+              EasyLoading.dismiss();
+              Fluttertoast.showToast(
+                msg: "please check your internet connection",
+                textColor: extraRed,
+              );
+
+              return const Center(
+                child: Text("Unable to fetch data, please try again!"),
+              );
             } else if (state.reservationList.isEmpty) {
               EasyLoading.dismiss();
               return const Center(

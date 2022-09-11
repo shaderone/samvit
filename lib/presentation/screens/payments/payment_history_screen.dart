@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:samvit/bloc/payment/payment_bloc.dart';
 import 'package:samvit/core/constants.dart';
 import 'package:samvit/domain/screens/payment/payment_history/payment_history.dart';
@@ -94,7 +95,13 @@ class _PaymentHistoryScreenState extends State<PaymentHistoryScreen> {
                 return const SizedBox();
               } else if (state.isError) {
                 EasyLoading.dismiss();
-                return const Text("Unable to fetch data, please try again!");
+                Fluttertoast.showToast(
+                  msg: "please check your internet connection",
+                  textColor: extraRed,
+                );
+                return const Center(
+                  child: Text("Unable to fetch data, please try again!"),
+                );
               } else if (state.paymentList.isEmpty) {
                 EasyLoading.dismiss();
                 return const TabBarView(children: [

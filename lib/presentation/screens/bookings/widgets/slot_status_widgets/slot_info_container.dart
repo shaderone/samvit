@@ -1,10 +1,12 @@
 import 'dart:developer';
 
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:samvit/bloc/slot_info/slot_info_bloc.dart';
 import 'package:samvit/core/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:samvit/presentation/screens/bookings/widgets/time_slot_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SlotInfoContainer extends StatelessWidget {
@@ -21,6 +23,16 @@ class SlotInfoContainer extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     if (state.isLoading) {
       return const CircularProgressIndicator(strokeWidth: 2);
+    } else if (state.isError) {
+      Fluttertoast.showToast(
+        msg: "Please check your internet connection",
+        textColor: extraRed,
+      );
+      return StatusWidget(
+        statusBgColor: extraRed.withOpacity(.05),
+        statusColor: extraRed,
+        statusText: "Unable to fetch slot info",
+      );
     } else {
       return AnimationLimiter(
         child: Column(

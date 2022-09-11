@@ -134,7 +134,9 @@ class _BookingScreenState extends State<BookingScreen> {
                                 const SizedBox(height: 30),
                                 state.slotInfo.remainingSlot == 0
                                     ? const SizedBox()
-                                    : const ConfirmButton(),
+                                    : state.isError
+                                        ? const SizedBox()
+                                        : const ConfirmButton(),
                                 const SizedBox(height: 30),
                               ],
                             ),

@@ -38,7 +38,7 @@ class ReservationBloc extends Bloc<ReservationEvent, ReservationState> {
       }, (List<ReservationModal> data) {
         return ReservationState(
           isLoading: false,
-          isError: true,
+          isError: false,
           reservationList: data,
         );
       });
