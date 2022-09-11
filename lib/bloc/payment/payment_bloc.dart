@@ -1,9 +1,9 @@
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
-import 'package:brechfete/domain/common_failures/common_failures.dart';
-import 'package:brechfete/domain/screens/payment/payment_history/payment_history.dart';
-import 'package:brechfete/domain/screens/payment/payment_service.dart';
+import 'package:samvit/domain/common_failures/common_failures.dart';
+import 'package:samvit/domain/screens/payment/payment_history/payment_history.dart';
+import 'package:samvit/domain/screens/payment/payment_service.dart';
 import 'package:dartz/dartz.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';

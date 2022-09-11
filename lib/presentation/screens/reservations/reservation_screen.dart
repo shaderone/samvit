@@ -1,9 +1,9 @@
-import 'package:brechfete/bloc/reservation/reservation_bloc.dart';
-import 'package:brechfete/domain/screens/reservation/reservation/reservation.dart';
-import 'package:brechfete/presentation/screens/bookings/booking_screen.dart';
-import 'package:brechfete/presentation/screens/reservations/widgets/reservation_card_widgets/reservation_cards.dart';
+import 'package:samvit/bloc/reservation/reservation_bloc.dart';
+import 'package:samvit/domain/screens/reservation/reservation/reservation.dart';
+import 'package:samvit/presentation/screens/bookings/booking_screen.dart';
+import 'package:samvit/presentation/screens/reservations/widgets/reservation_card_widgets/reservation_cards.dart';
 import 'package:flutter/material.dart';
-import 'package:brechfete/core/constants.dart';
+import 'package:samvit/core/constants.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';

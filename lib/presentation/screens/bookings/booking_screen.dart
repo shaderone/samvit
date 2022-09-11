@@ -1,17 +1,17 @@
 import 'dart:developer';
 
-import 'package:brechfete/bloc/booking/booking_bloc.dart';
-import 'package:brechfete/bloc/slot_info/slot_info_bloc.dart';
-import 'package:brechfete/core/constants.dart';
-import 'package:brechfete/presentation/root/app.dart';
-import 'package:brechfete/presentation/root/widgets/bottom_navbar.dart';
-import 'package:brechfete/presentation/screens/bookings/pages/expo_registration_page.dart';
+import 'package:samvit/bloc/booking/booking_bloc.dart';
+import 'package:samvit/bloc/slot_info/slot_info_bloc.dart';
+import 'package:samvit/core/constants.dart';
+import 'package:samvit/presentation/root/app.dart';
+import 'package:samvit/presentation/root/widgets/bottom_navbar.dart';
+import 'package:samvit/presentation/screens/bookings/pages/expo_registration_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:brechfete/presentation/screens/bookings/widgets/slot_status_widgets/slot_info_container.dart';
-import 'package:brechfete/presentation/screens/bookings/widgets/time_slot_widget.dart';
-import 'package:brechfete/presentation/screens/bookings/widgets/calendar_widget.dart';
-import 'package:brechfete/presentation/screens/bookings/widgets/calendar_widgets/calendar_status_widget.dart';
+import 'package:samvit/presentation/screens/bookings/widgets/slot_status_widgets/slot_info_container.dart';
+import 'package:samvit/presentation/screens/bookings/widgets/time_slot_widget.dart';
+import 'package:samvit/presentation/screens/bookings/widgets/calendar_widget.dart';
+import 'package:samvit/presentation/screens/bookings/widgets/calendar_widgets/calendar_status_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';

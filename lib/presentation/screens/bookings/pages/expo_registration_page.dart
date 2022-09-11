@@ -1,14 +1,14 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:brechfete/core/constants.dart';
-import 'package:brechfete/presentation/root/app.dart';
-import 'package:brechfete/presentation/screens/bookings/booking_screen.dart';
-import 'package:brechfete/presentation/screens/bookings/pages/booking_success_page.dart';
-import 'package:brechfete/presentation/screens/bookings/pages/pay_now_page.dart';
-import 'package:brechfete/presentation/screens/bookings/pages/widgets/registration_form_builder.dart';
-import 'package:brechfete/presentation/screens/bookings/pages/widgets/registration_form_buttons.dart';
-import 'package:brechfete/presentation/screens/bookings/widgets/slot_status_widgets/slot_info_container.dart';
+import 'package:samvit/core/constants.dart';
+import 'package:samvit/presentation/root/app.dart';
+import 'package:samvit/presentation/screens/bookings/booking_screen.dart';
+import 'package:samvit/presentation/screens/bookings/pages/booking_success_page.dart';
+import 'package:samvit/presentation/screens/bookings/pages/pay_now_page.dart';
+import 'package:samvit/presentation/screens/bookings/pages/widgets/registration_form_builder.dart';
+import 'package:samvit/presentation/screens/bookings/pages/widgets/registration_form_buttons.dart';
+import 'package:samvit/presentation/screens/bookings/widgets/slot_status_widgets/slot_info_container.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';

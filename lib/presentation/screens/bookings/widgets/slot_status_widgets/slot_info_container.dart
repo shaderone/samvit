@@ -1,7 +1,7 @@
 import 'dart:developer';
 
-import 'package:brechfete/bloc/slot_info/slot_info_bloc.dart';
-import 'package:brechfete/core/constants.dart';
+import 'package:samvit/bloc/slot_info/slot_info_bloc.dart';
+import 'package:samvit/core/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';

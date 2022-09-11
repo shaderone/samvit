@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:brechfete/core/constants.dart';
-import 'package:brechfete/presentation/root/app.dart';
-import 'package:brechfete/presentation/root/widgets/custom_form_input.dart';
+import 'package:samvit/core/constants.dart';
+import 'package:samvit/presentation/root/app.dart';
+import 'package:samvit/presentation/root/widgets/custom_form_input.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';

@@ -1,10 +1,10 @@
 import 'dart:developer';
 
-import 'package:brechfete/bloc/payment/payment_bloc.dart';
-import 'package:brechfete/core/constants.dart';
-import 'package:brechfete/domain/screens/payment/payment_history/payment_history.dart';
-import 'package:brechfete/presentation/screens/bookings/booking_screen.dart';
-import 'package:brechfete/presentation/screens/reservations/widgets/reservation_chip.dart';
+import 'package:samvit/bloc/payment/payment_bloc.dart';
+import 'package:samvit/core/constants.dart';
+import 'package:samvit/domain/screens/payment/payment_history/payment_history.dart';
+import 'package:samvit/presentation/screens/bookings/booking_screen.dart';
+import 'package:samvit/presentation/screens/reservations/widgets/reservation_chip.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

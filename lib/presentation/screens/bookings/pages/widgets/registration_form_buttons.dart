@@ -1,4 +1,4 @@
-import 'package:brechfete/core/constants.dart';
+import 'package:samvit/core/constants.dart';
 import 'package:flutter/material.dart';
 
 class RegistrationButton extends StatelessWidget {

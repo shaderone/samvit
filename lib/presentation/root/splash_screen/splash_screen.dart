@@ -1,6 +1,6 @@
-import 'package:brechfete/core/constants.dart';
-import 'package:brechfete/presentation/root/app.dart';
-import 'package:brechfete/presentation/screens/login/login.dart';
+import 'package:samvit/core/constants.dart';
+import 'package:samvit/presentation/root/app.dart';
+import 'package:samvit/presentation/screens/login/login.dart';
 import 'package:easy_splash_screen/easy_splash_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';

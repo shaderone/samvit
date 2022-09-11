@@ -1,7 +1,7 @@
-import 'package:brechfete/core/constants.dart';
-import 'package:brechfete/presentation/root/app.dart';
-import 'package:brechfete/presentation/root/widgets/bottom_navbar.dart';
-import 'package:brechfete/presentation/screens/reservations/reservation_screen.dart';
+import 'package:samvit/core/constants.dart';
+import 'package:samvit/presentation/root/app.dart';
+import 'package:samvit/presentation/root/widgets/bottom_navbar.dart';
+import 'package:samvit/presentation/screens/reservations/reservation_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 

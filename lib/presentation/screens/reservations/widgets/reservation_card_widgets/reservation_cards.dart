@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'package:brechfete/bloc/reservation/reservation_bloc.dart';
+import 'package:samvit/bloc/reservation/reservation_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:brechfete/core/constants.dart';
-import 'package:brechfete/domain/screens/reservation/reservation/reservation.dart';
-import 'package:brechfete/presentation/screens/bookings/pages/expo_registration_page.dart';
-import 'package:brechfete/presentation/screens/reservations/widgets/reservation_chip.dart';
+import 'package:samvit/core/constants.dart';
+import 'package:samvit/domain/screens/reservation/reservation/reservation.dart';
+import 'package:samvit/presentation/screens/bookings/pages/expo_registration_page.dart';
+import 'package:samvit/presentation/screens/reservations/widgets/reservation_chip.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';

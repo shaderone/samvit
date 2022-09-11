@@ -1,9 +1,9 @@
 import 'package:animations/animations.dart';
-import 'package:brechfete/core/constants.dart';
-import 'package:brechfete/presentation/root/widgets/bottom_navbar.dart';
-import 'package:brechfete/presentation/screens/bookings/booking_screen.dart';
-import 'package:brechfete/presentation/screens/payments/payment_history_screen.dart';
-import 'package:brechfete/presentation/screens/reservations/reservation_screen.dart';
+import 'package:samvit/core/constants.dart';
+import 'package:samvit/presentation/root/widgets/bottom_navbar.dart';
+import 'package:samvit/presentation/screens/bookings/booking_screen.dart';
+import 'package:samvit/presentation/screens/payments/payment_history_screen.dart';
+import 'package:samvit/presentation/screens/reservations/reservation_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
