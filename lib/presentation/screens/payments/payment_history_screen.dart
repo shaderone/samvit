@@ -89,6 +89,7 @@ class _PaymentHistoryScreenState extends State<PaymentHistoryScreen> {
                   .toList();
 
               if (state.isLoading) {
+                Fluttertoast.cancel();
                 EasyLoading.instance.indicatorType =
                     EasyLoadingIndicatorType.wave;
                 EasyLoading.show(status: 'Loading...');

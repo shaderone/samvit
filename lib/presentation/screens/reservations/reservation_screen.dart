@@ -80,6 +80,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
         body: BlocBuilder<ReservationBloc, ReservationState>(
           builder: (context, state) {
             if (state.isLoading) {
+            Fluttertoast.cancel();
               EasyLoading.instance.indicatorType =
                   EasyLoadingIndicatorType.wave;
               EasyLoading.show(status: 'Getting Data...');
@@ -96,10 +97,12 @@ class _ReservationScreenState extends State<ReservationScreen> {
               );
             } else if (state.reservationList.isEmpty) {
               EasyLoading.dismiss();
+              Fluttertoast.cancel();
               return const Center(
                 child: Text("List is empty!"),
               );
             } else {
+              Fluttertoast.cancel();
               EasyLoading.dismiss();
               return AnimationLimiter(
                 child: ListView.separated(
