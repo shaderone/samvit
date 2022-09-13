@@ -94,7 +94,9 @@ class _PaymentHistoryScreenState extends State<PaymentHistoryScreen> {
                 return const SizedBox();
               } else if (state.isError) {
                 EasyLoading.dismiss();
-                return const Text("Unable to fetch data, please try again!");
+                return const Center(
+                  child: Text("Unable to fetch data, please try again!"),
+                );
               } else if (state.paymentList.isEmpty) {
                 EasyLoading.dismiss();
                 return const TabBarView(children: [

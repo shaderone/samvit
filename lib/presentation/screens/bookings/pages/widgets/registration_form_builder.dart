@@ -126,77 +126,55 @@ class RegistrationFormHolderState extends State<RegistrationFormHolder> {
                   : facultyEmail = value!;
             },
           ),
-          CustomFormInput(
-            labelText: "Phone",
-            textInputType: TextInputType.number,
-            textInputAction: TextInputAction.next,
-            hintText:
-                "Enter ${widget.isInstitution ? "Institution" : "Faculty"} phone",
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return "Phone is required";
-              } else if (value.length != 10) {
-                return "Enter a valid phone number";
-              }
-              return null;
-            },
-            inputFormatters: [
-              FilteringTextInputFormatter.digitsOnly,
-            ],
-            maxInputLength: 10,
-            inputSpacing: 0,
-            onSaved: (String? value) {
-              widget.isInstitution
-                  ? institutionPhone = value!
-                  : facultyPhone = value!;
-            },
-          ),
-          const SizedBox(height: 10),
-          CustomFormInput(
-            labelText:
-                widget.isInstitution ? "Landline / other" : "optional phone",
-            textInputType: TextInputType.number,
-            textInputAction: TextInputAction.done,
-            hintText: widget.isInstitution
-                ? "Enter ${isTelephoneSwitched ? "Phone" : "Landline"}"
-                : "Enter optional phone",
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                final String insValidationMsg =
-                    "${widget.isInstitution ? "Institution" : "Faculty"} Landline/phone is required";
-                return widget.isInstitution ? insValidationMsg : null;
-              } else if (value.length != 11 && !isTelephoneSwitched) {
-                return widget.isInstitution ? "Enter a valid telephone" : null;
-              } else if (value.length != 10 && isTelephoneSwitched) {
-                return "Enter a valid phone";
-              }
-              return null;
-            },
-            inputFormatters: [
-              FilteringTextInputFormatter.digitsOnly,
-            ],
-            maxInputLength: !widget.isInstitution
-                ? 10
-                : isTelephoneSwitched
-                    ? 10
-                    : 11,
-            suffixIcon: !widget.isInstitution
-                ? null
-                : isTelephoneSwitched
-                    ? Icons.phone_android_rounded
-                    : MdiIcons.phoneClassic,
-            suffixIconAction: () {
-              setState(() {
-                isTelephoneSwitched = !isTelephoneSwitched;
-              });
-            },
-            inputSpacing: 0,
-            onSaved: (String? value) {
-              widget.isInstitution
-                  ? institutionTelOrPhone = value!
-                  : facultyTelOrPhone = value!;
-            },
-          ),
+          widget.isInstitution
+              ? const SizedBox()
+              : CustomFormInput(
+                  labelText: "Phone",
+                  textInputType: TextInputType.number,
+                  textInputAction: TextInputAction.next,
+                  hintText: "Enter faculty phone",
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Phone is required";
+                    } else if (value.length != 10) {
+                      return "Enter a valid phone number";
+                    }
+                    return null;
+                  },
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                  ],
+                  maxInputLength: 10,
+                  inputSpacing: 0,
+                  onSaved: (String? value) {
+                    facultyPhone = value!;
+                  },
+                ),
+          SizedBox(height: widget.isInstitution ? 0 : 10),
+          widget.isInstitution
+              ? const SizedBox()
+              : CustomFormInput(
+                  labelText: "optional phone",
+                  textInputType: TextInputType.number,
+                  textInputAction: TextInputAction.done,
+                  hintText: "Enter optional phone",
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return null;
+                    } else if (value.length != 10) {
+                      return "Enter a valid phone";
+                    }
+                    return null;
+                  },
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                  ],
+                  maxInputLength: 10,
+                  inputSpacing: 0,
+                  onSaved: (String? value) {
+                    facultyTelOrPhone = value!;
+                  },
+                ),
         ],
       ),
     );
@@ -204,7 +182,6 @@ class RegistrationFormHolderState extends State<RegistrationFormHolder> {
 
   //call this on register button
   static Future<bool> doRegistration() async {
-    //print("object");
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final token = prefs.getString("token");
     final selectedDate = prefs.getString("selectedDate");
@@ -218,15 +195,11 @@ class RegistrationFormHolderState extends State<RegistrationFormHolder> {
       "cname": institutionName,
       "caddress": institutionAddress,
       "cemail": institutionEmail,
-      "cphone": institutionPhone,
-      "ctelorphone": institutionTelOrPhone,
       "fname": facultyName,
       "femail": facultyEmail,
       "fphone": facultyPhone,
       "ftelorphone": facultyTelOrPhone,
     };
-
-    //print(formData);
     EasyLoading.show(
       status: 'processing...',
     );
@@ -243,10 +216,6 @@ class RegistrationFormHolderState extends State<RegistrationFormHolder> {
     );
     EasyLoading.dismiss();
     final data = jsonDecode(response.body);
-    log(data.toString());
-    // log("Parsed data " + parsedData.toString());
-    // final parsedData = SlotRegisterModal.fromJson(data);
-    // final parsedData = data['id'];
     final id = data['id'];
     final isRegistered = data['is_registered'];
     final registrationError = data['error'];
