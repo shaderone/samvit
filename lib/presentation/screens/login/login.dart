@@ -10,6 +10,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 void configLoading() {
   EasyLoading.instance
@@ -102,6 +104,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     //  child: Image.asset("assets/images/samvit.png"),
                     //),
                     //const SizedBox(height: 50),
+                    Text(
+                      "For College Staff",
+                      style: GoogleFonts.poppins(
+                        fontSize: 18,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    //const Divider(thickness: 2),
                     CustomFormInput(
                       labelText: "Phone",
                       hintText: 'Enter your phone number',
@@ -338,6 +348,77 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: const Text("VERIFY"),
                     ),
                     const SizedBox(height: 20),
+                    const Divider(
+                      thickness: 3,
+                      color: Colors.white54,
+                    ),
+                    const SizedBox(height: 10),
+                    Column(
+                      children: [
+                        Text(
+                          "For Individuals Registration",
+                          style: GoogleFonts.poppins(
+                            fontSize: 18,
+                          ),
+                        ),
+                        const SizedBox(height: 5),
+                        const Text("Please contact the Office"),
+                        const SizedBox(height: 20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            GestureDetector(
+                              onTap: () async {
+                                await launchUrlString("tel:8547651030");
+                              },
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: ColoredBox(
+                                  color: primaryDark,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 15,
+                                      horizontal: 20,
+                                    ),
+                                    child: Text(
+                                      "8547651030",
+                                      style: GoogleFonts.ubuntu(
+                                        color: secondaryBlueShadeLight,
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () async {
+                                await launchUrlString("tel:9645268304");
+                              },
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: ColoredBox(
+                                  color: primaryDark,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 15,
+                                      horizontal: 20,
+                                    ),
+                                    child: Text(
+                                      "9645268304",
+                                      style: GoogleFonts.ubuntu(
+                                        color: secondaryBlueShadeLight,
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    )
                   ],
                 ),
               ),
