@@ -88,6 +88,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
+                    const SizedBox(height: 10),
+                    Image.asset("assets/images/sb_logo.png"),
                     GradientText(
                       'Samvit 2.0',
                       style: GoogleFonts.pacifico(
@@ -98,6 +100,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         Color(0xFFECECEC),
                       ],
                     ),
+                    const Text(
+                      "19 - 25 September 2022",
+                      style: TextStyle(
+                        color: textWhiteShadeLight,
+                      ),
+                    ),
                     const SizedBox(height: 20),
                     //ClipRRect(
                     //  borderRadius: BorderRadius.circular(8),
@@ -105,13 +113,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     //),
                     //const SizedBox(height: 50),
                     Text(
-                      "For College Staff",
+                      "Staff Login",
                       style: GoogleFonts.poppins(
                         fontSize: 18,
                       ),
                     ),
                     const SizedBox(height: 10),
-                    //const Divider(thickness: 2),
                     CustomFormInput(
                       labelText: "Phone",
                       hintText: 'Enter your phone number',
@@ -349,7 +356,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(height: 20),
                     const Divider(
-                      thickness: 3,
+                      thickness: 2,
                       color: Colors.white54,
                     ),
                     const SizedBox(height: 10),
@@ -357,60 +364,23 @@ class _LoginScreenState extends State<LoginScreen> {
                       children: [
                         Text(
                           "For Individuals Registration",
-                          style: GoogleFonts.poppins(
-                            fontSize: 18,
-                          ),
+                          style: GoogleFonts.poppins(fontSize: 18),
                         ),
-                        const SizedBox(height: 5),
-                        const Text("Please contact the Office"),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 10),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            GestureDetector(
-                              onTap: () async {
-                                await launchUrlString("tel:8547651030");
-                              },
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                child: ColoredBox(
-                                  color: primaryDark,
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: 15,
-                                      horizontal: 20,
-                                    ),
-                                    child: Text(
-                                      "8547651030",
-                                      style: GoogleFonts.ubuntu(
-                                        color: secondaryBlueShadeLight,
-                                        fontSize: 20,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () async {
-                                await launchUrlString("tel:9645268304");
-                              },
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                child: ColoredBox(
-                                  color: primaryDark,
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: 15,
-                                      horizontal: 20,
-                                    ),
-                                    child: Text(
-                                      "9645268304",
-                                      style: GoogleFonts.ubuntu(
-                                        color: secondaryBlueShadeLight,
-                                        fontSize: 20,
-                                      ),
-                                    ),
+                            Expanded(
+                              child: ElevatedButton(
+                                onPressed: () async {
+                                  if (!await launchUrlString(
+                                      "https://rzp.io/l/ddwnFSyPS")) {
+                                    throw 'Could not finish booking!';
+                                  }
+                                },
+                                child: const Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 13),
+                                  child: Text(
+                                    "Register Online",
                                   ),
                                 ),
                               ),
