@@ -34,7 +34,7 @@ dependencies:
   scrollable_positioned_list: ^0.3.2
   shared_preferences: ^2.0.15
   simple_gradient_text: ^1.2.3
-  tabbed_sliverlist: ^0.1.0
+  tabbed_sliverlist: ^0.1.0 
   table_calendar: ^3.0.6
   url_launcher: ^6.1.5
 
