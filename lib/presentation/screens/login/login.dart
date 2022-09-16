@@ -10,6 +10,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 void configLoading() {
   EasyLoading.instance
@@ -86,6 +88,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
+                    const SizedBox(height: 10),
+                    Image.asset("assets/images/sb_logo.png"),
                     GradientText(
                       'Samvit 2.0',
                       style: GoogleFonts.pacifico(
@@ -96,12 +100,25 @@ class _LoginScreenState extends State<LoginScreen> {
                         Color(0xFFECECEC),
                       ],
                     ),
+                    const Text(
+                      "19 - 25 September 2022",
+                      style: TextStyle(
+                        color: textWhiteShadeLight,
+                      ),
+                    ),
                     const SizedBox(height: 20),
                     //ClipRRect(
                     //  borderRadius: BorderRadius.circular(8),
                     //  child: Image.asset("assets/images/samvit.png"),
                     //),
                     //const SizedBox(height: 50),
+                    Text(
+                      "Staff Login",
+                      style: GoogleFonts.poppins(
+                        fontSize: 18,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
                     CustomFormInput(
                       labelText: "Phone",
                       hintText: 'Enter your phone number',
@@ -338,6 +355,40 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: const Text("VERIFY"),
                     ),
                     const SizedBox(height: 20),
+                    const Divider(
+                      thickness: 2,
+                      color: Colors.white54,
+                    ),
+                    const SizedBox(height: 10),
+                    Column(
+                      children: [
+                        Text(
+                          "For Individuals Registration",
+                          style: GoogleFonts.poppins(fontSize: 18),
+                        ),
+                        const SizedBox(height: 10),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: ElevatedButton(
+                                onPressed: () async {
+                                  if (!await launchUrlString(
+                                      "https://rzp.io/l/ddwnFSyPS")) {
+                                    throw 'Could not finish booking!';
+                                  }
+                                },
+                                child: const Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 13),
+                                  child: Text(
+                                    "Register Online",
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    )
                   ],
                 ),
               ),
